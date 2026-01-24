@@ -1,0 +1,78 @@
+<!-- Detection Result Page Template -->
+<view class="result-page {{showAnimation ? 'animated' : ''}}">
+  <!-- Header -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <text class="header-title">检测完成</text>
+      <text class="header-time">{{result.timestamp ? '刚刚' : ''}}</text>
+    </view>
+  </view>
+
+  <!-- Result card -->
+  <view class="result-section">
+    <result-card
+      result="{{result}}"
+      showDetails="{{true}}"
+    ></result-card>
+  </view>
+
+  <!-- Health suggestions -->
+  <view class="suggestions-section">
+    <view class="section-header">
+      <text class="section-title">健康建议</text>
+    </view>
+
+    <view class="suggestions-list">
+      <view
+        class="suggestion-item"
+        wx:for="{{suggestions}}"
+        wx:key="index"
+        style="animation-delay: {{index * 0.1}}s;"
+      >
+        <text class="suggestion-icon">{{item.icon}}</text>
+        <text class="suggestion-text">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Actions -->
+  <view class="actions-section">
+    <view class="action-row">
+      <button class="action-btn primary" bindtap="detectAgain">
+        <text class="btn-icon">🔄</text>
+        <text class="btn-text">再测一次</text>
+      </button>
+    </view>
+
+    <view class="action-row secondary-actions">
+      <button class="action-btn secondary" bindtap="viewHistory">
+        <text class="btn-icon">📋</text>
+        <text class="btn-text">历史记录</text>
+      </button>
+      <button class="action-btn secondary" bindtap="consultAI">
+        <text class="btn-icon">🤖</text>
+        <text class="btn-text">咨询AI</text>
+      </button>
+    </view>
+
+    <view class="action-row">
+      <button class="action-btn text" bindtap="goHome">
+        返回首页
+      </button>
+    </view>
+  </view>
+
+  <!-- Disclaimer -->
+  <view class="disclaimer-section">
+    <view class="disclaimer-card">
+      <text class="disclaimer-icon">⚕️</text>
+      <text class="disclaimer-text">{{disclaimer}}</text>
+    </view>
+  </view>
+
+  <!-- Share button (fixed) -->
+  <view class="share-float" wx:if="{{showShare}}" bindtap="shareResult">
+    <text class="share-icon">📤</text>
+  </view>
+</view>

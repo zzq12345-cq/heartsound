@@ -1,0 +1,55 @@
+<!-- Detection Analyzing Page Template -->
+<view class="analyzing-page">
+  <!-- Loading heart animation -->
+  <view class="loading-section">
+    <loading-heart
+      text="{{loadingText}}"
+      estimatedTime="{{estimatedTime}}"
+    ></loading-heart>
+  </view>
+
+  <!-- Analysis stages -->
+  <view class="stages-section">
+    <view class="stages-title">
+      <text>分析进度</text>
+    </view>
+
+    <view class="stages-list">
+      <view
+        class="stage-item {{item.status}}"
+        wx:for="{{stages}}"
+        wx:key="key"
+      >
+        <!-- Stage icon -->
+        <view class="stage-icon-wrapper">
+          <view class="stage-icon {{item.status}}">
+            <text wx:if="{{item.status === 'completed'}}">✓</text>
+            <text wx:elif="{{item.status === 'active'}}">{{item.icon}}</text>
+            <text wx:else>{{index + 1}}</text>
+          </view>
+          <!-- Connecting line -->
+          <view class="stage-line" wx:if="{{index < stages.length - 1}}"></view>
+        </view>
+
+        <!-- Stage info -->
+        <view class="stage-info">
+          <text class="stage-label">{{item.label}}</text>
+          <text class="stage-status" wx:if="{{item.status === 'active'}}">处理中...</text>
+          <text class="stage-status" wx:elif="{{item.status === 'completed'}}">已完成</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Cancel button -->
+  <view class="cancel-section">
+    <button class="cancel-btn" bindtap="cancelAnalysis">
+      取消分析
+    </button>
+  </view>
+
+  <!-- Disclaimer -->
+  <view class="disclaimer">
+    <text>AI分析结果仅供参考，不作为医学诊断依据</text>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "loading-heart": "/components/loading-heart/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "分析中"
+}

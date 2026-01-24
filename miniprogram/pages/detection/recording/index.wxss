@@ -1,0 +1,252 @@
+/* Detection Recording Page Styles */
+
+.recording-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1A1A2E 0%, #0F3460 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pulse background */
+.pulse-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.pulse-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2rpx solid rgba(24, 144, 255, 0.3);
+  animation: pulse-expand 3s ease-out infinite;
+}
+
+.pulse-circle.c1 {
+  width: 400rpx;
+  height: 400rpx;
+  top: -200rpx;
+  left: -200rpx;
+  animation-delay: 0s;
+}
+
+.pulse-circle.c2 {
+  width: 600rpx;
+  height: 600rpx;
+  top: -300rpx;
+  left: -300rpx;
+  animation-delay: 1s;
+}
+
+.pulse-circle.c3 {
+  width: 800rpx;
+  height: 800rpx;
+  top: -400rpx;
+  left: -400rpx;
+  animation-delay: 2s;
+}
+
+@keyframes pulse-expand {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Header */
+.header {
+  width: 100%;
+  padding: 88rpx 32rpx 32rpx;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 10;
+}
+
+.close-btn {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.close-icon {
+  font-size: 32rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Countdown section */
+.countdown-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40rpx;
+  position: relative;
+  z-index: 10;
+}
+
+.countdown-ring {
+  width: 320rpx;
+  height: 320rpx;
+  border-radius: 50%;
+  background: conic-gradient(
+    #1890FF 0%,
+    #1890FF var(--progress, 0%),
+    rgba(255, 255, 255, 0.1) var(--progress, 0%),
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.countdown-inner {
+  width: 280rpx;
+  height: 280rpx;
+  border-radius: 50%;
+  background: #1A1A2E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdown-number {
+  font-size: 120rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1;
+}
+
+.countdown-unit {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 8rpx;
+}
+
+.status-text {
+  margin-top: 32rpx;
+  font-size: 32rpx;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Waveform section */
+.waveform-section {
+  width: 100%;
+  padding: 40rpx 32rpx;
+  position: relative;
+  z-index: 10;
+}
+
+/* Heart rate section */
+.heart-rate-section {
+  position: relative;
+  z-index: 10;
+}
+
+.heart-rate-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16rpx 32rpx;
+  border-radius: 40rpx;
+}
+
+.heart-emoji {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+  animation: heartbeat 0.8s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+}
+
+.heart-rate-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.heart-rate-unit {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 8rpx;
+}
+
+/* Progress section */
+.progress-section {
+  width: 100%;
+  padding: 40rpx 48rpx;
+  position: relative;
+  z-index: 10;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1890FF, #36CFC9);
+  border-radius: 4rpx;
+  transition: width 0.3s ease;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12rpx;
+}
+
+.progress-start,
+.progress-end {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Tips section */
+.tips-section {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 40rpx 32rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+  position: relative;
+  z-index: 10;
+}
+
+.tip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tip-icon {
+  font-size: 40rpx;
+  margin-bottom: 12rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.7);
+}

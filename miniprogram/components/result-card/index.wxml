@@ -1,0 +1,49 @@
+<!-- Result Card Component Template -->
+<view
+  class="result-card {{riskLevel}} {{compact ? 'compact' : ''}}"
+  style="background-color: {{riskBgColor}}; border-color: {{riskColor}};"
+  bindtap="onTap"
+>
+  <!-- Main result section -->
+  <view class="result-main">
+    <!-- Risk icon -->
+    <view class="risk-icon-wrapper">
+      <text class="risk-icon">{{riskIcon}}</text>
+    </view>
+
+    <!-- Result info -->
+    <view class="result-info">
+      <view class="risk-status" style="color: {{riskColor}};">
+        <text class="risk-text">{{riskText}}</text>
+      </view>
+      <text class="category-label">{{categoryLabel}}</text>
+      <text class="confidence">置信度: {{confidence}}%</text>
+    </view>
+  </view>
+
+  <!-- Probability details -->
+  <view class="probability-section" wx:if="{{showDetails && probabilities.length > 0}}">
+    <view class="section-title">
+      <text>详细分析结果</text>
+    </view>
+
+    <view class="probability-list">
+      <view
+        class="probability-item {{item.isTop ? 'is-top' : ''}}"
+        wx:for="{{probabilities}}"
+        wx:key="key"
+      >
+        <text class="prob-label">{{item.label}}</text>
+        <view class="prob-bar-wrapper">
+          <view
+            class="prob-bar"
+            style="width: {{item.value}}%; background-color: {{item.isTop ? riskColor : '#E0E0E0'}};"
+          ></view>
+        </view>
+        <text class="prob-value" style="color: {{item.isTop ? riskColor : '#666'}};">
+          {{item.value}}%
+        </text>
+      </view>
+    </view>
+  </view>
+</view>

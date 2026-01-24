@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "result-card": "/components/result-card/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "检测结果",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
+}

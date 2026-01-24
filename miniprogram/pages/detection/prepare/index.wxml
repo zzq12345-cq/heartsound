@@ -1,0 +1,73 @@
+<!-- Detection Prepare Page Template -->
+<view class="prepare-page">
+  <!-- Header -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="title">检测准备</text>
+    <view class="placeholder"></view>
+  </view>
+
+  <!-- Main content -->
+  <view class="content">
+    <!-- Illustration -->
+    <view class="illustration-wrapper">
+      <view class="heart-position-guide">
+        <view class="body-outline">
+          <view class="heart-marker pulse-animation">
+            <text class="heart-icon">❤️</text>
+          </view>
+          <view class="stethoscope-marker">
+            <text class="steth-icon">🩺</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Instructions -->
+    <view class="instructions">
+      <view class="instruction-title">
+        <text>请将听诊器放置在正确位置</text>
+      </view>
+
+      <view class="tips-carousel">
+        <view class="tip-item {{index === currentTip ? 'active' : ''}}"
+              wx:for="{{tips}}"
+              wx:key="index">
+          <text class="tip-number">{{index + 1}}</text>
+          <text class="tip-text">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- Tip indicators -->
+      <view class="tip-indicators">
+        <view class="indicator {{index === currentTip ? 'active' : ''}}"
+              wx:for="{{tips}}"
+              wx:key="index"></view>
+      </view>
+    </view>
+
+    <!-- Device status -->
+    <view class="device-status {{deviceConnected ? 'connected' : 'disconnected'}}">
+      <text class="status-icon">{{deviceConnected ? '✅' : '⚠️'}}</text>
+      <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
+    </view>
+  </view>
+
+  <!-- Bottom action -->
+  <view class="bottom-action">
+    <button
+      class="start-btn {{isReady ? '' : 'disabled'}}"
+      bindtap="startDetection"
+      disabled="{{!isReady}}"
+    >
+      <text class="btn-icon">🎯</text>
+      <text class="btn-text">开始测量</text>
+    </button>
+
+    <view class="disclaimer">
+      <text>本检测仅供参考，不作为医学诊断依据</text>
+    </view>
+  </view>
+</view>

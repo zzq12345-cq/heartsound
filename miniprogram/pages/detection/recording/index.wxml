@@ -1,0 +1,75 @@
+<!-- Detection Recording Page Template -->
+<view class="recording-page">
+  <!-- Background pulse effect -->
+  <view class="pulse-bg">
+    <view class="pulse-circle c1"></view>
+    <view class="pulse-circle c2"></view>
+    <view class="pulse-circle c3"></view>
+  </view>
+
+  <!-- Header -->
+  <view class="header">
+    <view class="close-btn" bindtap="stopRecording">
+      <text class="close-icon">✕</text>
+    </view>
+  </view>
+
+  <!-- Countdown display -->
+  <view class="countdown-section">
+    <view class="countdown-ring">
+      <view class="countdown-progress" style="--progress: {{progress}}%;"></view>
+      <view class="countdown-inner">
+        <text class="countdown-number">{{countdown}}</text>
+        <text class="countdown-unit">秒</text>
+      </view>
+    </view>
+    <text class="status-text">{{statusText}}</text>
+  </view>
+
+  <!-- Waveform display -->
+  <view class="waveform-section">
+    <waveform
+      height="200"
+      lineColor="#1890FF"
+      lineWidth="3"
+      showDemo="{{!isRecording}}"
+      bindready="onWaveformReady"
+    ></waveform>
+  </view>
+
+  <!-- Heart rate display (if available) -->
+  <view class="heart-rate-section" wx:if="{{heartRate !== '--'}}">
+    <view class="heart-rate-card">
+      <text class="heart-emoji">❤️</text>
+      <text class="heart-rate-value">{{heartRate}}</text>
+      <text class="heart-rate-unit">BPM</text>
+    </view>
+  </view>
+
+  <!-- Progress bar -->
+  <view class="progress-section">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%;"></view>
+    </view>
+    <view class="progress-labels">
+      <text class="progress-start">0秒</text>
+      <text class="progress-end">{{totalDuration}}秒</text>
+    </view>
+  </view>
+
+  <!-- Tips -->
+  <view class="tips-section">
+    <view class="tip-item">
+      <text class="tip-icon">🤫</text>
+      <text class="tip-text">请保持安静</text>
+    </view>
+    <view class="tip-item">
+      <text class="tip-icon">🧘</text>
+      <text class="tip-text">放松呼吸</text>
+    </view>
+    <view class="tip-item">
+      <text class="tip-icon">📍</text>
+      <text class="tip-text">保持位置</text>
+    </view>
+  </view>
+</view>

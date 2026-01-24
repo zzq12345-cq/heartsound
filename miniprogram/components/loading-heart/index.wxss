@@ -1,0 +1,178 @@
+/* Loading Heart Component Styles */
+
+.loading-heart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 80rpx 0;
+}
+
+/* Pulse rings */
+.pulse-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 4rpx solid;
+  animation: pulse-expand 2s ease-out infinite;
+}
+
+.ring-1 {
+  width: 200rpx;
+  height: 200rpx;
+  animation-delay: 0s;
+}
+
+.ring-2 {
+  width: 280rpx;
+  height: 280rpx;
+  animation-delay: 0.4s;
+}
+
+.ring-3 {
+  width: 360rpx;
+  height: 360rpx;
+  animation-delay: 0.8s;
+}
+
+@keyframes pulse-expand {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Heart icon */
+.heart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.heart-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: heartbeat 0.8s ease-in-out infinite;
+  box-shadow: 0 8rpx 32rpx rgba(24, 144, 255, 0.4);
+}
+
+.heart-emoji {
+  font-size: 60rpx;
+  animation: heartbeat-inner 0.8s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.15);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+@keyframes heartbeat-inner {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.1);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+/* ECG line */
+.ecg-line-container {
+  width: 80%;
+  height: 4rpx;
+  margin-top: 60rpx;
+  overflow: hidden;
+  border-radius: 2rpx;
+  background-color: #E8E8E8;
+}
+
+.ecg-line {
+  width: 100%;
+  height: 100%;
+  animation: ecg-flow 1.5s linear infinite;
+}
+
+@keyframes ecg-flow {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Loading text */
+.loading-text-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.loading-text {
+  font-size: 36rpx;
+  font-weight: 500;
+  color: var(--color-text-primary, #333);
+}
+
+.loading-dots {
+  display: flex;
+  margin-left: 4rpx;
+}
+
+.dot {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: var(--color-primary, #1890FF);
+  animation: dot-blink 1.4s infinite;
+}
+
+.dot-1 { animation-delay: 0s; }
+.dot-2 { animation-delay: 0.2s; }
+.dot-3 { animation-delay: 0.4s; }
+
+@keyframes dot-blink {
+  0%, 60%, 100% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+/* Estimated time */
+.estimated-time {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: var(--color-text-hint, #999);
+}

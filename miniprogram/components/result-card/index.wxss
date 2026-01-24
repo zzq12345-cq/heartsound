@@ -1,0 +1,135 @@
+/* Result Card Component Styles */
+
+.result-card {
+  border-radius: var(--radius-lg, 24rpx);
+  padding: var(--spacing-lg, 32rpx);
+  border: 2rpx solid;
+  transition: all 0.3s ease;
+}
+
+.result-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* Compact mode */
+.result-card.compact {
+  padding: var(--spacing-md, 24rpx);
+}
+
+.result-card.compact .risk-icon {
+  font-size: 48rpx;
+}
+
+.result-card.compact .risk-text {
+  font-size: 32rpx;
+}
+
+/* Main result section */
+.result-main {
+  display: flex;
+  align-items: center;
+}
+
+.risk-icon-wrapper {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--spacing-lg, 32rpx);
+}
+
+.risk-icon {
+  font-size: 64rpx;
+}
+
+.result-info {
+  flex: 1;
+}
+
+.risk-status {
+  margin-bottom: var(--spacing-xs, 8rpx);
+}
+
+.risk-text {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.category-label {
+  display: block;
+  font-size: var(--font-size-body, 28rpx);
+  color: var(--color-text-primary, #333);
+  margin-bottom: 4rpx;
+}
+
+.confidence {
+  display: block;
+  font-size: var(--font-size-caption, 24rpx);
+  color: var(--color-text-hint, #999);
+}
+
+/* Probability section */
+.probability-section {
+  margin-top: var(--spacing-lg, 32rpx);
+  padding-top: var(--spacing-lg, 32rpx);
+  border-top: 1rpx solid rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  margin-bottom: var(--spacing-md, 24rpx);
+}
+
+.section-title text {
+  font-size: var(--font-size-body, 28rpx);
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+/* Probability list */
+.probability-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 16rpx);
+}
+
+.probability-item {
+  display: flex;
+  align-items: center;
+}
+
+.probability-item.is-top {
+  font-weight: 600;
+}
+
+.prob-label {
+  width: 160rpx;
+  font-size: var(--font-size-caption, 24rpx);
+  color: var(--color-text-secondary, #666);
+  flex-shrink: 0;
+}
+
+.prob-bar-wrapper {
+  flex: 1;
+  height: 16rpx;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8rpx;
+  margin: 0 var(--spacing-sm, 16rpx);
+  overflow: hidden;
+}
+
+.prob-bar {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.5s ease;
+}
+
+.prob-value {
+  width: 80rpx;
+  text-align: right;
+  font-size: var(--font-size-caption, 24rpx);
+  flex-shrink: 0;
+}

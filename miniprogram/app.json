@@ -3,6 +3,10 @@
     "pages/index/index",
     "pages/connect/index",
     "pages/detection/index",
+    "pages/detection/prepare/index",
+    "pages/detection/recording/index",
+    "pages/detection/analyzing/index",
+    "pages/detection/result/index",
     "pages/records/index",
     "pages/profile/index"
   ],

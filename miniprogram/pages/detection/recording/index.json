@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "waveform": "/components/waveform/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "心音录制"
+}

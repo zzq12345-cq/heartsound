@@ -1,0 +1,9 @@
+<!-- Waveform Component Template -->
+<view class="waveform-container">
+  <canvas
+    type="2d"
+    id="waveCanvas"
+    class="waveform-canvas"
+    style="width: 100%; height: 100%;"
+  ></canvas>
+</view>

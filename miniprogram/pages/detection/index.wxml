@@ -1,15 +1,92 @@
-<!-- Detection Page Template (Placeholder for IMPL-005) -->
-<view class="page-container">
-  <view class="status-section">
-    <view class="status-icon">{{deviceConnected ? '✅' : '⚠️'}}</view>
-    <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
-    <text class="status-hint" wx:if="{{deviceInfo}}">{{deviceInfo.device_name}}</text>
+<!-- Detection Page Template - Entry Point -->
+<view class="detection-page">
+  <!-- Header section -->
+  <view class="header-section">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <text class="header-title">心音检测</text>
+      <text class="header-subtitle">AI智能分析，守护心脏健康</text>
+    </view>
   </view>
 
-  <view class="action-section">
-    <button class="btn btn-primary btn-block" bindtap="onStartTap" disabled="{{!deviceConnected}}">
-      开始检测
-    </button>
-    <text class="hint-text">检测功能将在IMPL-005中完整实现</text>
+  <!-- Main content -->
+  <view class="main-content">
+    <!-- Device status card -->
+    <view class="status-card {{deviceConnected ? 'connected' : 'disconnected'}}">
+      <view class="status-icon-wrapper">
+        <text class="status-icon">{{deviceConnected ? '✅' : '⚠️'}}</text>
+      </view>
+      <view class="status-info">
+        <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
+        <text class="status-hint" wx:if="{{deviceInfo}}">{{deviceInfo.device_name}}</text>
+        <text class="status-hint" wx:else>请在首页连接设备后开始检测</text>
+      </view>
+    </view>
+
+    <!-- Start detection button -->
+    <view class="start-section">
+      <view class="start-btn-wrapper" bindtap="onStartTap">
+        <view class="start-btn {{deviceConnected ? 'active' : 'disabled'}}">
+          <view class="pulse-ring r1" wx:if="{{deviceConnected}}"></view>
+          <view class="pulse-ring r2" wx:if="{{deviceConnected}}"></view>
+          <view class="btn-inner">
+            <text class="btn-icon">🩺</text>
+            <text class="btn-text">开始检测</text>
+          </view>
+        </view>
+      </view>
+      <text class="start-hint">点击开始30秒心音采集</text>
+    </view>
+
+    <!-- Health tip carousel -->
+    <view class="tip-section">
+      <view class="tip-card">
+        <text class="tip-icon">💡</text>
+        <text class="tip-content">{{tips[currentTip]}}</text>
+      </view>
+      <view class="tip-indicators">
+        <view
+          class="tip-dot {{index === currentTip ? 'active' : ''}}"
+          wx:for="{{tips}}"
+          wx:key="index"
+        ></view>
+      </view>
+    </view>
+
+    <!-- Recent records -->
+    <view class="records-section" wx:if="{{recentRecords.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">最近检测</text>
+        <text class="section-more" bindtap="viewAllRecords">查看全部 ></text>
+      </view>
+
+      <view class="records-list">
+        <view
+          class="record-item"
+          wx:for="{{recentRecords}}"
+          wx:key="index"
+          data-index="{{index}}"
+          bindtap="onRecordTap"
+        >
+          <view class="record-icon {{item.risk_level}}">
+            <text wx:if="{{item.risk_level === 'safe'}}">✅</text>
+            <text wx:elif="{{item.risk_level === 'warning'}}">⚠️</text>
+            <text wx:else>🚨</text>
+          </view>
+          <view class="record-info">
+            <text class="record-label">{{item.label || '心音检测'}}</text>
+            <text class="record-time">{{item.timestamp ? '刚刚' : '--'}}</text>
+          </view>
+          <view class="record-arrow">
+            <text>></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Disclaimer -->
+  <view class="disclaimer">
+    <text>本检测结果仅供参考，不作为医学诊断依据</text>
   </view>
 </view>

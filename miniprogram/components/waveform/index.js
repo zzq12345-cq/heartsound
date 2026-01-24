@@ -98,6 +98,9 @@ Component({
           // Draw initial empty state
           this.drawEmptyState();
 
+          // Trigger ready event
+          this.triggerEvent('ready', { component: this });
+
           console.log('[Waveform] Canvas initialized:', width, 'x', height);
         });
     },

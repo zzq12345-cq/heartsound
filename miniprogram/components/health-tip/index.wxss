@@ -13,8 +13,10 @@
   margin-bottom: var(--spacing-sm);
 }
 
-.tip-icon {
-  font-size: 32rpx;
+.tip-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: var(--spacing-xs);
 }
 

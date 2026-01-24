@@ -1,0 +1,8 @@
+<!-- Icon Component Template -->
+<image
+  wx:if="{{iconSrc}}"
+  class="icon"
+  src="{{iconSrc}}"
+  style="width: {{size}}rpx; height: {{size}}rpx;"
+  mode="aspectFit"
+></image>

@@ -85,8 +85,11 @@ Page({
     });
 
     try {
-      // 开始检测会话
-      const sessionId = await detectionService.startDetection(deviceIP);
+      // 开始检测会话（不传deviceIP，服务内部会获取）
+      const result = await detectionService.startDetection({ duration: this.data.totalDuration });
+
+      // result可能是对象 {sessionId, websocketUrl}
+      const sessionId = typeof result === 'object' ? result.sessionId : result;
       this.setData({ sessionId });
 
       // 开始倒计时

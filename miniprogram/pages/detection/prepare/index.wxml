@@ -3,7 +3,7 @@
   <!-- Header -->
   <view class="header">
     <view class="back-btn" bindtap="goBack">
-      <text class="back-icon">←</text>
+      <icon-svg name="arrow-left" size="40" color="#333" />
     </view>
     <text class="title">检测准备</text>
     <view class="placeholder"></view>
@@ -16,10 +16,10 @@
       <view class="heart-position-guide">
         <view class="body-outline">
           <view class="heart-marker pulse-animation">
-            <text class="heart-icon">❤️</text>
+            <icon-svg name="heart" size="48" color="#F44336" />
           </view>
           <view class="stethoscope-marker">
-            <text class="steth-icon">🩺</text>
+            <icon-svg name="stethoscope" size="64" color="#1890FF" />
           </view>
         </view>
       </view>
@@ -50,7 +50,7 @@
 
     <!-- Device status -->
     <view class="device-status {{deviceConnected ? 'connected' : 'disconnected'}}">
-      <text class="status-icon">{{deviceConnected ? '✅' : '⚠️'}}</text>
+      <icon-svg name="{{deviceConnected ? 'check-circle' : 'warning'}}" size="32" color="{{deviceConnected ? '#4CAF50' : '#FF9800'}}" />
       <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
     </view>
   </view>
@@ -62,7 +62,7 @@
       bindtap="startDetection"
       disabled="{{!isReady}}"
     >
-      <text class="btn-icon">🎯</text>
+      <icon-svg name="target" size="40" color="#FFFFFF" />
       <text class="btn-text">开始测量</text>
     </button>
 

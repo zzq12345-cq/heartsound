@@ -10,7 +10,7 @@
   <view class="card-content" wx:if="{{!loading}}">
     <!-- Status icon -->
     <view class="status-icon">
-      <text class="icon-text">{{statusIcon}}</text>
+      <icon-svg name="{{statusIconName}}" size="48" color="{{statusIconColor}}" />
     </view>
 
     <!-- Status info -->
@@ -24,7 +24,7 @@
 
     <!-- Arrow icon -->
     <view class="arrow-icon" wx:if="{{status === 'connected'}}">
-      <text class="arrow">›</text>
+      <icon-svg name="chevron-right" size="32" color="#CCC" />
     </view>
   </view>
 

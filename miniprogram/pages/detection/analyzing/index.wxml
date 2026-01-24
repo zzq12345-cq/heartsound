@@ -23,8 +23,8 @@
         <!-- Stage icon -->
         <view class="stage-icon-wrapper">
           <view class="stage-icon {{item.status}}">
-            <text wx:if="{{item.status === 'completed'}}">✓</text>
-            <text wx:elif="{{item.status === 'active'}}">{{item.icon}}</text>
+            <icon-svg wx:if="{{item.status === 'completed'}}" name="check-circle" size="24" color="#FFFFFF" />
+            <icon-svg wx:elif="{{item.status === 'active'}}" name="{{item.iconName}}" size="24" color="#FFFFFF" />
             <text wx:else>{{index + 1}}</text>
           </view>
           <!-- Connecting line -->

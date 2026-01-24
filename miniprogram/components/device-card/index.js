@@ -41,7 +41,8 @@ Component({
   data: {
     statusText: '未连接设备',
     statusHint: '点击上方按钮连接树莓派',
-    statusIcon: '📱', // Placeholder, will use actual icons
+    statusIconName: 'stethoscope',
+    statusIconColor: '#999',
     showRetry: false
   },
 
@@ -77,7 +78,8 @@ Component({
     updateStatusDisplay(status, deviceInfo, errorMessage) {
       let statusText = '';
       let statusHint = '';
-      let statusIcon = '';
+      let statusIconName = '';
+      let statusIconColor = '';
       let showRetry = false;
 
       switch (status) {
@@ -86,13 +88,15 @@ Component({
           statusHint = deviceInfo
             ? `IP: ${deviceInfo.ip_address} | 固件: ${deviceInfo.firmware_version}`
             : '设备已连接';
-          statusIcon = '✅';
+          statusIconName = 'check-circle';
+          statusIconColor = '#4CAF50';
           break;
 
         case 'error':
           statusText = '连接失败';
           statusHint = errorMessage || '请检查设备是否开机';
-          statusIcon = '❌';
+          statusIconName = 'alert';
+          statusIconColor = '#F44336';
           showRetry = true;
           break;
 
@@ -100,14 +104,16 @@ Component({
         default:
           statusText = '未连接设备';
           statusHint = '点击上方按钮连接树莓派';
-          statusIcon = '📱';
+          statusIconName = 'stethoscope';
+          statusIconColor = '#999';
           break;
       }
 
       this.setData({
         statusText,
         statusHint,
-        statusIcon,
+        statusIconName,
+        statusIconColor,
         showRetry
       });
     },

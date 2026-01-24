@@ -1,7 +1,9 @@
 <!-- Profile Page Template (Placeholder for IMPL-006) -->
 <view class="page-container">
   <view class="profile-header">
-    <view class="avatar">👤</view>
+    <view class="avatar">
+      <icon-svg name="heart" size="48" color="#1890FF" />
+    </view>
     <text class="nickname">心音用户</text>
   </view>
 
@@ -22,19 +24,31 @@
 
   <view class="menu-section card">
     <view class="menu-item">
-      <text class="menu-icon">📊</text>
+      <view class="menu-icon-wrapper">
+        <icon-svg name="chart" size="40" color="#1890FF" />
+      </view>
       <text class="menu-text">AI健康报告</text>
-      <text class="menu-arrow">›</text>
+      <view class="menu-arrow">
+        <icon-svg name="chevron-right" size="24" color="#CCC" />
+      </view>
     </view>
     <view class="menu-item">
-      <text class="menu-icon">⚙️</text>
+      <view class="menu-icon-wrapper">
+        <icon-svg name="target" size="40" color="#4CAF50" />
+      </view>
       <text class="menu-text">设置</text>
-      <text class="menu-arrow">›</text>
+      <view class="menu-arrow">
+        <icon-svg name="chevron-right" size="24" color="#CCC" />
+      </view>
     </view>
     <view class="menu-item">
-      <text class="menu-icon">❓</text>
+      <view class="menu-icon-wrapper">
+        <icon-svg name="lightbulb" size="40" color="#FF9800" />
+      </view>
       <text class="menu-text">帮助与反馈</text>
-      <text class="menu-arrow">›</text>
+      <view class="menu-arrow">
+        <icon-svg name="chevron-right" size="24" color="#CCC" />
+      </view>
     </view>
   </view>
 

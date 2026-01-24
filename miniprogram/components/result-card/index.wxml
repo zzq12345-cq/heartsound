@@ -8,7 +8,7 @@
   <view class="result-main">
     <!-- Risk icon -->
     <view class="risk-icon-wrapper">
-      <text class="risk-icon">{{riskIcon}}</text>
+      <icon-svg name="{{riskIconName}}" size="{{compact ? 48 : 64}}" color="{{riskColor}}" />
     </view>
 
     <!-- Result info -->

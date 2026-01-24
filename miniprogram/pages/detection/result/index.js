@@ -88,22 +88,22 @@ Page({
 
     const suggestionMap = {
       safe: [
-        { icon: '✅', text: '心音检测结果正常，请继续保持健康的生活方式' },
-        { icon: '🏃', text: '建议每周进行3-5次中等强度有氧运动' },
-        { icon: '😴', text: '保持规律作息，每天睡眠7-8小时' },
-        { icon: '📅', text: '建议每3个月进行一次心音检测' }
+        { iconName: 'check-circle', iconColor: '#4CAF50', text: '心音检测结果正常，请继续保持健康的生活方式' },
+        { iconName: 'heart-pulse', iconColor: '#1890FF', text: '建议每周进行3-5次中等强度有氧运动' },
+        { iconName: 'breathe', iconColor: '#9C27B0', text: '保持规律作息，每天睡眠7-8小时' },
+        { iconName: 'clipboard', iconColor: '#FF9800', text: '建议每3个月进行一次心音检测' }
       ],
       warning: [
-        { icon: '⚠️', text: '检测到轻微异常，建议密切关注' },
-        { icon: '🏥', text: '建议近期前往医院进行详细检查' },
-        { icon: '📝', text: '记录日常身体状况，如有不适及时就医' },
-        { icon: '🧘', text: '避免剧烈运动，保持心情平和' }
+        { iconName: 'warning', iconColor: '#FF9800', text: '检测到轻微异常，建议密切关注' },
+        { iconName: 'medical', iconColor: '#F44336', text: '建议近期前往医院进行详细检查' },
+        { iconName: 'clipboard', iconColor: '#1890FF', text: '记录日常身体状况，如有不适及时就医' },
+        { iconName: 'breathe', iconColor: '#4CAF50', text: '避免剧烈运动，保持心情平和' }
       ],
       danger: [
-        { icon: '🚨', text: '检测到明显异常，请尽快就医' },
-        { icon: '🏥', text: '建议立即前往心内科进行专业检查' },
-        { icon: '📞', text: '如有胸闷、心悸等症状，请拨打120' },
-        { icon: '⚠️', text: '在就医前避免剧烈活动' }
+        { iconName: 'alert', iconColor: '#F44336', text: '检测到明显异常，请尽快就医' },
+        { iconName: 'medical', iconColor: '#F44336', text: '建议立即前往心内科进行专业检查' },
+        { iconName: 'target', iconColor: '#F44336', text: '如有胸闷、心悸等症状，请拨打120' },
+        { iconName: 'warning', iconColor: '#FF9800', text: '在就医前避免剧烈活动' }
       ]
     };
 

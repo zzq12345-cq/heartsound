@@ -10,10 +10,10 @@ Page({
     sessionId: null,
     // 分析阶段
     stages: [
-      { key: 'processing', label: '音频预处理', icon: '🔊', status: 'pending' },
-      { key: 'feature', label: '特征提取', icon: '📊', status: 'pending' },
-      { key: 'inference', label: 'AI模型分析', icon: '🤖', status: 'pending' },
-      { key: 'result', label: '生成报告', icon: '📋', status: 'pending' }
+      { key: 'processing', label: '音频预处理', iconName: 'audio', status: 'pending' },
+      { key: 'feature', label: '特征提取', iconName: 'chart', status: 'pending' },
+      { key: 'inference', label: 'AI模型分析', iconName: 'robot', status: 'pending' },
+      { key: 'result', label: '生成报告', iconName: 'clipboard', status: 'pending' }
     ],
     currentStage: 0,
     // 加载文案

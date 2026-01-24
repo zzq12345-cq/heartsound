@@ -60,5 +60,8 @@
   },
   "requiredPrivateInfos": ["chooseLocation"],
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "icon-svg": "/components/icon/index"
+  }
 }

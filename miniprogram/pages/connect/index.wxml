@@ -22,7 +22,7 @@
         bindconfirm="onConnectTap"
       />
       <view class="clear-btn" wx:if="{{ipAddress}}" bindtap="onClearInput">
-        <text class="clear-icon">✕</text>
+        <icon-svg name="close" size="24" color="#999" />
       </view>
     </view>
 
@@ -50,7 +50,7 @@
     </view>
 
     <button class="btn btn-outline btn-block" bindtap="onScanTap">
-      <text class="btn-icon">📷</text>
+      <icon-svg name="scan" size="32" color="#1890FF" />
       <text>扫码连接</text>
     </button>
   </view>

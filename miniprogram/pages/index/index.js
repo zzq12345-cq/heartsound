@@ -71,6 +71,56 @@ Page({
   },
 
   /**
+   * 开发模式 - 长按模拟设备连接（方便UI测试）
+   */
+  onLongPressScan() {
+    console.log('[IndexPage] Long press - Dev mode mock connect');
+
+    wx.showModal({
+      title: '开发模式',
+      content: '是否模拟设备连接？（仅用于UI测试）',
+      success: (res) => {
+        if (res.confirm) {
+          this.mockDeviceConnect();
+        }
+      }
+    });
+  },
+
+  /**
+   * 模拟设备连接（开发测试用）
+   */
+  mockDeviceConnect() {
+    const mockDeviceInfo = {
+      device_id: 'MOCK-HS-001',
+      device_name: '心音智鉴(模拟)',
+      ip_address: '192.168.1.100',
+      firmware_version: 'v1.0.0-mock',
+      model_version: 'HeartNet-v2.1',
+      uptime_seconds: 3600,
+      status: 'ready'
+    };
+
+    // 保存到全局
+    app.globalData.deviceConnected = true;
+    app.globalData.deviceIP = '192.168.1.100';
+    app.globalData.deviceInfo = mockDeviceInfo;
+
+    this.setData({
+      deviceStatus: 'connected',
+      deviceInfo: mockDeviceInfo,
+      canStartDetection: true,
+      connecting: false,
+      errorMessage: ''
+    });
+
+    wx.showToast({
+      title: '模拟连接成功',
+      icon: 'success'
+    });
+  },
+
+  /**
    * Handle scan QR code button tap
    */
   onScanTap() {

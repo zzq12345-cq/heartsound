@@ -1,7 +1,9 @@
 <!-- Health Tip Component Template -->
 <view class="health-tip-container">
   <view class="tip-header">
-    <text class="tip-icon">💡</text>
+    <view class="tip-icon-wrapper">
+      <icon-svg name="lightbulb" size="36" color="#FF9800" />
+    </view>
     <text class="tip-title">健康小贴士</text>
   </view>
 

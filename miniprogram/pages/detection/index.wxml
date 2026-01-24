@@ -14,7 +14,7 @@
     <!-- Device status card -->
     <view class="status-card {{deviceConnected ? 'connected' : 'disconnected'}}">
       <view class="status-icon-wrapper">
-        <text class="status-icon">{{deviceConnected ? '✅' : '⚠️'}}</text>
+        <icon-svg name="{{deviceConnected ? 'check-circle' : 'warning'}}" size="40" color="{{deviceConnected ? '#4CAF50' : '#FF9800'}}" />
       </view>
       <view class="status-info">
         <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
@@ -30,7 +30,7 @@
           <view class="pulse-ring r1" wx:if="{{deviceConnected}}"></view>
           <view class="pulse-ring r2" wx:if="{{deviceConnected}}"></view>
           <view class="btn-inner">
-            <text class="btn-icon">🩺</text>
+            <icon-svg name="stethoscope" size="72" color="#FFFFFF" />
             <text class="btn-text">开始检测</text>
           </view>
         </view>
@@ -41,7 +41,7 @@
     <!-- Health tip carousel -->
     <view class="tip-section">
       <view class="tip-card">
-        <text class="tip-icon">💡</text>
+        <icon-svg name="lightbulb" size="32" color="#F57C00" />
         <text class="tip-content">{{tips[currentTip]}}</text>
       </view>
       <view class="tip-indicators">
@@ -69,16 +69,16 @@
           bindtap="onRecordTap"
         >
           <view class="record-icon {{item.risk_level}}">
-            <text wx:if="{{item.risk_level === 'safe'}}">✅</text>
-            <text wx:elif="{{item.risk_level === 'warning'}}">⚠️</text>
-            <text wx:else>🚨</text>
+            <icon-svg wx:if="{{item.risk_level === 'safe'}}" name="check-circle" size="28" color="#4CAF50" />
+            <icon-svg wx:elif="{{item.risk_level === 'warning'}}" name="warning" size="28" color="#FF9800" />
+            <icon-svg wx:else name="alert" size="28" color="#F44336" />
           </view>
           <view class="record-info">
             <text class="record-label">{{item.label || '心音检测'}}</text>
             <text class="record-time">{{item.timestamp ? '刚刚' : '--'}}</text>
           </view>
           <view class="record-arrow">
-            <text>></text>
+            <icon-svg name="chevron-right" size="24" color="#CCC" />
           </view>
         </view>
       </view>

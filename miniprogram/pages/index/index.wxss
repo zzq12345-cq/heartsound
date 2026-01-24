@@ -71,6 +71,15 @@
   color: var(--color-text-hint);
 }
 
+.btn-dev-hint {
+  font-size: 20rpx;
+  color: #FF9800;
+  margin-top: 8rpx;
+  padding: 4rpx 12rpx;
+  background: rgba(255, 152, 0, 0.1);
+  border-radius: 8rpx;
+}
+
 /* Start Detection Button */
 .start-btn {
   display: flex;

@@ -2,6 +2,7 @@
   "navigationBarTitleText": "心音智鉴",
   "usingComponents": {
     "device-card": "/components/device-card/index",
-    "health-tip": "/components/health-tip/index"
+    "health-tip": "/components/health-tip/index",
+    "icon-svg": "/components/icon/index"
   }
 }

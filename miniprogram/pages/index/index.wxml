@@ -16,14 +16,19 @@
   <!-- Connection Buttons -->
   <view class="section connection-buttons">
     <view class="btn-row">
-      <view class="btn-item" bindtap="onScanTap">
-        <view class="btn-icon scan-icon">📷</view>
+      <view class="btn-item" bindtap="onScanTap" bindlongpress="onLongPressScan">
+        <view class="btn-icon scan-icon">
+          <icon-svg name="scan" size="48" color="#FFFFFF" />
+        </view>
         <text class="btn-text">扫码连接</text>
         <text class="btn-hint">扫描设备二维码</text>
+        <text class="btn-dev-hint">长按3秒模拟连接</text>
       </view>
 
       <view class="btn-item" bindtap="onManualInputTap">
-        <view class="btn-icon input-icon">⌨️</view>
+        <view class="btn-icon input-icon">
+          <icon-svg name="keyboard" size="48" color="#FFFFFF" />
+        </view>
         <text class="btn-text">手动输入</text>
         <text class="btn-hint">输入设备IP地址</text>
       </view>
@@ -37,7 +42,7 @@
       bindtap="onStartDetectionTap"
       disabled="{{!canStartDetection}}"
     >
-      <text class="btn-icon-inline">❤️</text>
+      <icon-svg name="heart" size="40" color="#FFFFFF" />
       <text>开始检测</text>
     </button>
   </view>

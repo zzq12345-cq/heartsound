@@ -8,7 +8,7 @@
   <!-- Heart icon -->
   <view class="heart-wrapper" style="width: {{size}}rpx; height: {{size}}rpx;">
     <view class="heart-icon" style="background-color: {{color}};">
-      <text class="heart-emoji">❤️</text>
+      <icon-svg name="heart" size="60" color="#FFFFFF" />
     </view>
   </view>
 

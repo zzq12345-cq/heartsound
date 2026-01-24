@@ -40,7 +40,7 @@ let onErrorCallback = null;
  */
 async function startDetection(options = {}) {
   const app = getApp();
-  const { deviceIP } = app.globalData;
+  const { deviceIP, deviceInfo } = app.globalData;
 
   if (!deviceIP) {
     throw new Error('请先连接设备');
@@ -55,10 +55,19 @@ async function startDetection(options = {}) {
     startTime: null,
     duration: duration,
     result: null,
-    error: null
+    error: null,
+    isMock: false
   };
 
   notifyStatusChange(STATES.CONNECTING, '正在连接设备...');
+
+  // 检查是否是模拟设备（开发测试模式）
+  const isMockDevice = deviceInfo && deviceInfo.device_id && deviceInfo.device_id.startsWith('MOCK-');
+
+  if (isMockDevice) {
+    console.log('[DetectionService] Mock mode detected, using simulated data');
+    return startMockDetection(duration);
+  }
 
   try {
     // Call backend to start detection
@@ -80,6 +89,92 @@ async function startDetection(options = {}) {
     notifyError(err.message);
     throw err;
   }
+}
+
+/**
+ * Mock detection for development testing
+ * 模拟检测（开发测试用）
+ */
+function startMockDetection(duration) {
+  const mockSessionId = 'MOCK-SESSION-' + Date.now();
+
+  currentSession.sessionId = mockSessionId;
+  currentSession.isMock = true;
+  currentSession.state = STATES.RECORDING;
+  currentSession.startTime = Date.now();
+
+  console.log('[DetectionService] Mock session started:', mockSessionId);
+
+  // 模拟音频帧数据
+  let frameCount = 0;
+  const frameInterval = setInterval(() => {
+    if (currentSession.state !== STATES.RECORDING) {
+      clearInterval(frameInterval);
+      return;
+    }
+
+    frameCount++;
+    const remainingSeconds = duration - Math.floor(frameCount / 10);
+
+    // 生成模拟波形数据
+    const mockWaveform = [];
+    for (let i = 0; i < 128; i++) {
+      // 模拟心跳波形
+      const heartbeat = Math.sin(frameCount * 0.1 + i * 0.1) * 0.3;
+      const noise = (Math.random() - 0.5) * 0.1;
+      mockWaveform.push(0.5 + heartbeat + noise);
+    }
+
+    if (onAudioFrameCallback) {
+      onAudioFrameCallback({
+        waveform: mockWaveform,
+        amplitude: 0.5 + Math.sin(frameCount * 0.2) * 0.2,
+        remainingSeconds: remainingSeconds,
+        timestamp: Date.now()
+      });
+    }
+  }, 100); // 10fps
+
+  // 保存定时器引用以便停止
+  currentSession.mockFrameInterval = frameInterval;
+
+  notifyStatusChange(STATES.RECORDING, '录制中（模拟模式）...');
+
+  return {
+    sessionId: mockSessionId,
+    websocketUrl: 'mock://localhost/ws'
+  };
+}
+
+/**
+ * Get mock detection result
+ * 获取模拟检测结果
+ */
+function getMockResult() {
+  // 随机生成一个结果
+  const categories = [
+    { category: 'normal', label: '正常心音', risk_level: 'safe' },
+    { category: 'systolic_murmur', label: '轻微收缩期杂音', risk_level: 'warning' },
+    { category: 'normal', label: '正常心音', risk_level: 'safe' }
+  ];
+
+  const selected = categories[Math.floor(Math.random() * categories.length)];
+
+  return {
+    status: 'completed',
+    result: {
+      ...selected,
+      confidence: 85 + Math.random() * 10,
+      probabilities: {
+        normal: selected.category === 'normal' ? 85 + Math.random() * 10 : 10 + Math.random() * 5,
+        systolic_murmur: selected.category === 'systolic_murmur' ? 75 + Math.random() * 15 : 5 + Math.random() * 3,
+        diastolic_murmur: 2 + Math.random() * 3,
+        extra_heart_sound: 1 + Math.random() * 2,
+        aortic_stenosis: 0.5 + Math.random() * 1
+      },
+      timestamp: Date.now()
+    }
+  };
 }
 
 /**
@@ -256,6 +351,12 @@ function handleErrorMessage(message) {
 function stopDetection() {
   console.log('[DetectionService] Stopping detection');
 
+  // 清除模拟模式的定时器
+  if (currentSession.mockFrameInterval) {
+    clearInterval(currentSession.mockFrameInterval);
+    currentSession.mockFrameInterval = null;
+  }
+
   if (socketTask) {
     try {
       socketTask.send({
@@ -302,39 +403,38 @@ function resetSession() {
  * Get detection result by polling
  * 轮询获取检测结果
  */
-async function pollResult(maxAttempts = 30, interval = 1000) {
+async function pollResult(sessionId) {
   const app = getApp();
   const { deviceIP } = app.globalData;
 
-  if (!currentSession.sessionId) {
+  // 模拟模式 - 直接返回模拟结果
+  if (currentSession.isMock) {
+    console.log('[DetectionService] Returning mock result');
+    return getMockResult();
+  }
+
+  if (!currentSession.sessionId && !sessionId) {
     throw new Error('没有活动的检测会话');
   }
 
-  for (let i = 0; i < maxAttempts; i++) {
-    try {
-      const result = await deviceService.getDetectionResult(
-        deviceIP,
-        currentSession.sessionId
-      );
+  const sid = sessionId || currentSession.sessionId;
 
-      if (result.status === 'completed') {
-        currentSession.result = result.result;
-        currentSession.state = STATES.COMPLETED;
-        return result.result;
-      } else if (result.status === 'error') {
-        throw new Error(result.message || '分析失败');
-      }
+  try {
+    const result = await deviceService.getDetectionResult(deviceIP, sid);
 
-      // Wait before next poll
-      await sleep(interval);
-    } catch (err) {
-      if (i === maxAttempts - 1) {
-        throw err;
-      }
+    if (result.status === 'completed') {
+      currentSession.result = result.result;
+      currentSession.state = STATES.COMPLETED;
+      return result;
+    } else if (result.status === 'error') {
+      throw new Error(result.message || '分析失败');
     }
-  }
 
-  throw new Error('获取结果超时');
+    // Still processing
+    return { status: 'processing' };
+  } catch (err) {
+    throw err;
+  }
 }
 
 /**

@@ -10,7 +10,7 @@
   <!-- Header -->
   <view class="header">
     <view class="close-btn" bindtap="stopRecording">
-      <text class="close-icon">✕</text>
+      <icon-svg name="close" size="32" color="rgba(255,255,255,0.8)" />
     </view>
   </view>
 
@@ -40,7 +40,7 @@
   <!-- Heart rate display (if available) -->
   <view class="heart-rate-section" wx:if="{{heartRate !== '--'}}">
     <view class="heart-rate-card">
-      <text class="heart-emoji">❤️</text>
+      <icon-svg name="heart" size="32" color="#F44336" />
       <text class="heart-rate-value">{{heartRate}}</text>
       <text class="heart-rate-unit">BPM</text>
     </view>
@@ -60,15 +60,15 @@
   <!-- Tips -->
   <view class="tips-section">
     <view class="tip-item">
-      <text class="tip-icon">🤫</text>
+      <icon-svg name="quiet" size="40" color="#FFFFFF" />
       <text class="tip-text">请保持安静</text>
     </view>
     <view class="tip-item">
-      <text class="tip-icon">🧘</text>
+      <icon-svg name="breathe" size="40" color="#FFFFFF" />
       <text class="tip-text">放松呼吸</text>
     </view>
     <view class="tip-item">
-      <text class="tip-icon">📍</text>
+      <icon-svg name="pin" size="40" color="#FFFFFF" />
       <text class="tip-text">保持位置</text>
     </view>
   </view>

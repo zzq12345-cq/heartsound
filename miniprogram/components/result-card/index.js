@@ -26,7 +26,7 @@ Component({
     riskLevel: 'safe',
     riskColor: '#4CAF50',
     riskBgColor: '#E8F5E9',
-    riskIcon: '✅',
+    riskIconName: 'check-circle',
     riskText: '正常',
     categoryLabel: '',
     confidence: 0,
@@ -53,19 +53,19 @@ Component({
         safe: {
           color: '#4CAF50',
           bgColor: '#E8F5E9',
-          icon: '✅',
+          iconName: 'check-circle',
           text: '正常'
         },
         warning: {
           color: '#FF9800',
           bgColor: '#FFF3E0',
-          icon: '⚠️',
+          iconName: 'warning',
           text: '需关注'
         },
         danger: {
           color: '#F44336',
           bgColor: '#FFEBEE',
-          icon: '🚨',
+          iconName: 'alert',
           text: '请就医'
         }
       };
@@ -100,7 +100,7 @@ Component({
         riskLevel,
         riskColor: config.color,
         riskBgColor: config.bgColor,
-        riskIcon: config.icon,
+        riskIconName: config.iconName,
         riskText: config.text,
         categoryLabel: result.label || '',
         confidence: result.confidence || 0,

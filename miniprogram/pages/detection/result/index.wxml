@@ -30,7 +30,7 @@
         wx:key="index"
         style="animation-delay: {{index * 0.1}}s;"
       >
-        <text class="suggestion-icon">{{item.icon}}</text>
+        <icon-svg name="{{item.iconName}}" size="32" color="{{item.iconColor || '#1890FF'}}" />
         <text class="suggestion-text">{{item.text}}</text>
       </view>
     </view>
@@ -40,18 +40,18 @@
   <view class="actions-section">
     <view class="action-row">
       <button class="action-btn primary" bindtap="detectAgain">
-        <text class="btn-icon">🔄</text>
+        <icon-svg name="refresh" size="36" color="#FFFFFF" />
         <text class="btn-text">再测一次</text>
       </button>
     </view>
 
     <view class="action-row secondary-actions">
       <button class="action-btn secondary" bindtap="viewHistory">
-        <text class="btn-icon">📋</text>
+        <icon-svg name="clipboard" size="32" color="#333" />
         <text class="btn-text">历史记录</text>
       </button>
       <button class="action-btn secondary" bindtap="consultAI">
-        <text class="btn-icon">🤖</text>
+        <icon-svg name="robot" size="32" color="#333" />
         <text class="btn-text">咨询AI</text>
       </button>
     </view>
@@ -66,13 +66,13 @@
   <!-- Disclaimer -->
   <view class="disclaimer-section">
     <view class="disclaimer-card">
-      <text class="disclaimer-icon">⚕️</text>
+      <icon-svg name="medical" size="32" color="#F57C00" />
       <text class="disclaimer-text">{{disclaimer}}</text>
     </view>
   </view>
 
   <!-- Share button (fixed) -->
   <view class="share-float" wx:if="{{showShare}}" bindtap="shareResult">
-    <text class="share-icon">📤</text>
+    <icon-svg name="share" size="48" color="#1890FF" />
   </view>
 </view>

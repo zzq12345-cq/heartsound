@@ -1,0 +1,131 @@
+<!-- AI Health Report Page -->
+<view class="report-container">
+  <!-- Header -->
+  <view class="report-header">
+    <view class="header-title">
+      <icon-svg name="document" size="40" color="#1890FF" />
+      <text class="title-text">健康报告</text>
+    </view>
+    <view class="header-action" bindtap="goToChat">
+      <icon-svg name="chat" size="32" color="#666666" />
+      <text class="action-text">问助手</text>
+    </view>
+  </view>
+
+  <!-- Report Type Selector -->
+  <view class="type-selector">
+    <view
+      class="type-item {{selectedType === item.type ? 'active' : ''}}"
+      wx:for="{{reportTypes}}"
+      wx:key="type"
+      data-type="{{item.type}}"
+      bindtap="onTypeChange"
+    >
+      <text class="type-label">{{item.label}}</text>
+      <text class="type-period">近{{item.period}}天</text>
+    </view>
+  </view>
+
+  <!-- Stats Summary -->
+  <view class="stats-card" wx:if="{{detectionStats}}">
+    <view class="stats-title">检测统计</view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{detectionStats.totalCount}}</text>
+        <text class="stat-label">总检测</text>
+      </view>
+      <view class="stat-item safe">
+        <text class="stat-value">{{detectionStats.safeCount}}</text>
+        <text class="stat-label">正常</text>
+      </view>
+      <view class="stat-item warning">
+        <text class="stat-value">{{detectionStats.warningCount}}</text>
+        <text class="stat-label">注意</text>
+      </view>
+      <view class="stat-item danger">
+        <text class="stat-value">{{detectionStats.dangerCount}}</text>
+        <text class="stat-label">异常</text>
+      </view>
+    </view>
+    <view class="stats-footer" wx:if="{{detectionStats.totalCount > 0}}">
+      <text class="confidence-label">平均置信度：</text>
+      <text class="confidence-value">{{detectionStats.avgConfidence}}%</text>
+    </view>
+  </view>
+
+  <!-- No Data Tip -->
+  <view class="no-data-card" wx:if="{{!detectionStats || detectionStats.totalCount === 0}}">
+    <icon-svg name="alert" size="48" color="#999999" />
+    <text class="no-data-text">暂无检测数据</text>
+    <text class="no-data-tip">请先进行心音检测，获取健康数据后再生成报告</text>
+  </view>
+
+  <!-- Generate Button -->
+  <view class="generate-section" wx:if="{{detectionStats && detectionStats.totalCount > 0}}">
+    <button
+      class="generate-btn {{generating ? 'loading' : ''}}"
+      bindtap="generateReport"
+      disabled="{{generating}}"
+    >
+      <icon-svg name="robot" size="36" color="#FFFFFF" wx:if="{{!generating}}" />
+      <view class="loading-dots" wx:if="{{generating}}">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+      <text>{{generating ? progressText : '生成AI健康报告'}}</text>
+    </button>
+  </view>
+
+  <!-- Report Content -->
+  <view class="report-content" wx:if="{{currentReport}}">
+    <view class="report-card">
+      <view class="report-header-bar">
+        <view class="report-type-badge">
+          <text>{{selectedType === 'weekly' ? '周报' : '月报'}}</text>
+        </view>
+        <view class="report-actions">
+          <view class="share-btn" bindtap="shareReport">
+            <icon-svg name="share" size="28" color="#666666" />
+          </view>
+        </view>
+      </view>
+
+      <view class="report-body">
+        <text class="report-text">{{currentReport.content}}</text>
+      </view>
+
+      <view class="report-footer">
+        <text class="generated-time">生成时间：{{currentReport.generatedAt}}</text>
+      </view>
+    </view>
+
+    <!-- Disclaimer -->
+    <view class="report-disclaimer">
+      <icon-svg name="alert" size="24" color="#FF9800" />
+      <text class="disclaimer-text">
+        本报告由AI生成，仅供健康参考，不能作为医疗诊断依据。如有不适，请及时就医。
+      </text>
+    </view>
+  </view>
+
+  <!-- Report History -->
+  <view class="history-section" wx:if="{{reportHistory.length > 0}}">
+    <view class="section-title">历史报告</view>
+    <view class="history-list">
+      <view
+        class="history-item"
+        wx:for="{{reportHistory}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="viewHistoryReport"
+      >
+        <view class="history-info">
+          <text class="history-type">{{item.report_type === 'weekly' ? '周报' : '月报'}}</text>
+          <text class="history-date">{{item.created_at}}</text>
+        </view>
+        <icon-svg name="chevron-right" size="28" color="#CCCCCC" />
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,86 @@
+<!-- AI Health Assistant Chat Page -->
+<view class="chat-container">
+  <!-- Header -->
+  <view class="chat-header">
+    <view class="header-title">
+      <icon-svg name="robot" size="40" color="#1890FF" />
+      <text class="title-text">健康助手</text>
+    </view>
+    <view class="header-actions">
+      <view class="action-btn" bindtap="clearConversation">
+        <icon-svg name="refresh" size="36" color="#666666" />
+      </view>
+    </view>
+  </view>
+
+  <!-- Messages List -->
+  <scroll-view
+    class="messages-container"
+    scroll-y
+    scroll-into-view="{{scrollToMessage}}"
+    scroll-with-animation
+  >
+    <!-- Disclaimer Banner -->
+    <view class="disclaimer-banner">
+      <icon-svg name="alert" size="28" color="#FF9800" />
+      <text class="disclaimer-text">{{disclaimer}}</text>
+    </view>
+
+    <!-- Messages -->
+    <view class="messages-list">
+      <block wx:for="{{messages}}" wx:key="id">
+        <view id="{{item.id}}" class="message-item">
+          <chat-bubble
+            type="{{item.type}}"
+            content="{{item.content}}"
+            timestamp="{{item.timestamp}}"
+            loading="{{item.loading}}"
+            showDisclaimer="{{item.showDisclaimer}}"
+          />
+        </view>
+      </block>
+    </view>
+
+    <!-- Quick Questions -->
+    <view class="quick-questions" wx:if="{{showQuickQuestions && messages.length <= 1}}">
+      <view class="quick-title">快捷问题</view>
+      <view class="quick-list">
+        <view
+          class="quick-item"
+          wx:for="{{quickQuestions}}"
+          wx:key="*this"
+          data-question="{{item}}"
+          bindtap="onQuickQuestionTap"
+        >
+          <text class="quick-text">{{item}}</text>
+          <icon-svg name="chevron-right" size="28" color="#999999" />
+        </view>
+      </view>
+    </view>
+
+    <!-- Bottom Spacing -->
+    <view class="bottom-spacing"></view>
+  </scroll-view>
+
+  <!-- Input Area -->
+  <view class="input-container">
+    <view class="input-wrapper">
+      <input
+        class="message-input"
+        type="text"
+        placeholder="输入你的问题..."
+        value="{{inputValue}}"
+        bindinput="onInputChange"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+        disabled="{{loading}}"
+      />
+      <view
+        class="send-btn {{inputValue.trim() && !loading ? 'active' : ''}}"
+        bindtap="sendMessage"
+      >
+        <icon-svg name="send" size="36" color="{{inputValue.trim() && !loading ? '#FFFFFF' : '#CCCCCC'}}" />
+      </view>
+    </view>
+  </view>
+</view>

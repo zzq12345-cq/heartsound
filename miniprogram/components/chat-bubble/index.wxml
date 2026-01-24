@@ -1,0 +1,34 @@
+<!-- Chat Bubble Component Template -->
+<view class="bubble-container {{type === 'user' ? 'bubble-right' : 'bubble-left'}}">
+  <!-- Avatar -->
+  <view class="avatar-wrapper">
+    <view class="avatar {{type === 'user' ? 'user-avatar' : 'ai-avatar'}}">
+      <icon-svg name="{{type === 'user' ? 'user' : 'robot'}}" size="24" color="{{type === 'user' ? '#FFFFFF' : '#1890FF'}}" />
+    </view>
+  </view>
+
+  <!-- Bubble Content -->
+  <view class="bubble-wrapper">
+    <view class="bubble {{type === 'user' ? 'bubble-user' : 'bubble-ai'}}">
+      <!-- Loading State -->
+      <view class="loading-dots" wx:if="{{loading}}">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+
+      <!-- Message Content -->
+      <text class="bubble-text" wx:else>{{content}}</text>
+    </view>
+
+    <!-- Disclaimer (AI only) -->
+    <view class="disclaimer" wx:if="{{type === 'ai' && showDisclaimer && !loading}}">
+      <text class="disclaimer-text">仅供参考，不构成医疗建议</text>
+    </view>
+
+    <!-- Timestamp -->
+    <view class="timestamp" wx:if="{{formattedTime && !loading}}">
+      <text class="timestamp-text">{{formattedTime}}</text>
+    </view>
+  </view>
+</view>

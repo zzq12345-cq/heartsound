@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "健康助手",
+  "usingComponents": {
+    "chat-bubble": "/components/chat-bubble/index",
+    "icon-svg": "/components/icon/index"
+  }
+}

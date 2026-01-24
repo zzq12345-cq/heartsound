@@ -8,7 +8,9 @@
     "pages/detection/analyzing/index",
     "pages/detection/result/index",
     "pages/records/index",
-    "pages/profile/index"
+    "pages/profile/index",
+    "pages/ai-assistant/chat/index",
+    "pages/ai-assistant/report/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,10 +38,10 @@
         "selectedIconPath": "static/images/tab-detection-active.png"
       },
       {
-        "pagePath": "pages/records/index",
-        "text": "档案",
-        "iconPath": "static/images/tab-records.png",
-        "selectedIconPath": "static/images/tab-records-active.png"
+        "pagePath": "pages/ai-assistant/chat/index",
+        "text": "AI助手",
+        "iconPath": "static/images/tab-ai.png",
+        "selectedIconPath": "static/images/tab-ai-active.png"
       },
       {
         "pagePath": "pages/profile/index",

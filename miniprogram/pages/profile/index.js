@@ -14,7 +14,8 @@ const userService = require('../../services/user');
 
 // Menu items configuration
 const MENU_ITEMS = [
-  { key: 'ai-report', icon: 'chart', color: '#1890FF', label: 'AI健康报告', path: '/pages/ai-assistant/report' },
+  { key: 'records', icon: 'clipboard', color: '#1890FF', label: '健康档案', path: '/pages/records/index' },
+  { key: 'ai-report', icon: 'document', color: '#722ED1', label: 'AI健康报告', path: '/pages/ai-assistant/report/index' },
   { key: 'settings', icon: 'target', color: '#4CAF50', label: '设置', action: 'showDeveloping' },
   { key: 'help', icon: 'lightbulb', color: '#FF9800', label: '帮助与反馈', action: 'openHelp' }
 ];
@@ -209,7 +210,7 @@ Page({
    * Navigate to records page
    */
   goToRecords() {
-    wx.switchTab({
+    wx.navigateTo({
       url: '/pages/records/index'
     });
   }

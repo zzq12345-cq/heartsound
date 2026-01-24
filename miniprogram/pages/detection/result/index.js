@@ -218,7 +218,7 @@ Page({
    */
   consultAI() {
     wx.navigateTo({
-      url: '/pages/ai-assistant/index'
+      url: '/pages/ai-assistant/chat/index?fromDetection=true'
     });
   },
 

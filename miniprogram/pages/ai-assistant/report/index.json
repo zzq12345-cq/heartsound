@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "健康报告",
+  "usingComponents": {
+    "icon-svg": "/components/icon/index"
+  }
+}

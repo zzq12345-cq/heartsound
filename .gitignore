@@ -1,0 +1,59 @@
+# Environment files (contains secrets)
+.env
+.env.local
+.env.*.local
+supabase/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# AI Models (large files)
+*.onnx
+*.pt
+*.pth
+*.h5
+
+# Audio files
+*.wav
+*.mp3
+*.ogg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Node (for mini-program)
+node_modules/
+npm-debug.log
+
+# Mini Program
+miniprogram/unpackage/
+miniprogram-admin/unpackage/
+
+# Workflow internal files (optional - keep if you want tracking)
+# .workflow/
+
+# Temporary files
+*.tmp
+*.temp

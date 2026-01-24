@@ -1,0 +1,42 @@
+# HeartSound Supabase Configuration
+# 心音智鉴数据库配置
+
+[project]
+name = "heartsound-db"
+id = "your-project-id"  # Replace with actual Supabase project ID
+
+[api]
+# API Settings
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+# Database Settings
+port = 54322
+major_version = 15
+
+[studio]
+# Supabase Studio Settings
+enabled = true
+port = 54323
+
+[auth]
+# Authentication Settings
+site_url = "http://localhost:3000"
+additional_redirect_urls = []
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.external.wechat]
+# WeChat Mini Program Auth (via custom JWT)
+enabled = false
+
+[storage]
+# Storage Settings
+file_size_limit = "52428800"  # 50MB
+
+[realtime]
+# Realtime Settings
+enabled = true

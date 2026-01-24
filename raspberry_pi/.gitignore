@@ -1,0 +1,44 @@
+# HeartSound Raspberry Pi Backend
+# 心音智鉴树莓派后端
+
+# Environment
+.env
+.env.local
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Models (large files)
+models/*.onnx
+models/*.pt
+models/*.pth
+
+# Audio files
+*.wav
+*.mp3
+*.ogg
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

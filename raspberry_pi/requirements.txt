@@ -1,0 +1,36 @@
+# HeartSound Raspberry Pi Backend Dependencies
+# 心音智鉴树莓派后端依赖
+# Python 3.11+
+
+# Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# WebSocket
+websockets>=12.0
+
+# AI Inference
+onnxruntime>=1.16.0
+numpy>=1.24.0
+
+# Audio Processing
+sounddevice>=0.4.6
+scipy>=1.11.0
+
+# QR Code Generation
+qrcode[pil]>=7.4.0
+pillow>=10.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+httpx>=0.25.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0
+
+# Development
+python-multipart>=0.0.6

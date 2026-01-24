@@ -1,0 +1,170 @@
+/* Device Card Component Styles */
+
+.device-card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Status-based background colors */
+.device-card.disconnected {
+  background: linear-gradient(135deg, #F5F5F5 0%, #EEEEEE 100%);
+  border: 2rpx solid #E0E0E0;
+}
+
+.device-card.connected {
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  border: 2rpx solid #A5D6A7;
+}
+
+.device-card.error {
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  border: 2rpx solid #EF9A9A;
+}
+
+/* Card content layout */
+.card-content {
+  display: flex;
+  align-items: center;
+}
+
+/* Status icon */
+.status-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--spacing-lg);
+}
+
+.icon-text {
+  font-size: 48rpx;
+}
+
+/* Status info */
+.status-info {
+  flex: 1;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+}
+
+.status-text {
+  font-size: var(--font-size-h2);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-left: var(--spacing-sm);
+  animation: pulse 2s infinite;
+}
+
+.status-dot.connected {
+  background-color: var(--color-success);
+}
+
+.status-hint {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+  margin-top: var(--spacing-xs);
+  display: block;
+}
+
+/* Arrow icon */
+.arrow-icon {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow {
+  font-size: 48rpx;
+  color: var(--color-text-hint);
+}
+
+/* Loading overlay */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.loading-spinner {
+  width: 64rpx;
+  height: 64rpx;
+  border: 4rpx solid #E0E0E0;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+}
+
+/* Retry section */
+.retry-section {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1rpx solid rgba(0, 0, 0, 0.1);
+}
+
+.retry-btn {
+  background-color: var(--color-primary);
+  color: white;
+  font-size: var(--font-size-body);
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: var(--radius-md);
+  border: none;
+}
+
+.retry-btn::after {
+  border: none;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Active state */
+.device-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}

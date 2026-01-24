@@ -1,0 +1,15 @@
+<!-- Detection Page Template (Placeholder for IMPL-005) -->
+<view class="page-container">
+  <view class="status-section">
+    <view class="status-icon">{{deviceConnected ? '✅' : '⚠️'}}</view>
+    <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
+    <text class="status-hint" wx:if="{{deviceInfo}}">{{deviceInfo.device_name}}</text>
+  </view>
+
+  <view class="action-section">
+    <button class="btn btn-primary btn-block" bindtap="onStartTap" disabled="{{!deviceConnected}}">
+      开始检测
+    </button>
+    <text class="hint-text">检测功能将在IMPL-005中完整实现</text>
+  </view>
+</view>

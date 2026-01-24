@@ -1,0 +1,44 @@
+<!-- Profile Page Template (Placeholder for IMPL-006) -->
+<view class="page-container">
+  <view class="profile-header">
+    <view class="avatar">👤</view>
+    <text class="nickname">心音用户</text>
+  </view>
+
+  <view class="stats-section card">
+    <view class="stat-item">
+      <text class="stat-value">{{stats.totalDetections}}</text>
+      <text class="stat-label">检测次数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value safe">{{stats.safeCount}}</text>
+      <text class="stat-label">正常</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value warning">{{stats.warningCount}}</text>
+      <text class="stat-label">异常</text>
+    </view>
+  </view>
+
+  <view class="menu-section card">
+    <view class="menu-item">
+      <text class="menu-icon">📊</text>
+      <text class="menu-text">AI健康报告</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item">
+      <text class="menu-icon">❓</text>
+      <text class="menu-text">帮助与反馈</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="dev-notice">
+    <text>完整功能将在IMPL-006中实现</text>
+  </view>
+</view>

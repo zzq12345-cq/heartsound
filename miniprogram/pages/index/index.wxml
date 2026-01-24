@@ -1,0 +1,56 @@
+<!-- Index Page Template -->
+<view class="page-container">
+  <!-- Device Status Card -->
+  <view class="section">
+    <device-card
+      status="{{deviceStatus}}"
+      deviceInfo="{{deviceInfo}}"
+      loading="{{connecting}}"
+      errorMessage="{{errorMessage}}"
+      bind:retry="onDeviceRetry"
+      bind:disconnect="onDeviceDisconnect"
+      bind:viewInfo="onDeviceViewInfo"
+    />
+  </view>
+
+  <!-- Connection Buttons -->
+  <view class="section connection-buttons">
+    <view class="btn-row">
+      <view class="btn-item" bindtap="onScanTap">
+        <view class="btn-icon scan-icon">📷</view>
+        <text class="btn-text">扫码连接</text>
+        <text class="btn-hint">扫描设备二维码</text>
+      </view>
+
+      <view class="btn-item" bindtap="onManualInputTap">
+        <view class="btn-icon input-icon">⌨️</view>
+        <text class="btn-text">手动输入</text>
+        <text class="btn-hint">输入设备IP地址</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Start Detection Button -->
+  <view class="section">
+    <button
+      class="btn btn-primary btn-block start-btn {{!canStartDetection ? 'btn-disabled' : ''}}"
+      bindtap="onStartDetectionTap"
+      disabled="{{!canStartDetection}}"
+    >
+      <text class="btn-icon-inline">❤️</text>
+      <text>开始检测</text>
+    </button>
+  </view>
+
+  <!-- Health Tips -->
+  <view class="section">
+    <health-tip tips="{{healthTips}}" interval="{{5000}}" />
+  </view>
+
+  <!-- Footer Disclaimer -->
+  <view class="footer">
+    <text class="disclaimer">
+      本检测结果仅供参考，不能作为诊断依据。如有不适，请及时就医。
+    </text>
+  </view>
+</view>

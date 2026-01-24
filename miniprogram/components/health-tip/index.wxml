@@ -1,0 +1,35 @@
+<!-- Health Tip Component Template -->
+<view class="health-tip-container">
+  <view class="tip-header">
+    <text class="tip-icon">💡</text>
+    <text class="tip-title">健康小贴士</text>
+  </view>
+
+  <swiper
+    class="tip-swiper"
+    autoplay="{{true}}"
+    interval="{{interval}}"
+    circular="{{true}}"
+    indicator-dots="{{showDots}}"
+    indicator-color="rgba(24, 144, 255, 0.3)"
+    indicator-active-color="#1890FF"
+    bindchange="onSwiperChange"
+  >
+    <swiper-item
+      wx:for="{{tips}}"
+      wx:key="id"
+      data-index="{{index}}"
+      bindtap="onTipTap"
+    >
+      <view class="tip-item">
+        <text class="tip-category" wx:if="{{item.category}}">{{item.category}}</text>
+        <text class="tip-content">{{item.content}}</text>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- Empty state -->
+  <view class="empty-state" wx:if="{{tips.length === 0}}">
+    <text class="empty-text">暂无健康小贴士</text>
+  </view>
+</view>

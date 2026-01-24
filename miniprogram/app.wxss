@@ -1,0 +1,192 @@
+/**
+ * HeartSound Mini Program Global Styles
+ * 心音智鉴小程序全局样式
+ */
+
+/* ============================================================================
+   CSS Variables - Design System
+   ============================================================================ */
+page {
+  /* Brand Colors */
+  --color-primary: #1890FF;
+  --color-primary-light: #40A9FF;
+  --color-primary-dark: #096DD9;
+
+  /* Status Colors */
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-danger: #F44336;
+
+  /* Text Colors */
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-text-hint: #999999;
+  --color-text-white: #FFFFFF;
+
+  /* Background Colors */
+  --color-bg-page: #F5F5F5;
+  --color-bg-card: #FFFFFF;
+  --color-bg-disabled: #E0E0E0;
+
+  /* Border Colors */
+  --color-border: #E8E8E8;
+  --color-border-light: #F0F0F0;
+
+  /* Font Sizes */
+  --font-size-display: 72rpx;
+  --font-size-h1: 48rpx;
+  --font-size-h2: 36rpx;
+  --font-size-body: 28rpx;
+  --font-size-caption: 24rpx;
+  --font-size-small: 20rpx;
+
+  /* Spacing */
+  --spacing-xs: 8rpx;
+  --spacing-sm: 16rpx;
+  --spacing-md: 24rpx;
+  --spacing-lg: 32rpx;
+  --spacing-xl: 48rpx;
+
+  /* Border Radius */
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 24rpx;
+  --radius-full: 999rpx;
+
+  /* Shadows */
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.16);
+
+  /* Global Settings */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+               'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* ============================================================================
+   Common Classes
+   ============================================================================ */
+
+/* Containers */
+.container {
+  padding: var(--spacing-lg);
+}
+
+.card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Typography */
+.text-primary { color: var(--color-primary); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+.text-hint { color: var(--color-text-hint); }
+.text-center { text-align: center; }
+.text-bold { font-weight: bold; }
+
+/* Buttons */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2rpx solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-outline:active {
+  background-color: rgba(24, 144, 255, 0.1);
+}
+
+.btn-disabled {
+  background-color: var(--color-bg-disabled);
+  color: var(--color-text-hint);
+  pointer-events: none;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Flexbox Utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-center { align-items: center; justify-content: center; }
+.flex-between { justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+
+/* Spacing Utilities */
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+
+/* Status Indicators */
+.status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: var(--spacing-xs);
+}
+
+.status-connected { background-color: var(--color-success); }
+.status-disconnected { background-color: var(--color-danger); }
+.status-pending { background-color: var(--color-warning); }
+
+/* Icons placeholder */
+.icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.icon-lg {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+/* Loading */
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}

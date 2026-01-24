@@ -1,0 +1,65 @@
+/* Health Tip Component Styles */
+
+.health-tip-container {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.tip-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.tip-icon {
+  font-size: 32rpx;
+  margin-right: var(--spacing-xs);
+}
+
+.tip-title {
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.tip-swiper {
+  height: 120rpx;
+}
+
+.tip-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 var(--spacing-sm);
+}
+
+.tip-category {
+  font-size: var(--font-size-small);
+  color: var(--color-primary);
+  background-color: rgba(24, 144, 255, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+  margin-bottom: var(--spacing-xs);
+}
+
+.tip-content {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+}
+
+.empty-text {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+}

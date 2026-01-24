@@ -1,0 +1,35 @@
+<!-- Device Card Component Template -->
+<view class="device-card {{status}}" bindtap="onTap">
+  <!-- Loading overlay -->
+  <view class="loading-overlay" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">连接中...</text>
+  </view>
+
+  <!-- Card content -->
+  <view class="card-content" wx:if="{{!loading}}">
+    <!-- Status icon -->
+    <view class="status-icon">
+      <text class="icon-text">{{statusIcon}}</text>
+    </view>
+
+    <!-- Status info -->
+    <view class="status-info">
+      <view class="status-row">
+        <text class="status-text">{{statusText}}</text>
+        <view class="status-dot {{status}}" wx:if="{{status === 'connected'}}"></view>
+      </view>
+      <text class="status-hint">{{statusHint}}</text>
+    </view>
+
+    <!-- Arrow icon -->
+    <view class="arrow-icon" wx:if="{{status === 'connected'}}">
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Retry button -->
+  <view class="retry-section" wx:if="{{showRetry && !loading}}">
+    <button class="retry-btn" catchtap="onRetryTap">重新连接</button>
+  </view>
+</view>

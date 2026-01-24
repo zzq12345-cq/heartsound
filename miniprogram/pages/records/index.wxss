@@ -1,0 +1,6 @@
+.page-container { padding: var(--spacing-lg); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.empty-state { text-align: center; }
+.empty-icon { display: block; font-size: 120rpx; margin-bottom: var(--spacing-md); }
+.empty-title { display: block; font-size: var(--font-size-h2); font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--spacing-sm); }
+.empty-hint { display: block; font-size: var(--font-size-body); color: var(--color-text-hint); }
+.dev-hint { display: block; font-size: var(--font-size-caption); color: var(--color-primary); margin-top: var(--spacing-lg); }

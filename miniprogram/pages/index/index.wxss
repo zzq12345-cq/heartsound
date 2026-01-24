@@ -1,0 +1,109 @@
+/* Index Page Styles */
+
+.page-container {
+  padding: var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-xl) + 100rpx); /* Extra space for tabbar */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.section {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Connection Buttons */
+.connection-buttons {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 280rpx;
+}
+
+.btn-item:active {
+  background-color: rgba(24, 144, 255, 0.1);
+  transform: scale(0.95);
+}
+
+.btn-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  margin-bottom: var(--spacing-sm);
+}
+
+.scan-icon {
+  background: linear-gradient(135deg, #1890FF 0%, #40A9FF 100%);
+}
+
+.input-icon {
+  background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);
+}
+
+.btn-text {
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4rpx;
+}
+
+.btn-hint {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+}
+
+/* Start Detection Button */
+.start-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  background: linear-gradient(135deg, #1890FF 0%, #096DD9 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8rpx 24rpx rgba(24, 144, 255, 0.4);
+}
+
+.start-btn.btn-disabled {
+  background: #E0E0E0;
+  box-shadow: none;
+}
+
+.btn-icon-inline {
+  margin-right: var(--spacing-sm);
+  font-size: 36rpx;
+}
+
+/* Footer */
+.footer {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-md);
+}
+
+.disclaimer {
+  display: block;
+  text-align: center;
+  font-size: var(--font-size-small);
+  color: var(--color-text-hint);
+  line-height: 1.6;
+}

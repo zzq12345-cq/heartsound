@@ -1,0 +1,150 @@
+{
+  "id": "IMPL-002",
+  "title": "树莓派FastAPI后端 - 项目结构和设备API",
+  "status": "completed",
+  "meta": {
+    "type": "feature",
+    "agent": "@code-developer",
+    "phase": 2,
+    "estimated_effort": "1-2天"
+  },
+  "context": {
+    "requirements": [
+      "创建1个FastAPI项目结构: raspberry_pi/ (包含15个文件/目录)",
+      "实现2个设备API端点: [GET /api/device/info, GET /api/device/ping]",
+      "创建4个Pydantic数据模型: [DeviceInfo, DeviceStatus, PingResponse, ErrorResponse]",
+      "配置3个中间件: [CORS, 请求日志, 异常处理]",
+      "编写2个单元测试: [test_device_info, test_device_ping]"
+    ],
+    "focus_paths": [
+      "raspberry_pi/",
+      "raspberry_pi/api/",
+      "raspberry_pi/models/",
+      "raspberry_pi/tests/"
+    ],
+    "acceptance": [
+      "项目结构创建完成: verify by ls raspberry_pi/ 显示15个文件/目录",
+      "2个API端点可访问: verify by curl http://localhost:8000/api/device/info 返回200",
+      "4个数据模型定义完成: verify by python -c 'from models.schemas import *' 无错误",
+      "CORS配置正确: verify by 跨域请求响应包含Access-Control-Allow-Origin头",
+      "2个测试通过: verify by pytest tests/test_device.py 显示2 passed"
+    ],
+    "depends_on": [],
+    "artifacts": [
+      {
+        "type": "design_document",
+        "path": "心音智鉴检测中心功能设计方案.md",
+        "section": "十二、API详细设计 - 12.1 树莓派端API",
+        "priority": "highest"
+      }
+    ]
+  },
+  "flow_control": {
+    "pre_analysis": [
+      {
+        "step": "load_api_design",
+        "action": "读取API设计章节",
+        "commands": ["Read(心音智鉴检测中心功能设计方案.md)"],
+        "output_to": "api_design_spec",
+        "on_error": "abort"
+      }
+    ],
+    "implementation_approach": [
+      {
+        "step": 1,
+        "title": "创建项目目录结构",
+        "description": "按设计文档创建FastAPI项目骨架",
+        "modification_points": [
+          "创建1个根目录: raspberry_pi/",
+          "创建5个子目录: [api/, core/, models/, utils/, tests/]",
+          "创建4个初始化文件: [api/__init__.py, core/__init__.py, models/__init__.py, utils/__init__.py]"
+        ],
+        "logic_flow": [
+          "创建目录结构",
+          "创建__init__.py文件",
+          "初始化git忽略文件"
+        ],
+        "depends_on": [],
+        "output": "project_structure"
+      },
+      {
+        "step": 2,
+        "title": "配置项目依赖和入口",
+        "description": "创建requirements.txt和main.py入口文件",
+        "modification_points": [
+          "创建1个依赖文件: requirements.txt (约15个包，含版本锁定: fastapi>=0.109.0, uvicorn>=0.27.0, pydantic>=2.5.0, websockets>=12.0, onnxruntime>=1.16.0)",
+          "创建1个配置文件: config.py (约50行)",
+          "创建1个入口文件: main.py (约80行)"
+        ],
+        "logic_flow": [
+          "定义Python依赖包版本",
+          "配置FastAPI应用实例",
+          "注册路由和中间件"
+        ],
+        "depends_on": [1],
+        "output": "project_config"
+      },
+      {
+        "step": 3,
+        "title": "实现Pydantic数据模型",
+        "description": "定义API请求和响应的数据模型",
+        "modification_points": [
+          "创建1个模型文件: models/schemas.py (约100行)",
+          "定义4个Pydantic模型类"
+        ],
+        "logic_flow": [
+          "定义DeviceInfo响应模型",
+          "定义PingResponse模型",
+          "定义错误响应模型"
+        ],
+        "depends_on": [1],
+        "output": "pydantic_models"
+      },
+      {
+        "step": 4,
+        "title": "实现设备API端点",
+        "description": "开发设备信息和心跳检测API",
+        "modification_points": [
+          "创建1个路由文件: api/device.py (约80行)",
+          "实现2个GET端点: [/api/device/info, /api/device/ping]"
+        ],
+        "logic_flow": [
+          "创建APIRouter实例",
+          "实现get_device_info()函数",
+          "实现ping()函数",
+          "返回Pydantic模型响应"
+        ],
+        "depends_on": [3],
+        "output": "device_api"
+      },
+      {
+        "step": 5,
+        "title": "编写单元测试",
+        "description": "为设备API编写测试用例",
+        "modification_points": [
+          "创建1个测试文件: tests/test_device.py (约60行)",
+          "编写2个测试函数"
+        ],
+        "logic_flow": [
+          "配置pytest测试客户端",
+          "测试device/info端点响应",
+          "测试device/ping端点响应"
+        ],
+        "depends_on": [4],
+        "output": "unit_tests"
+      }
+    ],
+    "target_files": [
+      "raspberry_pi/main.py",
+      "raspberry_pi/config.py",
+      "raspberry_pi/requirements.txt",
+      "raspberry_pi/api/__init__.py",
+      "raspberry_pi/api/device.py",
+      "raspberry_pi/models/__init__.py",
+      "raspberry_pi/models/schemas.py",
+      "raspberry_pi/utils/__init__.py",
+      "raspberry_pi/utils/network.py",
+      "raspberry_pi/tests/test_device.py"
+    ]
+  }
+}

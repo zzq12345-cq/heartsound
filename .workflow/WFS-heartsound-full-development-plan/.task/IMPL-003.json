@@ -1,0 +1,163 @@
+{
+  "id": "IMPL-003",
+  "title": "树莓派FastAPI后端 - WebSocket音频流和AI推理",
+  "status": "completed",
+  "meta": {
+    "type": "feature",
+    "agent": "@code-developer",
+    "phase": 2,
+    "estimated_effort": "2-3天"
+  },
+  "context": {
+    "requirements": [
+      "实现1个WebSocket端点: [WS /ws/audio/{session_id}]",
+      "实现2个检测API端点: [POST /api/detection/start, GET /api/detection/{session_id}/result]",
+      "创建3个核心模块: [core/audio.py音频采集, core/inference.py AI推理, core/qrcode.py二维码生成]",
+      "实现4种WebSocket消息类型: [audio_frame, status, recording_complete, analysis_complete]",
+      "创建2个Pydantic模型: [StartDetectionRequest, DetectionResult]"
+    ],
+    "focus_paths": [
+      "raspberry_pi/api/",
+      "raspberry_pi/core/",
+      "raspberry_pi/models/"
+    ],
+    "acceptance": [
+      "WebSocket端点可连接: verify by wscat -c ws://localhost:8000/ws/audio/test123 连接成功",
+      "检测启动API可用: verify by curl -X POST http://localhost:8000/api/detection/start 返回session_id",
+      "3个核心模块可导入: verify by python -c 'from core.audio import *; from core.inference import *' 无错误",
+      "AI推理完成时间<=5秒: verify by 测试日志显示inference_time < 5000ms",
+      "音频帧率>=30fps: verify by WebSocket消息间隔约33ms"
+    ],
+    "depends_on": ["IMPL-002"],
+    "artifacts": [
+      {
+        "type": "design_document",
+        "path": "心音智鉴检测中心功能设计方案.md",
+        "section": "12.2 WebSocket音频流协议",
+        "priority": "highest"
+      }
+    ]
+  },
+  "flow_control": {
+    "pre_analysis": [
+      {
+        "step": "load_websocket_design",
+        "action": "读取WebSocket协议设计",
+        "commands": ["Read(心音智鉴检测中心功能设计方案.md)"],
+        "output_to": "websocket_protocol_spec",
+        "on_error": "abort"
+      },
+      {
+        "step": "mcp_websocket_patterns",
+        "action": "获取FastAPI WebSocket最佳实践",
+        "command": "mcp__exa__get_code_context_exa(query='FastAPI WebSocket audio streaming real-time')",
+        "output_to": "websocket_patterns",
+        "on_error": "skip_optional"
+      }
+    ],
+    "implementation_approach": [
+      {
+        "step": 1,
+        "title": "实现音频采集模块",
+        "description": "开发音频录制和数据处理功能",
+        "modification_points": [
+          "创建1个音频模块: core/audio.py (约150行)",
+          "实现AudioRecorder类包含3个方法: [start_recording(), stop_recording(), get_audio_data()]",
+          "创建1个工具模块: utils/audio_utils.py (约80行)"
+        ],
+        "logic_flow": [
+          "初始化PyAudio音频流",
+          "实现30秒录制逻辑",
+          "将音频数据转换为numpy数组",
+          "提供实时波形数据获取接口"
+        ],
+        "depends_on": [],
+        "output": "audio_module"
+      },
+      {
+        "step": 2,
+        "title": "实现AI推理模块",
+        "description": "集成心音分类模型进行推理",
+        "modification_points": [
+          "创建1个推理模块: core/inference.py (约120行)",
+          "实现HeartSoundClassifier类包含2个方法: [load_model(), predict()]",
+          "定义5个分类类别: [normal, systolic_murmur, diastolic_murmur, extra_heart_sound, aortic_stenosis]"
+        ],
+        "logic_flow": [
+          "加载ONNX模型文件",
+          "预处理音频数据",
+          "执行模型推理",
+          "后处理生成概率分布",
+          "确定风险等级和健康建议"
+        ],
+        "depends_on": [1],
+        "output": "inference_module"
+      },
+      {
+        "step": 3,
+        "title": "实现WebSocket音频流",
+        "description": "开发WebSocket端点处理实时音频传输",
+        "modification_points": [
+          "创建1个WebSocket路由: api/websocket.py (约180行)",
+          "实现ConnectionManager类管理多客户端连接",
+          "实现4种消息类型的发送逻辑"
+        ],
+        "logic_flow": [
+          "接受WebSocket连接",
+          "启动后台录音任务",
+          "每33ms推送音频帧数据",
+          "发送状态更新消息",
+          "录制完成后触发AI推理",
+          "发送分析完成消息"
+        ],
+        "depends_on": [1, 2],
+        "output": "websocket_handler"
+      },
+      {
+        "step": 4,
+        "title": "实现检测API端点",
+        "description": "开发检测启动和结果获取API",
+        "modification_points": [
+          "创建1个检测路由: api/detection.py (约150行)",
+          "实现2个端点: [POST /start, GET /{session_id}/result]",
+          "创建会话管理存储active_sessions"
+        ],
+        "logic_flow": [
+          "生成唯一session_id",
+          "启动后台检测任务",
+          "返回WebSocket连接URL",
+          "轮询返回检测结果或进度"
+        ],
+        "depends_on": [3],
+        "output": "detection_api"
+      },
+      {
+        "step": 5,
+        "title": "实现二维码生成模块",
+        "description": "开发设备连接二维码生成功能",
+        "modification_points": [
+          "创建1个二维码模块: core/qrcode.py (约60行)",
+          "实现generate_connect_qr()函数",
+          "二维码格式: heartsound://connect?ip={IP}"
+        ],
+        "logic_flow": [
+          "获取设备IP地址",
+          "生成符合协议的二维码内容",
+          "输出二维码图片"
+        ],
+        "depends_on": [],
+        "output": "qrcode_module"
+      }
+    ],
+    "target_files": [
+      "raspberry_pi/core/__init__.py",
+      "raspberry_pi/core/audio.py",
+      "raspberry_pi/core/inference.py",
+      "raspberry_pi/core/qrcode.py",
+      "raspberry_pi/api/websocket.py",
+      "raspberry_pi/api/detection.py",
+      "raspberry_pi/utils/audio_utils.py",
+      "raspberry_pi/models/schemas.py"
+    ]
+  }
+}

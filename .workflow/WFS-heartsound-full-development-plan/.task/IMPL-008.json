@@ -1,0 +1,197 @@
+{
+  "id": "IMPL-008",
+  "title": "管理后台小程序 - 用户和设备管理",
+  "status": "pending",
+  "meta": {
+    "type": "feature",
+    "agent": "@code-developer",
+    "phase": 4,
+    "estimated_effort": "2天"
+  },
+  "context": {
+    "requirements": [
+      "实现3个用户管理页面: [users/list用户列表, users/detail用户详情, users/records用户检测记录]",
+      "实现4个设备管理页面: [devices/list设备列表, devices/detail设备详情, devices/assign设备分配, devices/add添加设备]",
+      "创建3个列表组件: [user-card用户卡片, device-card设备卡片, search-bar搜索栏]",
+      "实现2个服务模块: [services/user.js用户管理服务, services/device.js设备管理服务]",
+      "实现搜索和筛选功能: 支持昵称/手机号/设备ID搜索"
+    ],
+    "focus_paths": [
+      "miniprogram-admin/pages/users/",
+      "miniprogram-admin/pages/devices/",
+      "miniprogram-admin/components/",
+      "miniprogram-admin/services/"
+    ],
+    "acceptance": [
+      "用户列表分页加载: verify by 每页20条滚动加载更多",
+      "用户搜索响应<=1秒: verify by 输入关键词后1秒内显示结果",
+      "用户详情显示完整: verify by 页面显示基本信息+检测统计+最近记录",
+      "设备列表按状态筛选: verify by 切换筛选器显示在线/离线设备",
+      "设备分配二次确认: verify by 点击分配后显示确认弹窗",
+      "分配操作记录日志: verify by admin_logs表新增一条分配记录"
+    ],
+    "depends_on": ["IMPL-007"],
+    "artifacts": [
+      {
+        "type": "design_document",
+        "path": "心音智鉴检测中心功能设计方案.md",
+        "section": "十四、管理员后台模块 - 14.4用户管理 和 14.5设备管理",
+        "priority": "highest"
+      }
+    ]
+  },
+  "flow_control": {
+    "pre_analysis": [
+      {
+        "step": "load_management_design",
+        "action": "读取用户和设备管理设计规范",
+        "commands": ["Read(心音智鉴检测中心功能设计方案.md)"],
+        "output_to": "management_design_spec",
+        "on_error": "abort"
+      }
+    ],
+    "implementation_approach": [
+      {
+        "step": 1,
+        "title": "实现用户管理服务",
+        "description": "封装用户查询和管理API调用",
+        "modification_points": [
+          "创建1个用户服务: services/user.js (约100行)",
+          "实现4个方法: [getUsers(), getUserById(), getUserRecords(), searchUsers()]"
+        ],
+        "logic_flow": [
+          "分页查询用户列表",
+          "按昵称/手机号模糊搜索",
+          "获取用户详情和统计",
+          "获取用户检测记录"
+        ],
+        "depends_on": [],
+        "output": "user_service"
+      },
+      {
+        "step": 2,
+        "title": "创建搜索栏组件",
+        "description": "实现通用的搜索和筛选组件",
+        "modification_points": [
+          "创建1个组件目录: components/search-bar/",
+          "创建4个组件文件",
+          "支持输入搜索和下拉筛选"
+        ],
+        "logic_flow": [
+          "输入框防抖触发搜索",
+          "下拉选择筛选条件",
+          "触发父组件搜索回调"
+        ],
+        "depends_on": [],
+        "output": "search_bar_component"
+      },
+      {
+        "step": 3,
+        "title": "创建用户卡片组件",
+        "description": "实现用户列表项的卡片展示",
+        "modification_points": [
+          "创建1个组件目录: components/user-card/",
+          "创建4个组件文件",
+          "显示头像/昵称/检测次数/绑定设备"
+        ],
+        "logic_flow": [
+          "接收user对象属性",
+          "渲染用户基本信息",
+          "点击跳转详情页"
+        ],
+        "depends_on": [],
+        "output": "user_card_component"
+      },
+      {
+        "step": 4,
+        "title": "实现用户管理页面",
+        "description": "开发用户列表和详情页面",
+        "modification_points": [
+          "创建2个页面目录: [pages/users/list/, pages/users/detail/]",
+          "创建8个页面文件",
+          "集成search-bar和user-card组件"
+        ],
+        "logic_flow": [
+          "列表页加载用户数据",
+          "支持搜索和分页",
+          "详情页显示用户信息",
+          "显示检测统计和最近记录"
+        ],
+        "depends_on": [1, 2, 3],
+        "output": "user_pages"
+      },
+      {
+        "step": 5,
+        "title": "实现设备管理服务",
+        "description": "封装设备查询和分配API调用",
+        "modification_points": [
+          "创建1个设备服务: services/device.js (约120行)",
+          "实现6个方法: [getDevices(), getDeviceById(), assignDevice(), unassignDevice(), addDevice(), searchDevices()]"
+        ],
+        "logic_flow": [
+          "分页查询设备列表",
+          "按状态筛选设备",
+          "分配设备给用户",
+          "解绑设备",
+          "添加新设备"
+        ],
+        "depends_on": [],
+        "output": "device_service"
+      },
+      {
+        "step": 6,
+        "title": "创建设备卡片组件",
+        "description": "实现设备列表项的卡片展示",
+        "modification_points": [
+          "创建1个组件目录: components/device-card/",
+          "创建4个组件文件",
+          "显示3种状态: [在线绿色, 离线红色, 未分配黄色]"
+        ],
+        "logic_flow": [
+          "接收device对象属性",
+          "根据状态渲染不同样式",
+          "显示设备ID/IP/绑定用户"
+        ],
+        "depends_on": [],
+        "output": "device_card_component"
+      },
+      {
+        "step": 7,
+        "title": "实现设备管理页面",
+        "description": "开发设备列表、详情和分配页面",
+        "modification_points": [
+          "创建3个页面目录: [pages/devices/list/, pages/devices/detail/, pages/devices/assign/]",
+          "创建12个页面文件",
+          "实现设备分配确认流程"
+        ],
+        "logic_flow": [
+          "列表页加载设备数据",
+          "按状态筛选设备",
+          "详情页显示设备信息",
+          "分配页选择目标用户",
+          "确认分配并记录日志"
+        ],
+        "depends_on": [5, 6],
+        "output": "device_pages"
+      }
+    ],
+    "target_files": [
+      "miniprogram-admin/services/user.js",
+      "miniprogram-admin/services/device.js",
+      "miniprogram-admin/components/search-bar/index.js",
+      "miniprogram-admin/components/search-bar/index.wxml",
+      "miniprogram-admin/components/user-card/index.js",
+      "miniprogram-admin/components/user-card/index.wxml",
+      "miniprogram-admin/components/device-card/index.js",
+      "miniprogram-admin/components/device-card/index.wxml",
+      "miniprogram-admin/pages/users/list/index.js",
+      "miniprogram-admin/pages/users/list/index.wxml",
+      "miniprogram-admin/pages/users/detail/index.js",
+      "miniprogram-admin/pages/users/detail/index.wxml",
+      "miniprogram-admin/pages/devices/list/index.js",
+      "miniprogram-admin/pages/devices/list/index.wxml",
+      "miniprogram-admin/pages/devices/detail/index.js",
+      "miniprogram-admin/pages/devices/assign/index.js"
+    ]
+  }
+}

@@ -13,6 +13,8 @@ from fastapi.responses import JSONResponse
 
 from config import settings
 from api.device import router as device_router
+from api.detection import router as detection_router
+from api.websocket import router as websocket_router
 
 # Configure logging
 logging.basicConfig(
@@ -97,11 +99,11 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Device API
 app.include_router(device_router)
 
-# Detection API (to be added in IMPL-003)
-# app.include_router(detection_router)
+# Detection API
+app.include_router(detection_router)
 
-# WebSocket (to be added in IMPL-003)
-# app.include_router(websocket_router)
+# WebSocket Audio Streaming
+app.include_router(websocket_router)
 
 
 # ============================================================================

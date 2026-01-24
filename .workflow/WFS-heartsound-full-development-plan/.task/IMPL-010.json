@@ -1,0 +1,173 @@
+{
+  "id": "IMPL-010",
+  "title": "Dify AI平台部署和配置",
+  "status": "pending",
+  "meta": {
+    "type": "infrastructure",
+    "agent": "@code-developer",
+    "phase": 5,
+    "estimated_effort": "2-3天"
+  },
+  "context": {
+    "requirements": [
+      "部署1个Dify平台实例: Docker Compose自托管",
+      "创建1个健康问答Chatflow: 心脏健康知识问答Bot",
+      "创建1个报告生成Workflow: 智能健康报告生成器",
+      "配置1个知识库: 心脏健康知识文档",
+      "配置1个LLM Provider: DeepSeek-V3 (推荐) 或 通义千问",
+      "生成2个API Key: [Chatflow API Key, Workflow API Key]"
+    ],
+    "focus_paths": [
+      "dify/",
+      "dify/docker-compose.yml",
+      "dify/knowledge-base/",
+      "dify/prompts/"
+    ],
+    "acceptance": [
+      "Dify Web控制台可访问: verify by 浏览器打开http://your-domain:3000",
+      "健康问答Bot响应正常: verify by Dify控制台测试对话返回回复",
+      "报告Workflow执行成功: verify by 传入检测数据返回结构化报告JSON",
+      "API Key可正常调用: verify by curl调用chat-messages API返回200",
+      "知识库检索可用: verify by 问答回复引用知识库内容",
+      "LLM响应时间<=5秒: verify by API响应时间日志<5000ms"
+    ],
+    "depends_on": [],
+    "parallel_note": "可与 IMPL-002~006 并行部署，Dify 服务需在 IMPL-006 集成前就绪",
+    "artifacts": [
+      {
+        "type": "design_document",
+        "path": "心音智鉴检测中心功能设计方案.md",
+        "section": "十五、AI健康助手模块",
+        "priority": "highest"
+      }
+    ]
+  },
+  "flow_control": {
+    "pre_analysis": [
+      {
+        "step": "load_dify_design",
+        "action": "读取Dify部署设计规范",
+        "commands": ["Read(心音智鉴检测中心功能设计方案.md)"],
+        "output_to": "dify_design_spec",
+        "on_error": "abort"
+      },
+      {
+        "step": "mcp_dify_patterns",
+        "action": "获取Dify部署和配置最佳实践",
+        "command": "mcp__exa__get_code_context_exa(query='Dify Docker Compose deployment Chatflow Workflow configuration')",
+        "output_to": "dify_patterns",
+        "on_error": "skip_optional"
+      }
+    ],
+    "implementation_approach": [
+      {
+        "step": 1,
+        "title": "准备Dify部署配置",
+        "description": "创建Docker Compose配置文件",
+        "modification_points": [
+          "创建1个部署目录: dify/",
+          "创建1个Docker Compose文件: docker-compose.yml (约120行)",
+          "创建1个环境变量文件: .env.example",
+          "创建1个Nginx配置: nginx.conf (约50行)"
+        ],
+        "logic_flow": [
+          "配置API服务容器",
+          "配置Web服务容器",
+          "配置PostgreSQL数据库",
+          "配置Redis缓存",
+          "配置Nginx反向代理"
+        ],
+        "depends_on": [],
+        "output": "docker_config"
+      },
+      {
+        "step": 2,
+        "title": "创建知识库文档",
+        "description": "准备心脏健康知识库内容",
+        "modification_points": [
+          "创建1个知识库目录: dify/knowledge-base/",
+          "创建5个知识文档: [心脏基础知识.md, 常见心脏问题.md, 健康生活建议.md, 就医指导.md, 心音检测说明.md]",
+          "每个文档约500-1000字"
+        ],
+        "logic_flow": [
+          "编写心脏健康科普内容",
+          "整理常见问题FAQ",
+          "编写生活方式建议",
+          "准备就医指导说明"
+        ],
+        "depends_on": [],
+        "output": "knowledge_documents"
+      },
+      {
+        "step": 3,
+        "title": "设计Chatflow提示词",
+        "description": "创建健康问答Bot的System Prompt",
+        "modification_points": [
+          "创建1个提示词目录: dify/prompts/",
+          "创建1个Chatflow提示词: health_qa_system_prompt.md (约300字)",
+          "定义角色、回答原则、免责声明"
+        ],
+        "logic_flow": [
+          "定义AI健康助手角色",
+          "设置回答原则和限制",
+          "配置必须包含的免责声明",
+          "定义拒绝回答的问题类型"
+        ],
+        "depends_on": [],
+        "output": "chatflow_prompt"
+      },
+      {
+        "step": 4,
+        "title": "设计Workflow提示词",
+        "description": "创建报告生成Workflow的提示词",
+        "modification_points": [
+          "创建1个Workflow提示词: health_report_prompt.md (约400字)",
+          "定义输入变量: detection_records",
+          "定义输出JSON格式"
+        ],
+        "logic_flow": [
+          "定义报告分析师角色",
+          "设置报告内容要求",
+          "定义输出JSON结构",
+          "确保包含警告信息"
+        ],
+        "depends_on": [],
+        "output": "workflow_prompt"
+      },
+      {
+        "step": 5,
+        "title": "编写部署脚本和说明",
+        "description": "创建一键部署脚本和配置指南",
+        "modification_points": [
+          "创建1个部署脚本: dify/deploy.sh (约50行)",
+          "创建1个配置指南: dify/README.md (约200行)",
+          "包含Dify控制台配置步骤"
+        ],
+        "logic_flow": [
+          "编写docker-compose启动命令",
+          "配置环境变量",
+          "说明LLM Provider配置步骤",
+          "说明知识库上传步骤",
+          "说明Chatflow/Workflow创建步骤",
+          "说明API Key生成步骤"
+        ],
+        "depends_on": [1, 2, 3, 4],
+        "output": "deployment_guide"
+      }
+    ],
+    "target_files": [
+      "dify/docker-compose.yml",
+      "dify/.env.example",
+      "dify/nginx.conf",
+      "dify/deploy.sh",
+      "dify/README.md",
+      "dify/knowledge-base/心脏基础知识.md",
+      "dify/knowledge-base/常见心脏问题.md",
+      "dify/knowledge-base/健康生活建议.md",
+      "dify/knowledge-base/就医指导.md",
+      "dify/knowledge-base/心音检测说明.md",
+      "dify/prompts/health_qa_system_prompt.md",
+      "dify/prompts/health_report_prompt.md"
+    ]
+  }
+}

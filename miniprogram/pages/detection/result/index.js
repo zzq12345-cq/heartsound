@@ -4,6 +4,7 @@
  */
 
 const userService = require('../../../services/user');
+const app = getApp();
 
 Page({
   data: {
@@ -112,30 +113,45 @@ Page({
 
   /**
    * 保存到历史记录
+   * 同时保存到本地和Supabase云端
    */
   async saveToHistory(result) {
     try {
-      // 获取历史记录
+      // 1. 保存到本地Storage作为缓存
       let history = wx.getStorageSync('detectionHistory') || [];
-
-      // 添加新记录
       history.unshift({
         ...result,
         timestamp: Date.now(),
         sessionId: this.data.sessionId
       });
-
-      // 只保留最近50条
       if (history.length > 50) {
         history = history.slice(0, 50);
       }
-
       wx.setStorageSync('detectionHistory', history);
 
-      // 同步到云端（如果用户已登录）
-      // await userService.syncDetectionRecord(result);
+      // 2. 同步到Supabase云端（如果用户已登录）
+      const userId = app.globalData.userId;
+      const deviceInfo = app.globalData.deviceInfo;
+
+      if (userId) {
+        const recordData = {
+          ...result,
+          session_id: this.data.sessionId,
+          duration_seconds: 30
+        };
+
+        await userService.saveDetectionRecord(
+          userId,
+          deviceInfo?.id || null,
+          recordData
+        );
+        console.log('[Result] 检测记录已同步到云端');
+      } else {
+        console.warn('[Result] 用户未登录，仅保存到本地');
+      }
     } catch (error) {
-      console.error('保存历史记录失败:', error);
+      console.error('[Result] 保存历史记录失败:', error);
+      // 本地已保存，云端失败不影响用户体验
     }
   },
 

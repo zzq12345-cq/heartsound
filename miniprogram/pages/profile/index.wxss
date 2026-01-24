@@ -1,17 +1,224 @@
-.page-container { padding: var(--spacing-lg); min-height: 100vh; padding-bottom: 120rpx; }
-.profile-header { text-align: center; padding: var(--spacing-xl) 0; }
-.avatar { font-size: 120rpx; margin-bottom: var(--spacing-md); }
-.nickname { display: block; font-size: var(--font-size-h2); font-weight: 600; color: var(--color-text-primary); }
-.stats-section { display: flex; justify-content: space-around; padding: var(--spacing-lg); }
-.stat-item { text-align: center; }
-.stat-value { display: block; font-size: var(--font-size-h1); font-weight: 700; color: var(--color-text-primary); }
-.stat-value.safe { color: var(--color-success); }
-.stat-value.warning { color: var(--color-warning); }
-.stat-label { display: block; font-size: var(--font-size-caption); color: var(--color-text-hint); margin-top: var(--spacing-xs); }
-.menu-section { padding: 0; }
-.menu-item { display: flex; align-items: center; padding: var(--spacing-lg); border-bottom: 1rpx solid var(--color-border-light); }
-.menu-item:last-child { border-bottom: none; }
-.menu-icon { font-size: 40rpx; margin-right: var(--spacing-md); }
-.menu-text { flex: 1; font-size: var(--font-size-body); color: var(--color-text-primary); }
-.menu-arrow { font-size: 32rpx; color: var(--color-text-hint); }
-.dev-notice { text-align: center; margin-top: var(--spacing-xl); font-size: var(--font-size-caption); color: var(--color-primary); }
+/* Profile Page Styles - User Profile */
+
+.page-container {
+  padding: var(--spacing-lg);
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+  background-color: var(--color-bg-page);
+}
+
+/* Profile Header */
+.profile-header {
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+}
+
+.avatar-wrapper {
+  display: inline-block;
+  margin-bottom: var(--spacing-md);
+}
+
+.avatar-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 4rpx solid var(--color-bg-card);
+  box-shadow: var(--shadow-md);
+}
+
+.avatar-placeholder {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background-color: var(--color-bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+
+.nickname {
+  display: block;
+  font-size: var(--font-size-h2);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.last-detection {
+  display: block;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+}
+
+/* Device Card */
+.device-card {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.device-icon-wrapper {
+  margin-right: var(--spacing-md);
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-name {
+  display: block;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4rpx;
+}
+
+.device-hint {
+  display: block;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+}
+
+.device-status-indicator {
+  margin-right: var(--spacing-sm);
+}
+
+.status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background-color: #CCC;
+}
+
+.device-status-indicator.connected .status-dot {
+  background-color: #4CAF50;
+  box-shadow: 0 0 8rpx rgba(76, 175, 80, 0.5);
+}
+
+.device-status-indicator.disconnected .status-dot {
+  background-color: #999;
+}
+
+/* Stats Section */
+.stats-section {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.stats-title {
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.stats-more {
+  display: flex;
+  align-items: center;
+}
+
+.more-text {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+  margin-right: 4rpx;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background-color: var(--color-border-light);
+}
+
+.stat-value {
+  display: block;
+  font-size: var(--font-size-h1);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.stat-value.safe {
+  color: var(--color-success);
+}
+
+.stat-value.warning {
+  color: var(--color-warning);
+}
+
+.stat-value.danger {
+  color: var(--color-danger);
+}
+
+.stat-label {
+  display: block;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+  margin-top: var(--spacing-xs);
+}
+
+/* Menu Section */
+.menu-section {
+  padding: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1rpx solid var(--color-border-light);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon-wrapper {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--spacing-md);
+}
+
+.menu-text {
+  flex: 1;
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+}
+
+.menu-arrow {
+  display: flex;
+  align-items: center;
+}
+
+/* Version Info */
+.version-info {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+}
+
+.version-text {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+}

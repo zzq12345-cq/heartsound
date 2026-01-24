@@ -1,58 +1,94 @@
-<!-- Profile Page Template (Placeholder for IMPL-006) -->
+<!-- Profile Page Template - User Profile -->
 <view class="page-container">
+  <!-- Profile Header -->
   <view class="profile-header">
-    <view class="avatar">
-      <icon-svg name="heart" size="48" color="#1890FF" />
+    <view class="avatar-wrapper">
+      <image
+        wx:if="{{userInfo && userInfo.avatarUrl}}"
+        class="avatar-image"
+        src="{{userInfo.avatarUrl}}"
+        mode="aspectFill"
+      />
+      <view wx:else class="avatar-placeholder">
+        <icon-svg name="heart" size="64" color="#1890FF" />
+      </view>
     </view>
-    <text class="nickname">心音用户</text>
+    <text class="nickname">{{userInfo.nickname || '心音用户'}}</text>
+    <text class="last-detection" wx:if="{{lastDetectionDate}}">
+      最近检测: {{lastDetectionDate}}
+    </text>
   </view>
 
-  <view class="stats-section card">
-    <view class="stat-item">
-      <text class="stat-value">{{stats.totalDetections}}</text>
-      <text class="stat-label">检测次数</text>
+  <!-- Device Status Card -->
+  <view class="device-card card" bindtap="onDeviceTap">
+    <view class="device-icon-wrapper">
+      <icon-svg name="stethoscope" size="48" color="{{deviceConnected ? '#4CAF50' : '#999'}}" />
     </view>
-    <view class="stat-item">
-      <text class="stat-value safe">{{stats.safeCount}}</text>
-      <text class="stat-label">正常</text>
+    <view class="device-info">
+      <text class="device-name">{{deviceConnected ? (deviceInfo.device_name || '心音智鉴设备') : '未连接设备'}}</text>
+      <text class="device-hint">{{deviceConnected ? '已连接' : '点击连接设备'}}</text>
     </view>
-    <view class="stat-item">
-      <text class="stat-value warning">{{stats.warningCount}}</text>
-      <text class="stat-label">异常</text>
+    <view class="device-status-indicator {{deviceConnected ? 'connected' : 'disconnected'}}">
+      <view class="status-dot"></view>
+    </view>
+    <view class="device-arrow">
+      <icon-svg name="chevron-right" size="32" color="#CCC" />
     </view>
   </view>
 
+  <!-- Stats Section -->
+  <view class="stats-section card" bindtap="goToRecords">
+    <view class="stats-header">
+      <text class="stats-title">检测统计</text>
+      <view class="stats-more">
+        <text class="more-text">查看详情</text>
+        <icon-svg name="chevron-right" size="24" color="#999" />
+      </view>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalDetections}}</text>
+        <text class="stat-label">检测次数</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value safe">{{stats.safeCount}}</text>
+        <text class="stat-label">正常</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value warning">{{stats.warningCount}}</text>
+        <text class="stat-label">需关注</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value danger">{{stats.dangerCount}}</text>
+        <text class="stat-label">请就医</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Menu Section -->
   <view class="menu-section card">
-    <view class="menu-item">
-      <view class="menu-icon-wrapper">
-        <icon-svg name="chart" size="40" color="#1890FF" />
+    <view
+      wx:for="{{menuItems}}"
+      wx:key="key"
+      class="menu-item"
+      data-menu="{{item.key}}"
+      bindtap="onMenuTap"
+    >
+      <view class="menu-icon-wrapper" style="background-color: {{item.color}}20;">
+        <icon-svg name="{{item.icon}}" size="40" color="{{item.color}}" />
       </view>
-      <text class="menu-text">AI健康报告</text>
-      <view class="menu-arrow">
-        <icon-svg name="chevron-right" size="24" color="#CCC" />
-      </view>
-    </view>
-    <view class="menu-item">
-      <view class="menu-icon-wrapper">
-        <icon-svg name="target" size="40" color="#4CAF50" />
-      </view>
-      <text class="menu-text">设置</text>
-      <view class="menu-arrow">
-        <icon-svg name="chevron-right" size="24" color="#CCC" />
-      </view>
-    </view>
-    <view class="menu-item">
-      <view class="menu-icon-wrapper">
-        <icon-svg name="lightbulb" size="40" color="#FF9800" />
-      </view>
-      <text class="menu-text">帮助与反馈</text>
+      <text class="menu-text">{{item.label}}</text>
       <view class="menu-arrow">
         <icon-svg name="chevron-right" size="24" color="#CCC" />
       </view>
     </view>
   </view>
 
-  <view class="dev-notice">
-    <text>完整功能将在IMPL-006中实现</text>
+  <!-- Version Info -->
+  <view class="version-info">
+    <text class="version-text">心音智鉴 v1.0.0</text>
   </view>
 </view>

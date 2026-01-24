@@ -1,4 +1,8 @@
 {
   "navigationBarTitleText": "健康档案",
-  "usingComponents": {}
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "result-card": "/components/result-card/index",
+    "icon-svg": "/components/icon/index"
+  }
 }

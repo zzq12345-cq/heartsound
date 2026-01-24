@@ -31,7 +31,7 @@ async function getOrCreateUser(openId) {
     return existingUser;
   }
 
-  // Create new user
+  // Create new user - use .select().single() to return the created record
   const { data: newUser, error: createError } = await supabase
     .from('users')
     .insert({
@@ -39,14 +39,16 @@ async function getOrCreateUser(openId) {
       nickname: '用户' + openId.slice(-6),
       avatar_url: null,
       created_at: new Date().toISOString()
-    });
+    })
+    .select()
+    .single();
 
   if (createError) {
     console.error('[UserService] Failed to create user:', createError);
     throw new Error('创建用户失败');
   }
 
-  console.log('[UserService] Created new user');
+  console.log('[UserService] Created new user:', newUser.id);
   return newUser;
 }
 
@@ -77,30 +79,83 @@ async function updateProfile(userId, profile) {
 }
 
 /**
- * Get user detection records
- * 获取用户检测记录
+ * Get user detection records with pagination and filtering
+ * 获取用户检测记录（支持分页和筛选）
  *
  * @param {string} userId - User ID
  * @param {object} options - Query options
- * @returns {Promise<array>}
+ * @param {number} options.page - Page number (1-based)
+ * @param {number} options.pageSize - Records per page
+ * @param {string} options.riskLevel - Filter by risk level: 'all'|'safe'|'warning'|'danger'
+ * @returns {Promise<object>} { data: array, hasMore: boolean, total: number }
  */
 async function getDetectionRecords(userId, options = {}) {
-  const { page = 1, pageSize = 20 } = options;
+  const { page = 1, pageSize = 20, riskLevel = 'all' } = options;
   const offset = (page - 1) * pageSize;
 
-  const { data, error } = await supabase
+  // Build query
+  let query = supabase
     .from('detection_records')
-    .select('*')
-    .eq('user_id', userId)
+    .select('*', { count: 'exact' })
+    .eq('user_id', userId);
+
+  // Apply risk level filter if specified
+  if (riskLevel && riskLevel !== 'all') {
+    query = query.eq('risk_level', riskLevel);
+  }
+
+  // Apply ordering and pagination using range()
+  const { data, error, count } = await query
     .order('created_at', { ascending: false })
-    .limit(pageSize);
+    .range(offset, offset + pageSize - 1);
 
   if (error) {
     console.error('[UserService] Failed to get records:', error);
     throw new Error('获取记录失败');
   }
 
-  return data || [];
+  const records = data || [];
+  const total = count || 0;
+  const hasMore = offset + records.length < total;
+
+  return {
+    data: records,
+    hasMore,
+    total,
+    page,
+    pageSize
+  };
+}
+
+/**
+ * Get single detection record by ID
+ * 根据ID获取单条检测记录
+ *
+ * @param {string} recordId - Record ID (UUID)
+ * @returns {Promise<object|null>} Record data or null if not found
+ */
+async function getRecordById(recordId) {
+  if (!recordId) {
+    throw new Error('Record ID is required');
+  }
+
+  const { data, error } = await supabase
+    .from('detection_records')
+    .select('*')
+    .eq('id', recordId)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      // No rows found
+      console.warn('[UserService] Record not found:', recordId);
+      return null;
+    }
+    console.error('[UserService] Failed to get record:', error);
+    throw new Error('获取记录失败');
+  }
+
+  return data;
 }
 
 /**
@@ -118,15 +173,13 @@ async function saveDetectionRecord(userId, deviceId, result) {
     .insert({
       user_id: userId,
       device_id: deviceId,
-      session_id: result.session_id,
-      result_category: result.category,
-      result_label: result.label,
-      confidence: result.confidence,
-      risk_level: result.risk_level,
-      probabilities: result.probabilities,
-      health_advice: result.health_advice,
-      duration_seconds: result.duration_seconds || 30,
-      created_at: new Date().toISOString()
+      result_category: result.category || 'normal',
+      result_label: result.label || '心音正常',
+      confidence: result.confidence || 0,
+      risk_level: result.risk_level || 'safe',
+      probabilities: result.probabilities || {},
+      health_advice: result.health_advice || null,
+      duration_seconds: result.duration_seconds || 30
     });
 
   if (error) {
@@ -200,6 +253,7 @@ module.exports = {
   getOrCreateUser,
   updateProfile,
   getDetectionRecords,
+  getRecordById,
   saveDetectionRecord,
   getHealthTips,
   getUserStats

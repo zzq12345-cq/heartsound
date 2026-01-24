@@ -5,6 +5,7 @@
 
 // Import services
 const deviceService = require('./services/device');
+const userService = require('./services/user');
 
 App({
   /**
@@ -14,6 +15,7 @@ App({
     // User info
     userInfo: null,
     openId: null,
+    userId: null,  // Supabase user ID
 
     // Device connection state
     deviceConnected: false,
@@ -41,6 +43,9 @@ App({
     // Get system info
     this.initSystemInfo();
 
+    // Initialize user (async, non-blocking)
+    this.initUser();
+
     // Check local device connection
     this.checkSavedDevice();
 
@@ -48,6 +53,56 @@ App({
     this.loadHealthTips();
 
     console.log('[App] HeartSound launched');
+  },
+
+  /**
+   * Initialize user - get or create user in Supabase
+   * 初始化用户 - 在Supabase中获取或创建用户
+   */
+  async initUser() {
+    try {
+      // Check if we have a cached openId
+      let openId = wx.getStorageSync('openId');
+
+      if (!openId) {
+        // Generate a local UUID as temporary openId
+        // In production, this should be obtained via wx.login() + backend
+        openId = this.generateUUID();
+        wx.setStorageSync('openId', openId);
+        console.log('[App] Generated new openId:', openId.slice(0, 8) + '...');
+      } else {
+        console.log('[App] Using cached openId:', openId.slice(0, 8) + '...');
+      }
+
+      this.globalData.openId = openId;
+
+      // Get or create user in Supabase
+      const user = await userService.getOrCreateUser(openId);
+
+      if (user) {
+        this.globalData.userId = user.id;
+        this.globalData.userInfo = {
+          nickname: user.nickname,
+          avatarUrl: user.avatar_url
+        };
+        console.log('[App] User initialized:', user.id);
+      }
+    } catch (error) {
+      console.error('[App] Failed to initialize user:', error);
+      // App continues to work, but cloud features will be limited
+    }
+  },
+
+  /**
+   * Generate UUID v4
+   * 生成UUID作为临时用户标识
+   */
+  generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   },
 
   /**

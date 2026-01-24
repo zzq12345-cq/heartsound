@@ -115,6 +115,13 @@ class SupabaseQueryBuilder {
     return this;
   }
 
+  range(from, to) {
+    // PostgREST uses Range header for pagination
+    this._rangeFrom = from;
+    this._rangeTo = to;
+    return this;
+  }
+
   single() {
     this._single = true;
     this._limit = 1;
@@ -154,6 +161,14 @@ class SupabaseQueryBuilder {
       options.headers['Accept'] = 'application/vnd.pgrst.object+json';
     }
 
+    // Add Range header for pagination
+    if (this._rangeFrom !== undefined && this._rangeTo !== undefined) {
+      options.headers['Range'] = `${this._rangeFrom}-${this._rangeTo}`;
+      options.headers['Range-Unit'] = 'items';
+      // Request count in response
+      options.headers['Prefer'] = 'count=exact';
+    }
+
     try {
       const response = await wxFetch(url, options);
       const data = await response.json();
@@ -162,7 +177,9 @@ class SupabaseQueryBuilder {
         return { data: null, error: data };
       }
 
-      return { data, error: null };
+      // Parse count from Content-Range header if available
+      // Note: wx.request doesn't give us headers easily, so count comes from select query
+      return { data, error: null, count: Array.isArray(data) ? data.length : 0 };
     } catch (err) {
       return { data: null, error: { message: err.message } };
     }
@@ -193,31 +210,15 @@ class SupabaseTable {
     return builder.select(columns);
   }
 
-  async insert(data, options = {}) {
-    const url = `${this.baseUrl}/rest/v1/${this.tableName}`;
-    const headers = { ...this.headers };
-
-    if (options.upsert) {
-      headers['Prefer'] = 'resolution=merge-duplicates';
-    }
-
-    try {
-      const response = await wxFetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(data)
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        return { data: null, error: result };
-      }
-
-      return { data: result, error: null };
-    } catch (err) {
-      return { data: null, error: { message: err.message } };
-    }
+  insert(data, options = {}) {
+    // Return an InsertBuilder to support chaining .select()
+    return new SupabaseInsertBuilder(
+      this.tableName,
+      this.baseUrl,
+      this.headers,
+      data,
+      options
+    );
   }
 
   async update(data) {
@@ -238,6 +239,63 @@ class SupabaseTable {
       this.headers
     );
     return builder;
+  }
+}
+
+/**
+ * Supabase insert builder - supports .select() and .single() chaining
+ */
+class SupabaseInsertBuilder {
+  constructor(tableName, baseUrl, headers, data, options = {}) {
+    this.tableName = tableName;
+    this.baseUrl = baseUrl;
+    this.headers = { ...headers };
+    this.data = data;
+    this.options = options;
+    this._returnData = false;
+    this._single = false;
+
+    if (options.upsert) {
+      this.headers['Prefer'] = 'resolution=merge-duplicates';
+    }
+  }
+
+  select(columns = '*') {
+    this._returnData = true;
+    this._selectColumns = columns;
+    // Tell PostgREST to return the inserted data
+    this.headers['Prefer'] = (this.headers['Prefer'] || '') +
+      (this.headers['Prefer'] ? ',' : '') + 'return=representation';
+    return this;
+  }
+
+  single() {
+    this._single = true;
+    return this;
+  }
+
+  async then(resolve) {
+    const url = `${this.baseUrl}/rest/v1/${this.tableName}`;
+
+    try {
+      const response = await wxFetch(url, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(this.data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        resolve({ data: null, error: result });
+      } else {
+        // If single() was called and result is array, return first item
+        const data = this._single && Array.isArray(result) ? result[0] : result;
+        resolve({ data, error: null });
+      }
+    } catch (err) {
+      resolve({ data: null, error: { message: err.message } });
+    }
   }
 }
 

@@ -3,6 +3,7 @@
  * 聊天气泡组件
  *
  * 支持用户消息和AI回复两种类型
+ * 支持显示AI思考过程（可折叠）
  */
 
 Component({
@@ -31,11 +32,22 @@ Component({
     showDisclaimer: {
       type: Boolean,
       value: false
+    },
+    // 思考内容
+    thinking: {
+      type: String,
+      value: ''
+    },
+    // 是否正在思考
+    isThinking: {
+      type: Boolean,
+      value: false
     }
   },
 
   data: {
-    formattedTime: ''
+    formattedTime: '',
+    thinkingExpanded: false
   },
 
   observers: {
@@ -57,6 +69,15 @@ Component({
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       return `${hours}:${minutes}`;
+    },
+
+    /**
+     * Toggle thinking content visibility
+     */
+    toggleThinking() {
+      this.setData({
+        thinkingExpanded: !this.data.thinkingExpanded
+      });
     }
   }
 });

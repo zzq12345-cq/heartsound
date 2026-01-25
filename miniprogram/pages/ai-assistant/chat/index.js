@@ -39,18 +39,49 @@ Page({
   onLoad(options) {
     console.log('[ChatPage] Page loaded');
 
-    // 如果从检测结果页进入，获取检测上下文
-    if (options.fromDetection) {
-      this.loadLatestDetection();
-    }
-
     // 添加欢迎消息
     this.addWelcomeMessage();
   },
 
   onShow() {
+    // 检查是否有从检测结果页传来的上下文
+    const pendingContext = app.globalData.pendingDetectionContext;
+    if (pendingContext) {
+      console.log('[ChatPage] Received detection context from result page');
+      this.setData({ latestDetection: pendingContext });
+      // 清除，避免重复使用
+      app.globalData.pendingDetectionContext = null;
+
+      // 自动发送分析请求
+      this.autoAskAboutDetection(pendingContext);
+    }
+
     // 滚动到底部
     this.scrollToBottom();
+  },
+
+  /**
+   * 自动询问检测结果
+   */
+  autoAskAboutDetection(detection) {
+    // 构建包含检测信息的详细提问
+    const riskText = detection.risk_level === 'safe' ? '正常' :
+                     detection.risk_level === 'warning' ? '需关注' : '高风险';
+
+    const label = detection.label || '心音检测';
+    const confidence = detection.confidence ? `${detection.confidence.toFixed(1)}%` : '未知';
+
+    const message = `我刚完成了心音检测，检测结果如下：
+- 结果：${label}
+- 风险等级：${riskText}
+- 置信度：${confidence}
+
+请根据以上检测结果，给我一些健康建议。`;
+
+    setTimeout(() => {
+      this.setData({ inputValue: message });
+      this.sendMessage();
+    }, 500);
   },
 
   /**
@@ -149,12 +180,19 @@ Page({
       // 构建输入上下文
       const inputs = {};
       if (latestDetection) {
-        inputs.latest_detection = JSON.stringify({
-          risk_level: latestDetection.risk_level,
-          result_label: latestDetection.result_label,
-          confidence: latestDetection.confidence,
-          created_at: latestDetection.created_at
-        });
+        // 构建详细的检测报告上下文
+        const detectionContext = {
+          risk_level: latestDetection.risk_level || 'unknown',
+          label: latestDetection.label || latestDetection.result_label || '未知',
+          category: latestDetection.category || 'unknown',
+          confidence: latestDetection.confidence || 0,
+          created_at: latestDetection.created_at || new Date().toISOString(),
+          probabilities: latestDetection.probabilities || null
+        };
+
+        inputs.latest_detection = JSON.stringify(detectionContext);
+
+        console.log('[ChatPage] Sending detection context:', detectionContext);
       }
 
       // 调用Dify API
@@ -165,7 +203,11 @@ Page({
         onMessage: (data) => {
           // 流式更新AI回复
           if (data.type === 'message') {
-            this.updateAIMessage(aiLoadingMessage.id, data.fullContent);
+            this.updateAIMessage(aiLoadingMessage.id, {
+              content: data.fullContent,
+              thinking: data.thinking || '',
+              isThinking: data.isThinking || false
+            });
           }
         }
       });
@@ -181,11 +223,19 @@ Page({
 
   /**
    * 流式更新AI消息
+   * @param {string} messageId - 消息ID
+   * @param {object} data - 包含content, thinking, isThinking
    */
-  updateAIMessage(messageId, content) {
+  updateAIMessage(messageId, data) {
     const messages = this.data.messages.map(msg => {
       if (msg.id === messageId) {
-        return { ...msg, content, loading: false };
+        return {
+          ...msg,
+          content: data.content,
+          thinking: data.thinking || '',
+          isThinking: data.isThinking || false,
+          loading: false
+        };
       }
       return msg;
     });
@@ -194,13 +244,19 @@ Page({
 
   /**
    * 完成AI消息
+   * @param {string} messageId - 消息ID
+   * @param {string} content - 最终内容
+   * @param {string} newConversationId - 对话ID
+   * @param {string} thinking - 思考内容（可选）
    */
-  finalizeAIMessage(messageId, content, newConversationId) {
+  finalizeAIMessage(messageId, content, newConversationId, thinking) {
     const messages = this.data.messages.map(msg => {
       if (msg.id === messageId) {
         return {
           ...msg,
           content: content || '抱歉，我暂时无法回答这个问题。',
+          thinking: thinking || msg.thinking || '',
+          isThinking: false,
           loading: false,
           showDisclaimer: true
         };

@@ -27,7 +27,9 @@ Page({
     // 获取缓存的结果
     const cachedResult = wx.getStorageSync('detectionResult');
     if (cachedResult) {
-      this.displayResult(cachedResult);
+      // cachedResult 结构是 { status: 'completed', result: {...} }
+      const resultData = cachedResult.result || cachedResult;
+      this.displayResult(resultData);
       // 清除缓存
       wx.removeStorageSync('detectionResult');
     } else {
@@ -217,8 +219,12 @@ Page({
    * 咨询AI助手
    */
   consultAI() {
-    wx.navigateTo({
-      url: '/pages/ai-assistant/chat/index?fromDetection=true'
+    // TabBar页面不支持navigateTo带参数，通过globalData传递
+    const app = getApp();
+    app.globalData.pendingDetectionContext = this.data.result;
+
+    wx.switchTab({
+      url: '/pages/ai-assistant/chat/index'
     });
   },
 

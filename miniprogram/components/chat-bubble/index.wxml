@@ -9,25 +9,56 @@
 
   <!-- Bubble Content -->
   <view class="bubble-wrapper">
+    <!-- Main Bubble -->
     <view class="bubble {{type === 'user' ? 'bubble-user' : 'bubble-ai'}}">
-      <!-- Loading State -->
-      <view class="loading-dots" wx:if="{{loading}}">
+      <!-- Loading State (no thinking) -->
+      <view class="loading-dots" wx:if="{{loading && !isThinking && !thinking}}">
         <view class="dot"></view>
         <view class="dot"></view>
         <view class="dot"></view>
       </view>
 
-      <!-- Message Content -->
-      <text class="bubble-text" wx:else>{{content}}</text>
+      <!-- AI Thinking State - 内嵌在气泡内 -->
+      <block wx:elif="{{type === 'ai' && (isThinking || thinking)}}">
+        <!-- 思考内容区域（可折叠） -->
+        <view class="thinking-block {{thinkingExpanded ? 'expanded' : ''}}" wx:if="{{thinking}}" bindtap="toggleThinking">
+          <view class="thinking-block-header">
+            <icon-svg name="lightbulb" size="16" color="#BFBFBF" />
+            <text class="thinking-block-label">{{isThinking ? '思考中...' : '思考过程'}}</text>
+            <icon-svg wx:if="{{!isThinking}}" name="{{thinkingExpanded ? 'chevron-up' : 'chevron-down'}}" size="14" color="#BFBFBF" />
+          </view>
+          <view class="thinking-block-content {{thinkingExpanded || isThinking ? 'show' : ''}}">
+            <text class="thinking-block-text">{{thinking}}</text>
+          </view>
+        </view>
+
+        <!-- 思考中但还没有内容时的占位 -->
+        <view class="thinking-waiting" wx:if="{{isThinking && !thinking}}">
+          <icon-svg name="lightbulb" size="18" color="#BFBFBF" />
+          <text class="thinking-waiting-text">正在思考</text>
+          <view class="thinking-dots-inline">
+            <view class="dot"></view>
+            <view class="dot"></view>
+            <view class="dot"></view>
+          </view>
+        </view>
+
+        <!-- 正式回答内容 -->
+        <view class="answer-divider" wx:if="{{content && thinking}}"></view>
+        <text class="bubble-text" wx:if="{{content}}">{{content}}</text>
+      </block>
+
+      <!-- Normal Message Content (no thinking) -->
+      <text class="bubble-text" wx:elif="{{content}}">{{content}}</text>
     </view>
 
     <!-- Disclaimer (AI only) -->
-    <view class="disclaimer" wx:if="{{type === 'ai' && showDisclaimer && !loading}}">
+    <view class="disclaimer" wx:if="{{type === 'ai' && showDisclaimer && !loading && content}}">
       <text class="disclaimer-text">仅供参考，不构成医疗建议</text>
     </view>
 
     <!-- Timestamp -->
-    <view class="timestamp" wx:if="{{formattedTime && !loading}}">
+    <view class="timestamp" wx:if="{{formattedTime && !loading && content}}">
       <text class="timestamp-text">{{formattedTime}}</text>
     </view>
   </view>

@@ -36,6 +36,8 @@
             timestamp="{{item.timestamp}}"
             loading="{{item.loading}}"
             showDisclaimer="{{item.showDisclaimer}}"
+            thinking="{{item.thinking}}"
+            isThinking="{{item.isThinking}}"
           />
         </view>
       </block>

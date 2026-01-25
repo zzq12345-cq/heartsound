@@ -268,14 +268,16 @@ async function handleStreamRequest(endpoint, data, onMessage) {
                 const text = parsed.answer || '';
                 fullAnswer += text;
 
-                // 过滤DeepSeek的思考内容
-                const filteredContent = filterThinkingContent(fullAnswer);
+                // 提取思考内容和回答内容
+                const { thinking, answer, isThinking } = extractThinkingContent(fullAnswer);
 
                 if (onMessage) {
                   onMessage({
                     type: 'message',
-                    content: filterThinkingContent(text),
-                    fullContent: filteredContent
+                    content: answer,
+                    fullContent: answer,
+                    thinking: thinking,
+                    isThinking: isThinking
                   });
                 }
               }
@@ -374,6 +376,28 @@ function filterThinkingContent(text) {
 
   // 清理开头的空白
   return filtered.trimStart();
+}
+
+/**
+ * Extract thinking content from text
+ * 提取思考内容
+ */
+function extractThinkingContent(text) {
+  if (!text) return { thinking: '', answer: text, isThinking: false };
+
+  // 检查是否正在思考（有<think>但没有</think>）
+  const hasOpenTag = /<think>/i.test(text);
+  const hasCloseTag = /<\/think>/i.test(text);
+  const isThinking = hasOpenTag && !hasCloseTag;
+
+  // 提取思考内容
+  const thinkMatch = text.match(/<think>([\s\S]*?)(<\/think>|$)/i);
+  const thinking = thinkMatch ? thinkMatch[1].trim() : '';
+
+  // 提取回答内容
+  const answer = filterThinkingContent(text);
+
+  return { thinking, answer, isThinking };
 }
 
 module.exports = {

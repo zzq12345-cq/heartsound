@@ -180,7 +180,9 @@ async function saveDetectionRecord(userId, deviceId, result) {
       probabilities: result.probabilities || {},
       health_advice: result.health_advice || null,
       duration_seconds: result.duration_seconds || 30
-    });
+    })
+    .select()
+    .single();
 
   if (error) {
     console.error('[UserService] Failed to save record:', error);

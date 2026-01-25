@@ -3,6 +3,7 @@
  */
 
 .line-chart-container {
+  position: relative;
   background-color: #FFFFFF;
   border-radius: 16rpx;
   padding: 24rpx;
@@ -20,13 +21,20 @@
   width: 100%;
 }
 
-.chart-loading,
-.chart-empty {
+.canvas-hidden {
+  opacity: 0;
+}
+
+.chart-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 300rpx;
   color: #999999;
 }
 

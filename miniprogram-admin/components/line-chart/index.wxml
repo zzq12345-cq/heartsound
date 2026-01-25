@@ -7,23 +7,22 @@
   <!-- 标题 -->
   <view wx:if="{{title}}" class="chart-title">{{title}}</view>
 
-  <!-- 加载状态 -->
-  <view wx:if="{{loading}}" class="chart-loading">
-    <view class="loading-spinner"></view>
-    <text class="loading-text">加载中...</text>
-  </view>
-
-  <!-- 空状态 -->
-  <view wx:elif="{{!data || data.length === 0}}" class="chart-empty">
-    <text class="empty-text">暂无数据</text>
-  </view>
-
-  <!-- 图表画布 -->
+  <!-- 图表画布 - 始终存在 -->
   <canvas
-    wx:else
     type="2d"
     id="lineChart"
     class="chart-canvas"
     style="width: 100%; height: {{height}}rpx;"
   ></canvas>
+
+  <!-- 加载状态遮罩 -->
+  <view wx:if="{{loading}}" class="chart-overlay">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态遮罩 -->
+  <view wx:elif="{{!data || data.length === 0}}" class="chart-overlay">
+    <text class="empty-text">暂无数据</text>
+  </view>
 </view>

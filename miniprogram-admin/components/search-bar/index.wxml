@@ -1,0 +1,53 @@
+<!--
+  Search Bar Component
+  搜索栏组件
+-->
+<view class="search-bar">
+  <!-- 搜索输入框 -->
+  <view class="search-input-wrap">
+    <image class="search-icon" src="/static/images/icon-search.svg" mode="aspectFit" />
+    <input
+      class="search-input"
+      type="text"
+      value="{{keyword}}"
+      placeholder="{{placeholder}}"
+      placeholder-class="placeholder"
+      confirm-type="search"
+      bindinput="onInput"
+      bindconfirm="onSearch"
+    />
+    <image
+      wx:if="{{keyword}}"
+      class="clear-icon"
+      src="/static/images/icon-clear.svg"
+      mode="aspectFit"
+      catchtap="onClear"
+    />
+  </view>
+
+  <!-- 筛选按钮 -->
+  <view wx:if="{{filters.length > 0}}" class="filter-btn" bindtap="toggleFilter">
+    <text class="filter-text">{{currentFilterLabel}}</text>
+    <image
+      class="filter-arrow {{showFilter ? 'rotate' : ''}}"
+      src="/static/images/icon-arrow-down.svg"
+      mode="aspectFit"
+    />
+  </view>
+</view>
+
+<!-- 筛选下拉 -->
+<view wx:if="{{showFilter}}" class="filter-dropdown-mask" catchtap="hideFilter">
+  <view class="filter-dropdown" catchtap="">
+    <view
+      wx:for="{{filters}}"
+      wx:key="value"
+      class="filter-item {{item.value === filterValue ? 'active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onSelectFilter"
+    >
+      <text>{{item.label}}</text>
+      <image wx:if="{{item.value === filterValue}}" class="check-icon" src="/static/images/icon-check.svg" mode="aspectFit" />
+    </view>
+  </view>
+</view>

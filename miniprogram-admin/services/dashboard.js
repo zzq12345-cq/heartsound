@@ -151,7 +151,7 @@ async function getTotalDetections() {
 async function getDeviceStats() {
   const { data, error } = await supabase
     .from('devices')
-    .select('id, last_online_at');
+    .select('id, last_seen_at');
 
   if (error) {
     console.error('[DashboardService] Failed to get device stats:', error);
@@ -164,7 +164,7 @@ async function getDeviceStats() {
 
   // 判断在线状态：最后在线时间在5分钟内视为在线
   const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-  const online = data.filter(d => d.last_online_at && d.last_online_at > fiveMinutesAgo).length;
+  const online = data.filter(d => d.last_seen_at && d.last_seen_at > fiveMinutesAgo).length;
 
   return { total: data.length, online };
 }

@@ -1,12 +1,52 @@
 <!--
-  Users Page - Placeholder
+  Users List Page
+  用户列表页
 -->
+<view class="page">
+  <!-- 搜索栏 -->
+  <search-bar
+    placeholder="搜索昵称或手机号"
+    bind:search="onSearch"
+  />
 
-<view class="container">
-  <view class="placeholder-content">
-    <view class="placeholder-icon">👥</view>
-    <text class="placeholder-title">用户管理</text>
-    <text class="placeholder-desc">功能开发中，敬请期待...</text>
-    <text class="placeholder-hint">将在 IMPL-008 中实现</text>
+  <!-- 统计信息 -->
+  <view class="stats-bar">
+    <text class="stats-text">共 {{total}} 位用户</text>
+  </view>
+
+  <!-- 用户列表 -->
+  <view class="user-list">
+    <block wx:if="{{loading && users.length === 0}}">
+      <view class="loading-wrap">
+        <view class="loading-spinner"></view>
+        <text class="loading-text">加载中...</text>
+      </view>
+    </block>
+
+    <block wx:elif="{{users.length === 0}}">
+      <view class="empty-wrap">
+        <image class="empty-icon" src="/static/images/icon-empty.svg" mode="aspectFit" />
+        <text class="empty-text">{{keyword ? '未找到相关用户' : '暂无用户'}}</text>
+      </view>
+    </block>
+
+    <block wx:else>
+      <user-card
+        wx:for="{{users}}"
+        wx:key="id"
+        user="{{item}}"
+        bind:tap="onUserTap"
+      />
+
+      <!-- 加载更多 -->
+      <view wx:if="{{loadingMore}}" class="loading-more">
+        <view class="loading-spinner small"></view>
+        <text>加载中...</text>
+      </view>
+
+      <view wx:elif="{{!hasMore}}" class="no-more">
+        <text>没有更多了</text>
+      </view>
+    </block>
   </view>
 </view>

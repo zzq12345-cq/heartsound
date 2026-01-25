@@ -45,7 +45,10 @@ Component({
 
   lifetimes: {
     attached() {
-      this.initCanvas();
+      // 延迟初始化Canvas，确保DOM已经渲染完成
+      wx.nextTick(() => {
+        setTimeout(() => this.initCanvas(), 50);
+      });
     },
     detached() {
       this.canvas = null;
@@ -53,18 +56,31 @@ Component({
     }
   },
 
+  pageLifetimes: {
+    show() {
+      // 页面显示时重新绘制（从其他页面返回时）
+      if (this.ctx && this.properties.data) {
+        setTimeout(() => this.drawChart(), 100);
+      }
+    }
+  },
+
   methods: {
     /**
      * 初始化Canvas
      */
-    initCanvas() {
+    initCanvas(retryCount = 0) {
+      const maxRetries = 3;
       const query = this.createSelectorQuery();
       query.select('#pieChart')
         .fields({ node: true, size: true })
         .exec((res) => {
           if (!res[0] || !res[0].node) {
-            console.error('[PieChart] Canvas not found');
-            setTimeout(() => this.initCanvas(), 100);
+            if (retryCount < maxRetries) {
+              setTimeout(() => this.initCanvas(retryCount + 1), 200);
+            } else {
+              console.warn('[PieChart] Canvas init failed after retries');
+            }
             return;
           }
 
@@ -176,12 +192,16 @@ Component({
       ctx.fillStyle = '#FFFFFF';
       ctx.fill();
 
-      // 中心文字
+      // 中心文字 - 显示主要占比
+      const mainItem = items.reduce((max, item) => item.value > max.value ? item : max, items[0]);
       ctx.fillStyle = '#333333';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('风险分布', centerX, centerY);
+      ctx.fillText(mainItem.percent || '', centerX, centerY - 8);
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = '#666666';
+      ctx.fillText(mainItem.label || '', centerX, centerY + 10);
     }
   }
 });

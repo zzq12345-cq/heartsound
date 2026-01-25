@@ -1,0 +1,130 @@
+/* Device Card Component Styles */
+
+.device-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 设备图标 */
+.device-icon-wrap {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.device-icon-wrap.online {
+  background: #e6f7e6;
+}
+
+.device-icon-wrap.offline {
+  background: #ffebee;
+}
+
+.device-icon-wrap.unassigned {
+  background: #fff8e1;
+}
+
+.device-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+/* 设备信息 */
+.info {
+  flex: 1;
+  margin-left: 20rpx;
+  overflow: hidden;
+}
+
+.id-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.device-id {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 状态标签 */
+.status-badge {
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+}
+
+.status-badge.online {
+  background: #e6f7e6;
+  color: #4CAF50;
+}
+
+.status-badge.offline {
+  background: #ffebee;
+  color: #F44336;
+}
+
+.status-badge.unassigned {
+  background: #fff8e1;
+  color: #FF9800;
+}
+
+/* 详情行 */
+.detail-row {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  gap: 20rpx;
+}
+
+.ip, .version {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 用户行 */
+.user-row {
+  display: flex;
+  align-items: center;
+  margin-top: 12rpx;
+  gap: 10rpx;
+}
+
+.user-row.empty {
+  margin-top: 10rpx;
+}
+
+.user-avatar {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+}
+
+.user-name {
+  font-size: 24rpx;
+  color: #1890FF;
+}
+
+.no-user {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 箭头 */
+.arrow {
+  width: 32rpx;
+  height: 32rpx;
+  opacity: 0.4;
+  flex-shrink: 0;
+}

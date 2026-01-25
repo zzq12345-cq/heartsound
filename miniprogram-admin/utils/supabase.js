@@ -3,6 +3,7 @@
  * 微信小程序Supabase客户端封装 (管理后台)
  *
  * 复用用户端的Supabase封装，适配wx.request替代fetch
+ * @version 1.0.1 - Fixed update/delete chain methods
  */
 
 const config = require('../config/supabase');
@@ -29,6 +30,7 @@ function wxFetch(url, options = {}) {
         resolve({
           ok: res.statusCode >= 200 && res.statusCode < 300,
           status: res.statusCode,
+          headers: res.header,  // Include response headers
           json: () => Promise.resolve(res.data),
           text: () => Promise.resolve(JSON.stringify(res.data))
         });
@@ -53,10 +55,18 @@ class SupabaseQueryBuilder {
     this._order = null;
     this._limit = null;
     this._single = false;
+    this._count = null;
+    this._head = false;
   }
 
-  select(columns = '*') {
+  select(columns = '*', options = {}) {
     this._select = columns;
+    if (options.count) {
+      this._count = options.count;
+    }
+    if (options.head) {
+      this._head = true;
+    }
     return this;
   }
 
@@ -97,6 +107,13 @@ class SupabaseQueryBuilder {
 
   ilike(column, pattern) {
     this._filters.push(`${column}=ilike.${pattern}`);
+    return this;
+  }
+
+  or(conditions) {
+    // PostgREST or syntax: or=(filter1,filter2)
+    // Input: "nickname.ilike.%test%,phone.ilike.%test%"
+    this._filters.push(`or=(${conditions})`);
     return this;
   }
 
@@ -160,6 +177,17 @@ class SupabaseQueryBuilder {
       options.headers['Accept'] = 'application/vnd.pgrst.object+json';
     }
 
+    // Support count=exact for getting total count
+    if (this._count === 'exact') {
+      options.headers['Prefer'] = 'count=exact';
+    }
+
+    // Support head request (only get count, no data)
+    if (this._head) {
+      options.headers['Prefer'] = 'count=exact';
+      options.method = 'HEAD';
+    }
+
     if (this._rangeFrom !== undefined && this._rangeTo !== undefined) {
       options.headers['Range'] = `${this._rangeFrom}-${this._rangeTo}`;
       options.headers['Range-Unit'] = 'items';
@@ -168,13 +196,33 @@ class SupabaseQueryBuilder {
 
     try {
       const response = await wxFetch(url, options);
+
+      // For HEAD request, only return count from Content-Range header
+      if (this._head) {
+        // Parse count from Content-Range header: "0-0/100" -> 100
+        const contentRange = response.headers && response.headers['content-range'];
+        let count = 0;
+        if (contentRange) {
+          const match = contentRange.match(/\/(\d+)/);
+          if (match) count = parseInt(match[1], 10);
+        }
+        return { data: null, error: null, count };
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
         return { data: null, error: data };
       }
 
-      return { data, error: null, count: Array.isArray(data) ? data.length : 0 };
+      // Parse count from Content-Range header if available
+      let count = Array.isArray(data) ? data.length : 0;
+      if (response.headers && response.headers['content-range']) {
+        const match = response.headers['content-range'].match(/\/(\d+)/);
+        if (match) count = parseInt(match[1], 10);
+      }
+
+      return { data, error: null, count };
     } catch (err) {
       return { data: null, error: { message: err.message } };
     }
@@ -215,7 +263,7 @@ class SupabaseTable {
     );
   }
 
-  async update(data) {
+  update(data) {
     const builder = new SupabaseUpdateBuilder(
       this.tableName,
       this.baseUrl,
@@ -225,7 +273,7 @@ class SupabaseTable {
     return builder;
   }
 
-  async delete() {
+  delete() {
     const builder = new SupabaseDeleteBuilder(
       this.tableName,
       this.baseUrl,

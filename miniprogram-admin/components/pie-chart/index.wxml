@@ -7,15 +7,9 @@
   <!-- 标题 -->
   <view wx:if="{{title}}" class="chart-title">{{title}}</view>
 
-  <!-- 加载状态 -->
-  <view wx:if="{{loading}}" class="chart-loading">
-    <view class="loading-spinner"></view>
-    <text class="loading-text">加载中...</text>
-  </view>
-
   <!-- 图表内容 -->
-  <view wx:else class="chart-content">
-    <!-- 饼图画布 -->
+  <view class="chart-content">
+    <!-- 饼图画布 - 始终存在 -->
     <canvas
       type="2d"
       id="pieChart"
@@ -23,8 +17,14 @@
       style="width: 100%; height: {{height}}rpx;"
     ></canvas>
 
+    <!-- 加载状态遮罩 -->
+    <view wx:if="{{loading}}" class="chart-overlay">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
     <!-- 图例 -->
-    <view class="chart-legend">
+    <view wx:if="{{legendItems.length > 0}}" class="chart-legend">
       <view
         wx:for="{{legendItems}}"
         wx:key="key"

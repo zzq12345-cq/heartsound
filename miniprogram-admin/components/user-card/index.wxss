@@ -1,0 +1,90 @@
+/* User Card Component Styles */
+
+.user-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 头像 */
+.avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+/* 用户信息 */
+.info {
+  flex: 1;
+  margin-left: 20rpx;
+  overflow: hidden;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.nickname {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 统计行 */
+.stats-row {
+  display: flex;
+  align-items: center;
+  margin-top: 12rpx;
+  gap: 24rpx;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.stat-icon {
+  width: 28rpx;
+  height: 28rpx;
+  opacity: 0.6;
+}
+
+.stat-value {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 时间行 */
+.time-row {
+  margin-top: 8rpx;
+}
+
+.register-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 箭头 */
+.arrow {
+  width: 32rpx;
+  height: 32rpx;
+  opacity: 0.4;
+  flex-shrink: 0;
+}

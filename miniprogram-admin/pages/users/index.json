@@ -1,4 +1,8 @@
 {
   "navigationBarTitleText": "用户管理",
-  "usingComponents": {}
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "search-bar": "/components/search-bar/index",
+    "user-card": "/components/user-card/index"
+  }
 }

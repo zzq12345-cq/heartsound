@@ -3,7 +3,10 @@
     "pages/login/index",
     "pages/dashboard/index",
     "pages/users/index",
+    "pages/users/detail/index",
     "pages/devices/index",
+    "pages/devices/detail/index",
+    "pages/devices/assign/index",
     "pages/reports/index"
   ],
   "window": {

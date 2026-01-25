@@ -1,0 +1,216 @@
+/* Device Assign Page Styles */
+
+.page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 160rpx;
+}
+
+/* 设备信息 */
+.device-info {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 24rpx;
+  background: linear-gradient(135deg, #1890FF 0%, #40a9ff 100%);
+}
+
+.device-icon {
+  width: 80rpx;
+  height: 80rpx;
+  filter: brightness(0) invert(1);
+}
+
+.device-detail {
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.device-id {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+.device-ip {
+  margin-top: 8rpx;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 搜索区域 */
+.search-section {
+  background: #fff;
+  margin-top: 16rpx;
+}
+
+.section-title {
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  margin: 16rpx 24rpx;
+  padding: 0 20rpx;
+  height: 72rpx;
+  background: #f5f5f5;
+  border-radius: 36rpx;
+}
+
+.search-icon {
+  width: 36rpx;
+  height: 36rpx;
+  opacity: 0.5;
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+  margin-left: 12rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 用户列表 */
+.user-list {
+  margin-top: 16rpx;
+  background: #fff;
+}
+
+.loading-wrap, .empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.loading-spinner {
+  width: 48rpx;
+  height: 48rpx;
+  border: 4rpx solid #f0f0f0;
+  border-top-color: #1890FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16rpx;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  transition: background 0.2s;
+}
+
+.user-item:active {
+  background: #f5f5f5;
+}
+
+.user-item.selected {
+  background: #e6f7ff;
+}
+
+.user-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.user-phone {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.check-icon-wrap {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.selected-info {
+  text-align: center;
+  margin-bottom: 16rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.selected-info .hint {
+  color: #999;
+}
+
+.btn-group {
+  display: flex;
+  gap: 24rpx;
+}
+
+.btn-cancel, .btn-confirm {
+  flex: 1;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-confirm {
+  background: #1890FF;
+  color: #fff;
+}
+
+.btn-confirm.disabled {
+  background: #ccc;
+}

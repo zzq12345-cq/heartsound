@@ -1,0 +1,101 @@
+<!--
+  User Detail Page
+  用户详情页
+-->
+<view class="page">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:elif="{{user}}">
+    <!-- 用户基本信息 -->
+    <view class="user-header">
+      <image class="avatar" src="{{user.avatar_url || '/static/images/default-avatar.svg'}}" mode="aspectFill" />
+      <view class="user-info">
+        <text class="nickname">{{user.nickname || '未设置昵称'}}</text>
+        <text wx:if="{{user.phone}}" class="phone">{{user.phone}}</text>
+        <text class="register-time">注册于 {{user.created_at_formatted}}</text>
+      </view>
+    </view>
+
+    <!-- 统计卡片 -->
+    <view class="stats-section">
+      <view class="section-title">检测统计</view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-value">{{user.stats.totalDetections || 0}}</text>
+          <text class="stat-label">总检测次数</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{user.stats.monthDetections || 0}}</text>
+          <text class="stat-label">本月检测</text>
+        </view>
+        <view class="stat-item safe">
+          <text class="stat-value">{{user.stats.riskDistribution.safe || 0}}</text>
+          <text class="stat-label">安全</text>
+        </view>
+        <view class="stat-item warning">
+          <text class="stat-value">{{user.stats.riskDistribution.warning || 0}}</text>
+          <text class="stat-label">中等风险</text>
+        </view>
+        <view class="stat-item danger">
+          <text class="stat-value">{{user.stats.riskDistribution.danger || 0}}</text>
+          <text class="stat-label">高风险</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 绑定设备 -->
+    <view class="devices-section">
+      <view class="section-title">绑定设备</view>
+      <view wx:if="{{user.devices.length === 0}}" class="empty-devices">
+        <text>暂无绑定设备</text>
+      </view>
+      <view wx:else class="devices-list">
+        <view wx:for="{{user.devices}}" wx:key="id" class="device-item">
+          <image class="device-icon" src="/static/images/icon-device-small.svg" mode="aspectFit" />
+          <view class="device-info">
+            <text class="device-id">{{item.device_id}}</text>
+            <text wx:if="{{item.is_primary}}" class="primary-badge">主设备</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 检测记录 -->
+    <view class="records-section">
+      <view class="section-title">检测记录</view>
+      <view wx:if="{{records.length === 0 && !loadingRecords}}" class="empty-records">
+        <text>暂无检测记录</text>
+      </view>
+      <view wx:else class="records-list">
+        <view wx:for="{{records}}" wx:key="id" class="record-item">
+          <view class="record-header">
+            <view class="risk-badge {{item.risk_class}}">
+              <text>{{item.risk_level === 'safe' ? '安全' : (item.risk_level === 'warning' ? '中等' : '高风险')}}</text>
+            </view>
+            <text class="record-time">{{item.created_at_formatted}}</text>
+          </view>
+          <view class="record-body">
+            <text class="result-text">{{item.result}}</text>
+            <text class="confidence-text">置信度: {{item.confidence_formatted}}%</text>
+          </view>
+        </view>
+
+        <!-- 加载更多 -->
+        <view wx:if="{{loadingRecords}}" class="loading-more">
+          <view class="loading-spinner small"></view>
+          <text>加载中...</text>
+        </view>
+        <view wx:elif="{{hasMoreRecords}}" class="load-more-btn" bindtap="loadMoreRecords">
+          <text>加载更多</text>
+        </view>
+        <view wx:elif="{{records.length > 0}}" class="no-more">
+          <text>没有更多了</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

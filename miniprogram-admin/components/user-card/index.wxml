@@ -1,0 +1,36 @@
+<!--
+  User Card Component
+  用户卡片组件
+-->
+<view class="user-card" bindtap="onTap">
+  <!-- 头像 -->
+  <image
+    class="avatar"
+    src="{{user.avatar_url || defaultAvatar}}"
+    mode="aspectFill"
+  />
+
+  <!-- 用户信息 -->
+  <view class="info">
+    <view class="name-row">
+      <text class="nickname">{{user.nickname || '未设置昵称'}}</text>
+      <text wx:if="{{user.phone}}" class="phone">{{user.phone}}</text>
+    </view>
+    <view class="stats-row">
+      <view class="stat-item">
+        <image class="stat-icon" src="/static/images/icon-detection.svg" mode="aspectFit" />
+        <text class="stat-value">{{user.detection_count || 0}}次检测</text>
+      </view>
+      <view wx:if="{{user.device_count > 0}}" class="stat-item">
+        <image class="stat-icon" src="/static/images/icon-device-small.svg" mode="aspectFit" />
+        <text class="stat-value">{{user.device_count}}台设备</text>
+      </view>
+    </view>
+    <view class="time-row">
+      <text class="register-time">注册于 {{user.created_at_formatted || '--'}}</text>
+    </view>
+  </view>
+
+  <!-- 箭头 -->
+  <image wx:if="{{showArrow}}" class="arrow" src="/static/images/icon-arrow-right.svg" mode="aspectFit" />
+</view>

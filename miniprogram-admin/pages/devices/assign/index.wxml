@@ -1,0 +1,80 @@
+<!--
+  Device Assign Page
+  设备分配页
+-->
+<view class="page">
+  <!-- 设备信息 -->
+  <view wx:if="{{device}}" class="device-info">
+    <image class="device-icon" src="/static/images/icon-device-large.svg" mode="aspectFit" />
+    <view class="device-detail">
+      <text class="device-id">{{device.device_id}}</text>
+      <text class="device-ip">{{device.ip_address || '未知IP'}}</text>
+    </view>
+  </view>
+
+  <!-- 搜索用户 -->
+  <view class="search-section">
+    <view class="section-title">选择目标用户</view>
+    <view class="search-input-wrap">
+      <image class="search-icon" src="/static/images/icon-search.svg" mode="aspectFit" />
+      <input
+        class="search-input"
+        type="text"
+        placeholder="搜索昵称或手机号"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+  </view>
+
+  <!-- 用户列表 -->
+  <view class="user-list">
+    <block wx:if="{{loading}}">
+      <view class="loading-wrap">
+        <view class="loading-spinner"></view>
+        <text>加载中...</text>
+      </view>
+    </block>
+
+    <block wx:elif="{{users.length === 0}}">
+      <view class="empty-wrap">
+        <text>{{searchKeyword ? '未找到相关用户' : '暂无用户'}}</text>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view
+        wx:for="{{users}}"
+        wx:key="id"
+        class="user-item {{selectedUser && selectedUser.id === item.id ? 'selected' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="selectUser"
+      >
+        <image class="user-avatar" src="{{item.avatar_url || '/static/images/default-avatar.svg'}}" mode="aspectFill" />
+        <view class="user-info">
+          <text class="user-name">{{item.nickname || '未设置昵称'}}</text>
+          <text wx:if="{{item.phone}}" class="user-phone">{{item.phone}}</text>
+        </view>
+        <view wx:if="{{selectedUser && selectedUser.id === item.id}}" class="check-icon-wrap">
+          <image class="check-icon" src="/static/images/icon-check.svg" mode="aspectFit" />
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="selected-info">
+      <text wx:if="{{selectedUser}}">已选择: {{selectedUser.nickname || '未知'}}</text>
+      <text wx:else class="hint">请选择要分配的用户</text>
+    </view>
+    <view class="btn-group">
+      <view class="btn-cancel" bindtap="cancel">
+        <text>取消</text>
+      </view>
+      <view class="btn-confirm {{selectedUser ? '' : 'disabled'}}" bindtap="confirmAssign">
+        <text>确认分配</text>
+      </view>
+    </view>
+  </view>
+</view>

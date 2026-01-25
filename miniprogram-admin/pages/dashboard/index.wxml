@@ -4,92 +4,81 @@
 -->
 
 <view class="container">
-  <!-- 页面内容 -->
-  <scroll-view
-    class="page-scroll"
-    scroll-y
-    enhanced
-    show-scrollbar="{{false}}"
-    refresher-enabled
-    refresher-triggered="{{refreshing}}"
-    bindrefresherrefresh="onPullDownRefresh"
-  >
-    <view class="page-content">
-      <!-- 欢迎信息 -->
-      <view class="welcome-section">
-        <view class="welcome-text">
-          <text class="welcome-hello">您好，</text>
-          <text class="welcome-name">{{adminInfo.nickname || '管理员'}}</text>
-        </view>
-        <text class="welcome-date">{{summary.total_users ? '数据已更新' : '加载中...'}}</text>
+  <view class="page-content">
+    <!-- 欢迎信息 -->
+    <view class="welcome-section">
+      <view class="welcome-text">
+        <text class="welcome-hello">您好，</text>
+        <text class="welcome-name">{{adminInfo.nickname || '管理员'}}</text>
       </view>
-
-      <!-- 核心指标卡片 -->
-      <view class="stats-grid">
-        <stat-card
-          title="总用户数"
-          value="{{summary.total_users}}"
-          trend="{{summary.trends.users_growth}}"
-          icon="users"
-          theme="primary"
-          loading="{{loading}}"
-          data-type="users"
-          bindtap="onStatCardTap"
-        />
-        <stat-card
-          title="总检测数"
-          value="{{summary.total_detections}}"
-          trend="{{summary.trends.detections_growth}}"
-          icon="detection"
-          theme="success"
-          loading="{{loading}}"
-          data-type="detections"
-          bindtap="onStatCardTap"
-        />
-        <stat-card
-          title="设备数量"
-          value="{{summary.total_devices}}"
-          subtitle="在线: {{summary.online_devices}}"
-          icon="devices"
-          theme="warning"
-          loading="{{loading}}"
-          data-type="devices"
-          bindtap="onStatCardTap"
-        />
-        <stat-card
-          title="今日检测"
-          value="{{summary.today_detections}}"
-          trend="{{summary.trends.today_growth}}"
-          icon="today"
-          theme="danger"
-          loading="{{loading}}"
-          data-type="today"
-          bindtap="onStatCardTap"
-        />
-      </view>
-
-      <!-- 7天检测趋势 -->
-      <view class="chart-section">
-        <line-chart
-          title="检测趋势 (近7天)"
-          data="{{weeklyTrend}}"
-          height="{{350}}"
-          loading="{{loading}}"
-        />
-      </view>
-
-      <!-- 风险分布 -->
-      <view class="chart-section">
-        <pie-chart
-          title="风险分布"
-          data="{{summary.risk_distribution}}"
-          height="{{300}}"
-          loading="{{loading}}"
-        />
-      </view>
-
-      <!-- 底部间距 -->
-      <view class="bottom-spacer"></view>
+      <text class="welcome-date">{{summary.total_users ? '数据已更新' : '加载中...'}}</text>
     </view>
-  </scroll-view>
+
+    <!-- 核心指标卡片 -->
+    <view class="stats-grid">
+      <stat-card
+        title="总用户数"
+        value="{{summary.total_users}}"
+        trend="{{summary.trends.users_growth}}"
+        icon="users"
+        theme="primary"
+        loading="{{loading}}"
+        data-type="users"
+        bindtap="onStatCardTap"
+      />
+      <stat-card
+        title="总检测数"
+        value="{{summary.total_detections}}"
+        trend="{{summary.trends.detections_growth}}"
+        icon="detection"
+        theme="success"
+        loading="{{loading}}"
+        data-type="detections"
+        bindtap="onStatCardTap"
+      />
+      <stat-card
+        title="设备数量"
+        value="{{summary.total_devices}}"
+        subtitle="在线: {{summary.online_devices}}"
+        icon="devices"
+        theme="warning"
+        loading="{{loading}}"
+        data-type="devices"
+        bindtap="onStatCardTap"
+      />
+      <stat-card
+        title="今日检测"
+        value="{{summary.today_detections}}"
+        trend="{{summary.trends.today_growth}}"
+        icon="today"
+        theme="danger"
+        loading="{{loading}}"
+        data-type="today"
+        bindtap="onStatCardTap"
+      />
+    </view>
+
+    <!-- 7天检测趋势 -->
+    <view class="chart-section">
+      <line-chart
+        title="检测趋势 (近7天)"
+        data="{{weeklyTrend}}"
+        height="{{350}}"
+        loading="{{loading}}"
+      />
+    </view>
+
+    <!-- 风险分布 -->
+    <view class="chart-section">
+      <pie-chart
+        title="风险分布"
+        data="{{summary.risk_distribution}}"
+        height="{{300}}"
+        loading="{{loading}}"
+      />
+    </view>
+
+    <!-- 底部间距 -->
+    <view class="bottom-spacer"></view>
+  </view>
 </view>

@@ -221,7 +221,7 @@ class SupabaseTable {
     );
   }
 
-  async update(data) {
+  update(data) {
     // Returns a query builder for chaining .eq() etc.
     const builder = new SupabaseUpdateBuilder(
       this.tableName,
@@ -232,7 +232,7 @@ class SupabaseTable {
     return builder;
   }
 
-  async delete() {
+  delete() {
     const builder = new SupabaseDeleteBuilder(
       this.tableName,
       this.baseUrl,

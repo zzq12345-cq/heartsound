@@ -1,0 +1,37 @@
+<!--
+  Device Card Component
+  设备卡片组件
+-->
+<view class="device-card" bindtap="onTap">
+  <!-- 设备图标 -->
+  <view class="device-icon-wrap {{device.is_online ? 'online' : (device.assigned_user ? 'offline' : 'unassigned')}}">
+    <image class="device-icon" src="/static/images/icon-device-large.svg" mode="aspectFit" />
+  </view>
+
+  <!-- 设备信息 -->
+  <view class="info">
+    <view class="id-row">
+      <text class="device-id">{{device.device_id || '--'}}</text>
+      <view class="status-badge {{device.is_online ? 'online' : (device.assigned_user ? 'offline' : 'unassigned')}}">
+        <text>{{device.is_online ? '在线' : (device.assigned_user ? '离线' : '未分配')}}</text>
+      </view>
+    </view>
+
+    <view class="detail-row">
+      <text wx:if="{{device.ip_address}}" class="ip">IP: {{device.ip_address}}</text>
+      <text class="version">固件: {{device.firmware_version || '--'}}</text>
+    </view>
+
+    <view wx:if="{{device.assigned_user}}" class="user-row">
+      <image class="user-avatar" src="{{device.assigned_user.avatar_url || '/static/images/default-avatar.svg'}}" mode="aspectFill" />
+      <text class="user-name">{{device.assigned_user.nickname || '未知用户'}}</text>
+    </view>
+
+    <view wx:else class="user-row empty">
+      <text class="no-user">暂未分配用户</text>
+    </view>
+  </view>
+
+  <!-- 箭头 -->
+  <image wx:if="{{showArrow}}" class="arrow" src="/static/images/icon-arrow-right.svg" mode="aspectFit" />
+</view>

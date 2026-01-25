@@ -1,4 +1,8 @@
 {
   "navigationBarTitleText": "设备管理",
-  "usingComponents": {}
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "search-bar": "/components/search-bar/index",
+    "device-card": "/components/device-card/index"
+  }
 }

@@ -1,0 +1,86 @@
+<!--
+  Device Detail Page
+  设备详情页
+-->
+<view class="page">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:elif="{{device}}">
+    <!-- 设备状态卡片 -->
+    <view class="device-header {{device.is_online ? 'online' : 'offline'}}">
+      <view class="device-icon-wrap">
+        <image class="device-icon" src="/static/images/icon-device-large.svg" mode="aspectFit" />
+      </view>
+      <view class="device-main-info">
+        <text class="device-id">{{device.device_id}}</text>
+        <view class="status-badge {{device.is_online ? 'online' : 'offline'}}">
+          <text>{{device.is_online ? '在线' : '离线'}}</text>
+        </view>
+      </view>
+      <text wx:if="{{device.ip_address}}" class="device-ip">IP: {{device.ip_address}}</text>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="info-section">
+      <view class="section-title">基本信息</view>
+      <view class="info-list">
+        <view class="info-item">
+          <text class="info-label">固件版本</text>
+          <text class="info-value">{{device.firmware_version || '--'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">模型版本</text>
+          <text class="info-value">{{device.model_version || '--'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">注册时间</text>
+          <text class="info-value">{{device.created_at_formatted}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">最后在线</text>
+          <text class="info-value">{{device.last_seen_formatted}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 使用统计 -->
+    <view class="stats-section">
+      <view class="section-title">使用统计</view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-value">{{device.stats.totalDetections || 0}}</text>
+          <text class="stat-label">总检测次数</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{device.stats.monthDetections || 0}}</text>
+          <text class="stat-label">本月检测</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 分配信息 -->
+    <view class="assign-section">
+      <view class="section-title">分配信息</view>
+      <view wx:if="{{device.assigned_user}}" class="assigned-user">
+        <image class="user-avatar" src="{{device.assigned_user.avatar_url || '/static/images/default-avatar.svg'}}" mode="aspectFill" />
+        <view class="user-info">
+          <text class="user-name">{{device.assigned_user.nickname || '未知用户'}}</text>
+          <text class="assign-status">已分配</text>
+        </view>
+        <view class="unassign-btn" bindtap="unassignDevice">
+          <text>解绑</text>
+        </view>
+      </view>
+      <view wx:else class="not-assigned">
+        <text class="not-assigned-text">暂未分配用户</text>
+        <view class="assign-btn" bindtap="goAssign">
+          <text>分配设备</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

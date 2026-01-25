@@ -37,7 +37,7 @@
         <view class="prob-bar-wrapper">
           <view
             class="prob-bar"
-            style="width: {{item.value}}%; background-color: {{item.isTop ? riskColor : '#E0E0E0'}};"
+            style="width: {{item.value}}%; background-color: {{item.isTop ? riskColor : '#78909C'}};"
           ></view>
         </view>
         <text class="prob-value" style="color: {{item.isTop ? riskColor : '#666'}};">

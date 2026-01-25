@@ -15,6 +15,7 @@ Page({
     totalDuration: 30,
     // 进度百分比
     progress: 0,
+    progressRound: 0,
     // 波形数据
     waveData: [],
     // 会话ID
@@ -81,7 +82,8 @@ Page({
       isRecording: true,
       statusText: '正在录制心音...',
       countdown: this.data.totalDuration,
-      progress: 0
+      progress: 0,
+      progressRound: 0
     });
 
     try {
@@ -116,7 +118,8 @@ Page({
       } else {
         this.setData({
           countdown: newCountdown,
-          progress
+          progress,
+          progressRound: Math.round(progress)
         });
 
         // 最后5秒提示
@@ -190,6 +193,7 @@ Page({
     this.setData({
       isRecording: false,
       progress: 100,
+      progressRound: 100,
       statusText: '录制完成，正在分析...'
     });
 

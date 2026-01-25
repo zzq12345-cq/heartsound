@@ -115,7 +115,7 @@
 .prob-bar-wrapper {
   flex: 1;
   height: 16rpx;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.12);
   border-radius: 8rpx;
   margin: 0 var(--spacing-sm, 16rpx);
   overflow: hidden;

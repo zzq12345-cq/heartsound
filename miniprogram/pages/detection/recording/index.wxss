@@ -1,29 +1,52 @@
-/* Detection Recording Page Styles */
+/**
+ * Detection Recording Page Styles
+ * 检测录制页样式 - 老王出品必属精品
+ */
 
+/* 页面容器 */
 .recording-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1A1A2E 0%, #0F3460 100%);
+  background: linear-gradient(180deg, #1A1A2E 0%, #0F3460 50%, #16213E 100%);
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
   overflow: hidden;
 }
 
-/* Pulse background */
+/* ==================== 背景特效 ==================== */
+.bg-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 渐变遮罩 */
+.gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(24, 144, 255, 0.15) 0%, transparent 60%);
+}
+
+/* 脉冲背景 */
 .pulse-bg {
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 0;
 }
 
 .pulse-circle {
   position: absolute;
   border-radius: 50%;
-  border: 2rpx solid rgba(24, 144, 255, 0.3);
-  animation: pulse-expand 3s ease-out infinite;
+  border: 2rpx solid rgba(24, 144, 255, 0.25);
+  animation: pulse-expand 4s ease-out infinite;
 }
 
 .pulse-circle.c1 {
@@ -35,218 +58,739 @@
 }
 
 .pulse-circle.c2 {
-  width: 600rpx;
-  height: 600rpx;
-  top: -300rpx;
-  left: -300rpx;
+  width: 550rpx;
+  height: 550rpx;
+  top: -275rpx;
+  left: -275rpx;
   animation-delay: 1s;
 }
 
 .pulse-circle.c3 {
-  width: 800rpx;
-  height: 800rpx;
-  top: -400rpx;
-  left: -400rpx;
+  width: 700rpx;
+  height: 700rpx;
+  top: -350rpx;
+  left: -350rpx;
   animation-delay: 2s;
+}
+
+.pulse-circle.c4 {
+  width: 850rpx;
+  height: 850rpx;
+  top: -425rpx;
+  left: -425rpx;
+  animation-delay: 3s;
 }
 
 @keyframes pulse-expand {
   0% {
-    transform: scale(0.5);
-    opacity: 1;
+    transform: scale(0.6);
+    opacity: 0.8;
   }
   100% {
-    transform: scale(1.5);
+    transform: scale(1.4);
     opacity: 0;
   }
 }
 
-/* Header */
+/* 浮动粒子 */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(24, 144, 255, 0.6);
+  border-radius: 50%;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+.particle.p1 { top: 15%; left: 10%; animation-delay: 0s; }
+.particle.p2 { top: 25%; left: 85%; animation-delay: 1s; }
+.particle.p3 { top: 45%; left: 5%; animation-delay: 2s; }
+.particle.p4 { top: 60%; left: 90%; animation-delay: 3s; }
+.particle.p5 { top: 75%; left: 15%; animation-delay: 4s; }
+.particle.p6 { top: 85%; left: 80%; animation-delay: 5s; }
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-30rpx) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* 声波装饰 - 录制时显示 */
+.sound-waves {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sound-wave {
+  position: absolute;
+  border-radius: 50%;
+  border: 3rpx solid rgba(24, 144, 255, 0.4);
+  animation: sound-wave-pulse 2s ease-out infinite;
+}
+
+.sound-wave.sw1 {
+  width: 500rpx;
+  height: 500rpx;
+  top: -250rpx;
+  left: -250rpx;
+  animation-delay: 0s;
+}
+
+.sound-wave.sw2 {
+  width: 650rpx;
+  height: 650rpx;
+  top: -325rpx;
+  left: -325rpx;
+  animation-delay: 0.4s;
+}
+
+.sound-wave.sw3 {
+  width: 800rpx;
+  height: 800rpx;
+  top: -400rpx;
+  left: -400rpx;
+  animation-delay: 0.8s;
+}
+
+@keyframes sound-wave-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+    border-color: rgba(24, 144, 255, 0.6);
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+    border-color: rgba(24, 144, 255, 0);
+  }
+}
+
+/* ==================== 顶部Header ==================== */
 .header {
   width: 100%;
-  padding: 88rpx 32rpx 32rpx;
+  padding: 100rpx 32rpx 24rpx;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   z-index: 10;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+/* 录制标识 */
+.recording-badge {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 32rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+.recording-badge.active {
+  background: rgba(244, 67, 54, 0.15);
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+.rec-dot {
+  width: 16rpx;
+  height: 16rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  margin-right: 12rpx;
+}
+
+.recording-badge.active .rec-dot {
+  background: #F44336;
+  animation: rec-blink 1s ease-in-out infinite;
+}
+
+@keyframes rec-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.rec-text {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 2rpx;
+}
+
+.recording-badge.active .rec-text {
+  color: #F44336;
+}
+
+/* 关闭按钮 */
 .close-btn {
   width: 80rpx;
   height: 80rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 50%;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
 }
 
-.close-icon {
-  font-size: 32rpx;
-  color: rgba(255, 255, 255, 0.8);
+.close-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.95);
 }
 
-/* Countdown section */
+/* ==================== 主内容区 ==================== */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* ==================== 倒计时区域 ==================== */
 .countdown-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 40rpx;
+  margin-top: 20rpx;
   position: relative;
-  z-index: 10;
 }
 
+/* 发光效果 */
+.countdown-glow {
+  position: absolute;
+  width: 400rpx;
+  height: 400rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(24, 144, 255, 0.2) 0%, transparent 70%);
+  filter: blur(30rpx);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.countdown-glow.active {
+  opacity: 1;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* 倒计时环容器 */
+.countdown-ring-wrapper {
+  position: relative;
+  width: 340rpx;
+  height: 340rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 外圈装饰 */
+.countdown-ring-outer {
+  position: absolute;
+  width: 340rpx;
+  height: 340rpx;
+  border-radius: 50%;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+/* 进度环 */
 .countdown-ring {
   width: 320rpx;
   height: 320rpx;
   border-radius: 50%;
-  background: conic-gradient(
-    #1890FF 0%,
-    #1890FF var(--progress, 0%),
-    rgba(255, 255, 255, 0.1) var(--progress, 0%),
-    rgba(255, 255, 255, 0.1) 100%
-  );
+  background: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
 }
 
-.countdown-inner {
-  width: 280rpx;
-  height: 280rpx;
+/* 进度条 - 使用conic-gradient */
+.countdown-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: #1A1A2E;
+  background: conic-gradient(
+    from 0deg,
+    #1890FF 0%,
+    #36CFC9 calc(var(--progress, 0%) * 0.5),
+    #1890FF var(--progress, 0%),
+    rgba(255, 255, 255, 0.08) var(--progress, 0%),
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  mask: radial-gradient(transparent 125rpx, #000 126rpx);
+  -webkit-mask: radial-gradient(transparent 125rpx, #000 126rpx);
+}
+
+/* 内圈 */
+.countdown-inner {
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #1A1A2E 0%, #16213E 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: inset 0 4rpx 20rpx rgba(0, 0, 0, 0.3);
+}
+
+.countdown-inner-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(24, 144, 255, 0.1) 0%, transparent 70%);
 }
 
 .countdown-number {
-  font-size: 120rpx;
+  font-size: 100rpx;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1;
+  text-shadow: 0 0 30rpx rgba(24, 144, 255, 0.5);
 }
 
 .countdown-unit {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 8rpx;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4rpx;
+}
+
+/* 刻度线 */
+.ring-ticks {
+  position: absolute;
+  width: 340rpx;
+  height: 340rpx;
+}
+
+.tick {
+  position: absolute;
+  width: 2rpx;
+  height: 12rpx;
+  background: rgba(255, 255, 255, 0.3);
+  top: 0;
+  left: 50%;
+  transform-origin: center 170rpx;
+}
+
+/* 状态文字 */
+.status-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 40rpx;
 }
 
 .status-text {
-  margin-top: 32rpx;
-  font-size: 32rpx;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 30rpx;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
 }
 
-/* Waveform section */
+.status-dots {
+  display: flex;
+  align-items: center;
+  margin-left: 8rpx;
+}
+
+.status-dots .dot {
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  margin-left: 6rpx;
+  animation: dot-bounce 1.4s ease-in-out infinite;
+}
+
+.status-dots .dot.d1 { animation-delay: 0s; }
+.status-dots .dot.d2 { animation-delay: 0.2s; }
+.status-dots .dot.d3 { animation-delay: 0.4s; }
+
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: scale(1); opacity: 0.4; }
+  40% { transform: scale(1.3); opacity: 1; }
+}
+
+/* ==================== 波形区域 ==================== */
 .waveform-section {
   width: 100%;
-  padding: 40rpx 32rpx;
+  padding: 32rpx;
   position: relative;
-  z-index: 10;
 }
 
-/* Heart rate section */
-.heart-rate-section {
+.waveform-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10rpx);
+}
+
+.waveform-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.waveform-title {
+  display: flex;
+  align-items: center;
+}
+
+.waveform-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-left: 12rpx;
+  font-weight: 500;
+}
+
+/* 实时指示器 */
+.waveform-indicator {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20rpx;
+}
+
+.waveform-indicator.active {
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.indicator-dot {
+  width: 12rpx;
+  height: 12rpx;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+
+.waveform-indicator.active .indicator-dot {
+  background: #4CAF50;
+  animation: live-blink 1s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8rpx #4CAF50; }
+  50% { opacity: 0.5; box-shadow: none; }
+}
+
+.indicator-text {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+.waveform-indicator.active .indicator-text {
+  color: #4CAF50;
+}
+
+/* 波形容器 */
+.waveform-container {
   position: relative;
-  z-index: 10;
+  border-radius: 16rpx;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.waveform-glow {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 60rpx;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent, rgba(24, 144, 255, 0.1), transparent);
+  pointer-events: none;
+}
+
+/* 网格叠加层 */
+.waveform-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.grid-line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.grid-line.horizontal {
+  left: 0;
+  right: 0;
+  height: 1rpx;
+}
+
+.grid-line.horizontal:nth-child(1) { top: 25%; }
+.grid-line.horizontal:nth-child(2) { top: 50%; }
+.grid-line.horizontal:nth-child(3) { top: 75%; }
+.grid-line.horizontal:nth-child(4) { top: 100%; }
+
+.grid-line.vertical {
+  top: 0;
+  bottom: 0;
+  width: 1rpx;
+}
+
+.grid-line.vertical:nth-child(5) { left: 12.5%; }
+.grid-line.vertical:nth-child(6) { left: 25%; }
+.grid-line.vertical:nth-child(7) { left: 37.5%; }
+.grid-line.vertical:nth-child(8) { left: 50%; }
+.grid-line.vertical:nth-child(9) { left: 62.5%; }
+.grid-line.vertical:nth-child(10) { left: 75%; }
+.grid-line.vertical:nth-child(11) { left: 87.5%; }
+.grid-line.vertical:nth-child(12) { left: 100%; }
+
+/* ==================== 心率显示 ==================== */
+.heart-rate-section {
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 0.4s ease;
+  margin-top: 16rpx;
+}
+
+.heart-rate-section.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .heart-rate-card {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 16rpx 32rpx;
-  border-radius: 40rpx;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 20rpx 32rpx;
+  border-radius: 48rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
 }
 
-.heart-emoji {
-  font-size: 32rpx;
-  margin-right: 12rpx;
-  animation: heartbeat 0.8s ease-in-out infinite;
+.heart-icon-wrapper {
+  position: relative;
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(244, 67, 54, 0.2);
+  animation: heart-pulse 1s ease-out infinite;
+}
+
+@keyframes heart-pulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.heart-icon {
+  position: relative;
+  z-index: 1;
+  animation: heartbeat 1s ease-in-out infinite;
 }
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.15); }
+  14% { transform: scale(1.2); }
   28% { transform: scale(1); }
-  42% { transform: scale(1.1); }
+  42% { transform: scale(1.15); }
+}
+
+.heart-rate-info {
+  display: flex;
+  align-items: baseline;
+  margin-left: 16rpx;
 }
 
 .heart-rate-value {
   font-size: 48rpx;
   font-weight: 700;
   color: #FFFFFF;
+  line-height: 1;
 }
 
 .heart-rate-unit {
   font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   margin-left: 8rpx;
 }
 
-/* Progress section */
-.progress-section {
-  width: 100%;
-  padding: 40rpx 48rpx;
+.heart-rate-status {
+  margin-left: 20rpx;
+  padding-left: 20rpx;
+  border-left: 1rpx solid rgba(255, 255, 255, 0.15);
+}
+
+.status-label {
+  font-size: 24rpx;
+  color: #4CAF50;
+}
+
+/* ==================== 底部区域 ==================== */
+.bottom-section {
   position: relative;
   z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 进度区域 */
+.progress-section {
+  padding: 24rpx 48rpx;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.progress-label {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.progress-percent {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1890FF;
+}
+
+.progress-bar-wrapper {
+  position: relative;
 }
 
 .progress-bar {
   width: 100%;
-  height: 8rpx;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4rpx;
+  height: 12rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6rpx;
   overflow: hidden;
+  position: relative;
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #1890FF, #36CFC9);
-  border-radius: 4rpx;
+  border-radius: 6rpx;
   transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+  border-radius: 6rpx 6rpx 0 0;
+}
+
+.progress-glow {
+  position: absolute;
+  top: 50%;
+  width: 20rpx;
+  height: 20rpx;
+  background: #36CFC9;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20rpx #36CFC9, 0 0 40rpx rgba(54, 207, 201, 0.5);
+  transition: left 0.3s ease;
 }
 
 .progress-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 12rpx;
+  margin-top: 16rpx;
 }
 
 .progress-start,
+.progress-current,
 .progress-end {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
 }
 
-/* Tips section */
+.progress-current {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* 提示区域 */
 .tips-section {
   display: flex;
   justify-content: space-around;
-  width: 100%;
-  padding: 40rpx 32rpx;
-  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
-  position: relative;
-  z-index: 10;
+  padding: 32rpx 24rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
 }
 
-.tip-item {
+.tip-card {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20rpx 28rpx;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.08);
+  min-width: 160rpx;
 }
 
-.tip-icon {
-  font-size: 40rpx;
+.tip-icon-wrapper {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(54, 207, 201, 0.1);
+  border-radius: 50%;
   margin-bottom: 12rpx;
 }
 
 .tip-text {
   font-size: 24rpx;
   color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
 }

@@ -1,0 +1,12 @@
+<!--
+  Devices Page - Placeholder
+-->
+
+<view class="container">
+  <view class="placeholder-content">
+    <view class="placeholder-icon">📱</view>
+    <text class="placeholder-title">设备管理</text>
+    <text class="placeholder-desc">功能开发中，敬请期待...</text>
+    <text class="placeholder-hint">将在 IMPL-008 中实现</text>
+  </view>
+</view>

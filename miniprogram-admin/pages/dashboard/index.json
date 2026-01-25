@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "数据看板",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "stat-card": "/components/stat-card/index",
+    "line-chart": "/components/line-chart/index",
+    "pie-chart": "/components/pie-chart/index"
+  }
+}

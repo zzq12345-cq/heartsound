@@ -1,0 +1,61 @@
+<!--
+  Login Page - Admin Authentication
+  管理员登录页面模板
+-->
+
+<view class="container">
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="bg-circle circle-1"></view>
+    <view class="bg-circle circle-2"></view>
+  </view>
+
+  <!-- 登录内容 -->
+  <view class="login-content">
+    <!-- Logo和标题 -->
+    <view class="login-header">
+      <view class="logo">
+        <view class="logo-icon">
+          <!-- 心形图标 -->
+          <view class="heart-icon"></view>
+        </view>
+      </view>
+      <text class="app-title">心音智鉴</text>
+      <text class="app-subtitle">管理后台</text>
+    </view>
+
+    <!-- 登录卡片 -->
+    <view class="login-card">
+      <text class="card-title">管理员登录</text>
+      <text class="card-desc">请使用授权的微信账号登录</text>
+
+      <!-- 登录按钮 -->
+      <button
+        class="login-btn {{loading ? 'loading' : ''}}"
+        bindtap="onLoginTap"
+        disabled="{{loading}}"
+      >
+        <view wx:if="{{loading}}" class="btn-loading">
+          <view class="loading-spinner"></view>
+          <text>验证中...</text>
+        </view>
+        <view wx:else class="btn-content">
+          <text class="btn-icon">🔐</text>
+          <text>微信登录</text>
+        </view>
+      </button>
+
+      <!-- 错误提示 -->
+      <view wx:if="{{errorMessage}}" class="error-message" bindtap="clearError">
+        <text class="error-icon">⚠️</text>
+        <text class="error-text">{{errorMessage}}</text>
+      </view>
+    </view>
+
+    <!-- 底部说明 -->
+    <view class="login-footer">
+      <text class="footer-text">仅限授权管理员访问</text>
+      <text class="footer-hint">如需权限请联系系统管理员</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,29 @@
+<!--
+  Line Chart Component
+  折线图组件模板
+-->
+
+<view class="line-chart-container">
+  <!-- 标题 -->
+  <view wx:if="{{title}}" class="chart-title">{{title}}</view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="chart-loading">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{!data || data.length === 0}}" class="chart-empty">
+    <text class="empty-text">暂无数据</text>
+  </view>
+
+  <!-- 图表画布 -->
+  <canvas
+    wx:else
+    type="2d"
+    id="lineChart"
+    class="chart-canvas"
+    style="width: 100%; height: {{height}}rpx;"
+  ></canvas>
+</view>

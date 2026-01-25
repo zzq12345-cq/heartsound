@@ -1,0 +1,67 @@
+/**
+ * Dashboard Page Styles
+ * 数据看板页面样式
+ */
+
+.container {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+}
+
+.page-scroll {
+  height: 100vh;
+}
+
+.page-content {
+  padding: 24rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 欢迎区域 */
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+  padding: 0 8rpx;
+}
+
+.welcome-text {
+  display: flex;
+  align-items: baseline;
+}
+
+.welcome-hello {
+  font-size: 32rpx;
+  color: #666666;
+}
+
+.welcome-name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-left: 8rpx;
+}
+
+.welcome-date {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 统计卡片网格 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 图表区域 */
+.chart-section {
+  margin-bottom: 24rpx;
+}
+
+/* 底部间距 */
+.bottom-spacer {
+  height: 120rpx;
+}

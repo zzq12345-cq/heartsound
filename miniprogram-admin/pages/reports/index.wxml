@@ -1,0 +1,12 @@
+<!--
+  Reports Page - Placeholder
+-->
+
+<view class="container">
+  <view class="placeholder-content">
+    <view class="placeholder-icon">📊</view>
+    <text class="placeholder-title">报表导出</text>
+    <text class="placeholder-desc">功能开发中，敬请期待...</text>
+    <text class="placeholder-hint">将在 IMPL-009 中实现</text>
+  </view>
+</view>

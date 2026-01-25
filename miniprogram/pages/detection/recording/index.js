@@ -1,6 +1,9 @@
 /**
  * Detection Recording Page
  * 录制页 - 30秒心音采集 (优化重构版)
+ *
+ * 修复记录:
+ * - 修复回调函数未在onUnload时注销的问题
  */
 
 const detectionService = require('../../../services/detection');
@@ -36,21 +39,27 @@ Page({
     currentTip: { icon: 'quiet', text: '请保持安静，避免说话或移动' }
   },
 
+  // 保存注销函数引用
+  _unsubscribers: [],
+
   onLoad() {
-    // 注册音频帧回调
-    detectionService.onAudioFrame((frame) => {
+    // 注册音频帧回调，保存注销函数
+    const unsubAudio = detectionService.onAudioFrame((frame) => {
       this.handleAudioFrame(frame);
     });
+    this._unsubscribers.push(unsubAudio);
 
     // 注册状态变化回调
-    detectionService.onStatusChange((status) => {
+    const unsubStatus = detectionService.onStatusChange((status) => {
       this.handleStatusChange(status);
     });
+    this._unsubscribers.push(unsubStatus);
 
     // 注册错误回调
-    detectionService.onError((error) => {
+    const unsubError = detectionService.onError((error) => {
       this.handleError(error);
     });
+    this._unsubscribers.push(unsubError);
 
     // 自动开始录制
     setTimeout(() => {
@@ -66,10 +75,19 @@ Page({
     // 清除定时器
     if (this.countdownTimer) {
       clearInterval(this.countdownTimer);
+      this.countdownTimer = null;
     }
     if (this.tipTimer) {
       clearInterval(this.tipTimer);
+      this.tipTimer = null;
     }
+    // 注销所有回调 - 修复关键！
+    this._unsubscribers.forEach(unsub => {
+      if (typeof unsub === 'function') {
+        unsub();
+      }
+    });
+    this._unsubscribers = [];
   },
 
   /**

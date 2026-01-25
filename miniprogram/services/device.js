@@ -3,6 +3,9 @@
  * 设备连接服务模块
  *
  * Handles device discovery, connection, and status management.
+ *
+ * 修复记录:
+ * - 修复验证设备时MOCK设备会失败的问题
  */
 
 const DEFAULT_PORT = 8000;
@@ -154,8 +157,14 @@ async function connect(ip, port = DEFAULT_PORT) {
   try {
     const deviceInfo = await getDeviceInfo(ip, port);
 
-    // Verify it's a HeartSound device
-    if (!deviceInfo.device_id || !deviceInfo.device_id.startsWith('RPi')) {
+    // 修复：验证设备时支持MOCK设备和真实设备
+    const isValidDevice = deviceInfo.device_id && (
+      deviceInfo.device_id.startsWith('RPi') ||
+      deviceInfo.device_id.startsWith('MOCK-') ||
+      deviceInfo.device_id.startsWith('HS-')
+    );
+
+    if (!isValidDevice) {
       throw new Error('这不是心音智鉴设备');
     }
 
@@ -171,6 +180,8 @@ async function connect(ip, port = DEFAULT_PORT) {
       throw new Error('连接被拒绝，请检查IP地址是否正确');
     } else if (err.message.includes('network')) {
       throw new Error('网络错误，请确保手机和设备在同一WiFi下');
+    } else if (err.message === '这不是心音智鉴设备') {
+      throw err;
     }
 
     throw new Error('连接失败，请检查设备状态');

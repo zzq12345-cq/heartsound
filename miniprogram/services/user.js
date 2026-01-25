@@ -3,6 +3,11 @@
  * 用户服务模块
  *
  * Handles user authentication, profile, and data management.
+ *
+ * 修复记录:
+ * - 修复getOrCreateUser的findError处理
+ * - 修复getUserStats排序问题
+ * - 修复updateProfile缺少.select()返回数据
  */
 
 const { supabase } = require('../utils/supabase');
@@ -26,7 +31,14 @@ async function getOrCreateUser(openId) {
     .eq('openid', openId)
     .single();
 
-  if (existingUser) {
+  // 修复：正确处理findError
+  if (findError) {
+    // PGRST116 = No rows found，这是正常情况，需要创建用户
+    if (findError.code !== 'PGRST116') {
+      console.error('[UserService] Failed to find user:', findError);
+      throw new Error('查询用户失败');
+    }
+  } else if (existingUser) {
     console.log('[UserService] Found existing user:', existingUser.id);
     return existingUser;
   }
@@ -61,6 +73,7 @@ async function getOrCreateUser(openId) {
  * @returns {Promise<object>}
  */
 async function updateProfile(userId, profile) {
+  // 修复：添加.select().single()返回更新后的数据
   const { data, error } = await supabase
     .from('users')
     .update({
@@ -68,7 +81,9 @@ async function updateProfile(userId, profile) {
       avatar_url: profile.avatarUrl,
       updated_at: new Date().toISOString()
     })
-    .eq('id', userId);
+    .eq('id', userId)
+    .select()
+    .single();
 
   if (error) {
     console.error('[UserService] Failed to update profile:', error);
@@ -223,10 +238,12 @@ async function getHealthTips(limit = 10) {
  * @returns {Promise<object>}
  */
 async function getUserStats(userId) {
+  // 修复：添加排序确保lastDetectionAt是最新的
   const { data, error } = await supabase
     .from('detection_records')
     .select('risk_level, created_at')
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   if (error) {
     console.error('[UserService] Failed to get stats:', error);
@@ -245,6 +262,7 @@ async function getUserStats(userId) {
     safeCount: records.filter(r => r.risk_level === 'safe').length,
     warningCount: records.filter(r => r.risk_level === 'warning').length,
     dangerCount: records.filter(r => r.risk_level === 'danger').length,
+    // 修复：排序后第一条就是最新的
     lastDetectionAt: records.length > 0 ? records[0].created_at : null
   };
 

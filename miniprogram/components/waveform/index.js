@@ -1,6 +1,10 @@
 /**
  * Waveform Component
  * 实时波形显示组件 - Canvas 2D高性能渲染 (优化版)
+ *
+ * 修复记录:
+ * - 增强canvas初始化失败处理
+ * - 添加重试机制
  */
 
 Component({
@@ -50,7 +54,8 @@ Component({
   data: {
     canvasWidth: 375,
     canvasHeight: 160,
-    dpr: 1
+    dpr: 1,
+    initRetryCount: 0
   },
 
   lifetimes: {
@@ -60,12 +65,15 @@ Component({
 
     detached() {
       this.stopAnimation();
+      // 修复：清理所有资源
+      this.canvas = null;
+      this.ctx = null;
     }
   },
 
   observers: {
     'waveData': function(waveData) {
-      if (waveData && waveData.length > 0) {
+      if (waveData && waveData.length > 0 && this.ctx) {
         this.drawWaveform(waveData);
       }
     },
@@ -81,19 +89,36 @@ Component({
   methods: {
     /**
      * Initialize Canvas 2D context
+     * 修复：添加重试机制
      */
     initCanvas() {
       const query = this.createSelectorQuery();
       query.select('#waveCanvas')
         .fields({ node: true, size: true })
         .exec((res) => {
-          if (!res[0]) {
-            console.error('[Waveform] Canvas not found');
+          if (!res[0] || !res[0].node) {
+            const retryCount = this.data.initRetryCount;
+            if (retryCount < 3) {
+              // 修复：canvas可能还没渲染，延迟重试
+              console.warn('[Waveform] Canvas not found, retrying...', retryCount + 1);
+              this.setData({ initRetryCount: retryCount + 1 });
+              setTimeout(() => this.initCanvas(), 100);
+            } else {
+              console.error('[Waveform] Canvas not found after 3 retries');
+              this.triggerEvent('error', { message: 'Canvas初始化失败' });
+            }
             return;
           }
 
           const canvas = res[0].node;
           const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            console.error('[Waveform] Failed to get 2d context');
+            this.triggerEvent('error', { message: '获取Canvas上下文失败' });
+            return;
+          }
+
           const dpr = wx.getSystemInfoSync().pixelRatio;
 
           // Set canvas size
@@ -109,7 +134,8 @@ Component({
           this.setData({
             canvasWidth: width,
             canvasHeight: height,
-            dpr: dpr
+            dpr: dpr,
+            initRetryCount: 0
           });
 
           // Draw initial empty state

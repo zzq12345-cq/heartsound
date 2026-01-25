@@ -8,6 +8,9 @@
  * - 下拉刷新
  * - 风险等级筛选
  * - 空状态展示
+ *
+ * 修复记录:
+ * - 修复下拉刷新时未重置records数组的问题
  */
 
 const app = getApp();
@@ -177,17 +180,22 @@ Page({
 
   /**
    * Handle pull down refresh
+   * 修复：刷新时重置records数组
    */
   onPullDownRefresh() {
     console.log('[RecordsPage] Pull down refresh');
 
     this.setData({
       isRefreshing: true,
+      records: [], // 修复：重置records
       page: 1,
-      hasMore: true
+      hasMore: true,
+      isEmpty: false
     });
 
     this.loadRecords().then(() => {
+      wx.stopPullDownRefresh();
+    }).catch(() => {
       wx.stopPullDownRefresh();
     });
   },

@@ -1,6 +1,12 @@
 /**
  * Detection Service
- * 检测服务模块 - WebSocket连接和检测流程管理
+ * 检测服务模块 - WebSocket连接和检测流程管理 (Bug修复版)
+ *
+ * 修复记录:
+ * - 修复WebSocket超时定时器导致Promise多次reject的问题
+ * - 修复Mock模式定时器泄漏问题
+ * - 修复stopDetection在socket关闭后发送消息的问题
+ * - 改用回调数组支持多页面注册，避免单例覆盖
  */
 
 const deviceService = require('./device');
@@ -27,12 +33,13 @@ let currentSession = {
 
 // WebSocket task
 let socketTask = null;
+let isSocketOpen = false; // 新增：跟踪socket状态
 
-// Callbacks
-let onAudioFrameCallback = null;
-let onStatusChangeCallback = null;
-let onCompleteCallback = null;
-let onErrorCallback = null;
+// Callbacks - 改用数组支持多个回调
+let audioFrameCallbacks = [];
+let statusChangeCallbacks = [];
+let completeCallbacks = [];
+let errorCallbacks = [];
 
 /**
  * Start a new detection session
@@ -125,14 +132,20 @@ function startMockDetection(duration) {
       mockWaveform.push(0.5 + heartbeat + noise);
     }
 
-    if (onAudioFrameCallback) {
-      onAudioFrameCallback({
-        waveform: mockWaveform,
-        amplitude: 0.5 + Math.sin(frameCount * 0.2) * 0.2,
-        remainingSeconds: remainingSeconds,
-        timestamp: Date.now()
-      });
-    }
+    // 修复：遍历回调数组
+    const frameData = {
+      waveform: mockWaveform,
+      amplitude: 0.5 + Math.sin(frameCount * 0.2) * 0.2,
+      remainingSeconds: remainingSeconds,
+      timestamp: Date.now()
+    };
+    audioFrameCallbacks.forEach(callback => {
+      try {
+        callback(frameData);
+      } catch (e) {
+        console.error('[DetectionService] Mock audio frame callback error:', e);
+      }
+    });
   }, 100); // 10fps
 
   // 保存定时器引用以便停止
@@ -180,11 +193,15 @@ function getMockResult() {
 /**
  * Connect to WebSocket for audio streaming
  * 连接WebSocket接收音频流
+ * 修复：避免Promise多次resolve/reject
  */
 function connectWebSocket(ip, sessionId) {
   return new Promise((resolve, reject) => {
     const wsUrl = deviceService.getWebSocketUrl(ip, sessionId);
     console.log('[DetectionService] Connecting WebSocket:', wsUrl);
+
+    let settled = false; // 防止Promise多次settle
+    isSocketOpen = false;
 
     socketTask = wx.connectSocket({
       url: wsUrl,
@@ -192,11 +209,18 @@ function connectWebSocket(ip, sessionId) {
     });
 
     const connectTimeout = setTimeout(() => {
-      reject(new Error('WebSocket连接超时'));
+      if (!settled) {
+        settled = true;
+        closeWebSocket();
+        reject(new Error('WebSocket连接超时'));
+      }
     }, 5000);
 
     socketTask.onOpen(() => {
+      if (settled) return; // 已经settled就不处理了
+      settled = true;
       clearTimeout(connectTimeout);
+      isSocketOpen = true;
       console.log('[DetectionService] WebSocket connected');
 
       // Send start command
@@ -216,11 +240,15 @@ function connectWebSocket(ip, sessionId) {
 
     socketTask.onClose(() => {
       console.log('[DetectionService] WebSocket closed');
+      isSocketOpen = false;
       socketTask = null;
     });
 
     socketTask.onError((err) => {
+      if (settled) return; // 已经settled就不处理了
+      settled = true;
       clearTimeout(connectTimeout);
+      isSocketOpen = false;
       console.error('[DetectionService] WebSocket error:', err);
       reject(new Error('WebSocket连接失败'));
     });
@@ -293,16 +321,21 @@ function handleStatusMessage(message) {
 
 /**
  * Handle audio frame for waveform display
+ * 修复：遍历回调数组，支持多页面
  */
 function handleAudioFrame(message) {
-  if (onAudioFrameCallback) {
-    onAudioFrameCallback({
-      waveform: message.data,
-      amplitude: message.amplitude,
-      remainingSeconds: message.remaining_seconds,
-      timestamp: message.timestamp
-    });
-  }
+  audioFrameCallbacks.forEach(callback => {
+    try {
+      callback({
+        waveform: message.data,
+        amplitude: message.amplitude,
+        remainingSeconds: message.remaining_seconds,
+        timestamp: message.timestamp
+      });
+    } catch (e) {
+      console.error('[DetectionService] Audio frame callback error:', e);
+    }
+  });
 }
 
 /**
@@ -316,6 +349,7 @@ function handleRecordingComplete(message) {
 
 /**
  * Handle analysis complete with results
+ * 修复：遍历回调数组
  */
 function handleAnalysisComplete(message) {
   console.log('[DetectionService] Analysis complete:', message.result);
@@ -326,10 +360,14 @@ function handleAnalysisComplete(message) {
   // Close WebSocket
   closeWebSocket();
 
-  // Notify completion
-  if (onCompleteCallback) {
-    onCompleteCallback(message.result);
-  }
+  // Notify completion - 遍历所有回调
+  completeCallbacks.forEach(callback => {
+    try {
+      callback(message.result);
+    } catch (e) {
+      console.error('[DetectionService] Complete callback error:', e);
+    }
+  });
 
   notifyStatusChange(STATES.COMPLETED, '分析完成');
 }
@@ -347,6 +385,7 @@ function handleErrorMessage(message) {
 /**
  * Stop detection
  * 停止检测
+ * 修复：检查socket状态再发送消息
  */
 function stopDetection() {
   console.log('[DetectionService] Stopping detection');
@@ -357,13 +396,14 @@ function stopDetection() {
     currentSession.mockFrameInterval = null;
   }
 
-  if (socketTask) {
+  // 只有socket打开时才发送停止命令
+  if (socketTask && isSocketOpen) {
     try {
       socketTask.send({
         data: JSON.stringify({ command: 'stop' })
       });
     } catch (e) {
-      // Ignore send errors
+      console.warn('[DetectionService] Failed to send stop command:', e);
     }
   }
 
@@ -373,8 +413,10 @@ function stopDetection() {
 
 /**
  * Close WebSocket connection
+ * 修复：更新isSocketOpen状态
  */
 function closeWebSocket() {
+  isSocketOpen = false;
   if (socketTask) {
     try {
       socketTask.close();
@@ -452,35 +494,103 @@ function getResult() {
 }
 
 // ============================================================================
-// Event Handlers
+// Event Handlers - 修复：支持多回调注册/注销
 // ============================================================================
 
+/**
+ * 注册音频帧回调
+ * @param {Function} callback
+ * @returns {Function} 返回注销函数，调用即可移除回调
+ */
 function onAudioFrame(callback) {
-  onAudioFrameCallback = callback;
+  if (typeof callback === 'function') {
+    audioFrameCallbacks.push(callback);
+  }
+  // 返回注销函数
+  return () => {
+    const index = audioFrameCallbacks.indexOf(callback);
+    if (index > -1) {
+      audioFrameCallbacks.splice(index, 1);
+    }
+  };
 }
 
+/**
+ * 注册状态变化回调
+ * @param {Function} callback
+ * @returns {Function} 返回注销函数
+ */
 function onStatusChange(callback) {
-  onStatusChangeCallback = callback;
+  if (typeof callback === 'function') {
+    statusChangeCallbacks.push(callback);
+  }
+  return () => {
+    const index = statusChangeCallbacks.indexOf(callback);
+    if (index > -1) {
+      statusChangeCallbacks.splice(index, 1);
+    }
+  };
 }
 
+/**
+ * 注册完成回调
+ * @param {Function} callback
+ * @returns {Function} 返回注销函数
+ */
 function onComplete(callback) {
-  onCompleteCallback = callback;
+  if (typeof callback === 'function') {
+    completeCallbacks.push(callback);
+  }
+  return () => {
+    const index = completeCallbacks.indexOf(callback);
+    if (index > -1) {
+      completeCallbacks.splice(index, 1);
+    }
+  };
 }
 
+/**
+ * 注册错误回调
+ * @param {Function} callback
+ * @returns {Function} 返回注销函数
+ */
 function onError(callback) {
-  onErrorCallback = callback;
+  if (typeof callback === 'function') {
+    errorCallbacks.push(callback);
+  }
+  return () => {
+    const index = errorCallbacks.indexOf(callback);
+    if (index > -1) {
+      errorCallbacks.splice(index, 1);
+    }
+  };
 }
 
+/**
+ * 通知状态变化 - 遍历所有回调
+ */
 function notifyStatusChange(state, message, extra = {}) {
-  if (onStatusChangeCallback) {
-    onStatusChangeCallback({ state, message, ...extra });
-  }
+  statusChangeCallbacks.forEach(callback => {
+    try {
+      callback({ state, message, ...extra });
+    } catch (e) {
+      console.error('[DetectionService] Status change callback error:', e);
+    }
+  });
 }
 
+/**
+ * 通知错误 - 遍历所有回调
+ */
 function notifyError(message) {
-  if (onErrorCallback) {
-    onErrorCallback(new Error(message));
-  }
+  const error = new Error(message);
+  errorCallbacks.forEach(callback => {
+    try {
+      callback(error);
+    } catch (e) {
+      console.error('[DetectionService] Error callback error:', e);
+    }
+  });
 }
 
 // ============================================================================

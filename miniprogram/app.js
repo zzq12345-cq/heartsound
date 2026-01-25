@@ -1,6 +1,10 @@
 /**
  * HeartSound Mini Program Entry
  * 心音智鉴小程序入口文件
+ *
+ * 修复记录:
+ * - 修复onHide时心跳定时器应停止以节省资源
+ * - 增强错误处理
  */
 
 // Import services
@@ -283,10 +287,12 @@ App({
 
   /**
    * App hide lifecycle
+   * 修复：后台时停止心跳节省资源
    */
   onHide() {
     console.log('[App] App hidden');
-    // Keep heartbeat running in background
+    // 修复：停止心跳以节省资源，onShow时会重新启动
+    this.stopHeartbeat();
   },
 
   /**

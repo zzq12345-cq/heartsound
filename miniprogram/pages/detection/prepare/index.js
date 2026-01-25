@@ -1,6 +1,9 @@
 /**
  * Detection Prepare Page
  * 检测准备页 - 听诊器放置引导
+ *
+ * 修复记录:
+ * - 修复onShow重复弹窗问题
  */
 
 const deviceService = require('../../../services/device');
@@ -18,6 +21,9 @@ Page({
     currentTip: 0
   },
 
+  // 防止重复弹窗
+  _isShowingModal: false,
+
   onLoad() {
     // 检查设备连接状态
     this.checkDeviceConnection();
@@ -26,17 +32,31 @@ Page({
   },
 
   onShow() {
-    this.checkDeviceConnection();
+    // 修复：只更新状态，不重复弹窗
+    this.updateDeviceStatus();
   },
 
   onUnload() {
     if (this.tipTimer) {
       clearInterval(this.tipTimer);
+      this.tipTimer = null;
     }
   },
 
   /**
-   * 检查设备连接状态
+   * 仅更新设备状态（不弹窗）
+   */
+  updateDeviceStatus() {
+    const app = getApp();
+    const connected = app.globalData.deviceConnected;
+    this.setData({
+      deviceConnected: connected,
+      isReady: connected
+    });
+  },
+
+  /**
+   * 检查设备连接状态（首次加载时弹窗）
    */
   checkDeviceConnection() {
     const app = getApp();
@@ -47,7 +67,8 @@ Page({
       isReady: connected
     });
 
-    if (!connected) {
+    if (!connected && !this._isShowingModal) {
+      this._isShowingModal = true;
       wx.showModal({
         title: '设备未连接',
         content: '请先连接心音采集设备',
@@ -55,11 +76,15 @@ Page({
         confirmText: '去连接',
         cancelText: '返回',
         success: (res) => {
+          this._isShowingModal = false;
           if (res.confirm) {
             wx.switchTab({ url: '/pages/index/index' });
           } else {
             wx.navigateBack();
           }
+        },
+        fail: () => {
+          this._isShowingModal = false;
         }
       });
     }

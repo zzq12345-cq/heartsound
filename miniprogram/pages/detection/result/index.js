@@ -116,6 +116,7 @@ Page({
   /**
    * 保存到历史记录
    * 同时保存到本地和Supabase云端
+   * 修复：使用正确的字段名 device_id
    */
   async saveToHistory(result) {
     try {
@@ -142,9 +143,10 @@ Page({
           duration_seconds: 30
         };
 
+        // 修复：使用 device_id 而不是 id
         await userService.saveDetectionRecord(
           userId,
-          deviceInfo?.id || null,
+          deviceInfo?.device_id || null,
           recordData
         );
         console.log('[Result] 检测记录已同步到云端');

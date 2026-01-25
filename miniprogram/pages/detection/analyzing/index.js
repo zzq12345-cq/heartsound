@@ -1,6 +1,10 @@
 /**
  * Detection Analyzing Page
  * 分析中页 - AI推理加载动画
+ *
+ * 修复记录:
+ * - 修复重试时旧定时器未清理的问题
+ * - 修复stages数组直接修改的问题
  */
 
 const detectionService = require('../../../services/detection');
@@ -42,18 +46,43 @@ Page({
   },
 
   onUnload() {
+    this.clearAllTimers();
+  },
+
+  /**
+   * 清理所有定时器 - 修复：统一清理逻辑
+   */
+  clearAllTimers() {
     if (this.stageTimer) {
       clearTimeout(this.stageTimer);
+      this.stageTimer = null;
     }
     if (this.pollTimer) {
       clearTimeout(this.pollTimer);
+      this.pollTimer = null;
     }
+  },
+
+  /**
+   * 重置阶段状态
+   */
+  resetStages() {
+    const stages = this.data.stages.map(s => ({ ...s, status: 'pending' }));
+    this.setData({
+      stages,
+      currentStage: 0,
+      loadingText: '正在分析心音数据'
+    });
   },
 
   /**
    * 开始分析
    */
   startAnalysis() {
+    // 修复：先清理旧定时器
+    this.clearAllTimers();
+    this.resetStages();
+
     // 更新第一阶段
     this.updateStage(0, 'active');
 
@@ -95,11 +124,12 @@ Page({
   },
 
   /**
-   * 更新阶段状态
+   * 更新阶段状态 - 修复：使用不可变方式更新
    */
   updateStage(index, status) {
-    const stages = this.data.stages;
-    stages[index].status = status;
+    const stages = this.data.stages.map((s, i) =>
+      i === index ? { ...s, status } : s
+    );
     this.setData({ stages });
   },
 
@@ -181,6 +211,7 @@ Page({
    * 处理错误
    */
   handleError(error) {
+    this.clearAllTimers(); // 修复：清理定时器
     wx.showModal({
       title: '分析失败',
       content: error?.message || '心音分析过程中出现错误',

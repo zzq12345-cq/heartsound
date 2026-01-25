@@ -1,6 +1,6 @@
 /**
  * Detection Recording Page Styles
- * 检测录制页样式 - 老王出品必属精品
+ * 检测录制页样式 - 优化重构版 (MedTech专业风格)
  */
 
 /* 页面容器 */
@@ -31,13 +31,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at 50% 30%, rgba(24, 144, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 30%, rgba(24, 144, 255, 0.12) 0%, transparent 60%);
 }
 
-/* 脉冲背景 */
+/* 脉冲背景 - 简化为3个 */
 .pulse-bg {
   position: absolute;
-  top: 35%;
+  top: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -45,93 +45,49 @@
 .pulse-circle {
   position: absolute;
   border-radius: 50%;
-  border: 2rpx solid rgba(24, 144, 255, 0.25);
+  border: 2rpx solid rgba(24, 144, 255, 0.2);
   animation: pulse-expand 4s ease-out infinite;
 }
 
 .pulse-circle.c1 {
-  width: 400rpx;
-  height: 400rpx;
-  top: -200rpx;
-  left: -200rpx;
+  width: 420rpx;
+  height: 420rpx;
+  top: -210rpx;
+  left: -210rpx;
   animation-delay: 0s;
 }
 
 .pulse-circle.c2 {
-  width: 550rpx;
-  height: 550rpx;
-  top: -275rpx;
-  left: -275rpx;
-  animation-delay: 1s;
+  width: 600rpx;
+  height: 600rpx;
+  top: -300rpx;
+  left: -300rpx;
+  animation-delay: 1.3s;
 }
 
 .pulse-circle.c3 {
-  width: 700rpx;
-  height: 700rpx;
-  top: -350rpx;
-  left: -350rpx;
-  animation-delay: 2s;
-}
-
-.pulse-circle.c4 {
-  width: 850rpx;
-  height: 850rpx;
-  top: -425rpx;
-  left: -425rpx;
-  animation-delay: 3s;
+  width: 780rpx;
+  height: 780rpx;
+  top: -390rpx;
+  left: -390rpx;
+  animation-delay: 2.6s;
 }
 
 @keyframes pulse-expand {
   0% {
     transform: scale(0.6);
-    opacity: 0.8;
+    opacity: 0.7;
   }
   100% {
-    transform: scale(1.4);
+    transform: scale(1.3);
     opacity: 0;
   }
 }
 
-/* 浮动粒子 */
-.particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.particle {
-  position: absolute;
-  width: 8rpx;
-  height: 8rpx;
-  background: rgba(24, 144, 255, 0.6);
-  border-radius: 50%;
-  animation: particle-float 6s ease-in-out infinite;
-}
-
-.particle.p1 { top: 15%; left: 10%; animation-delay: 0s; }
-.particle.p2 { top: 25%; left: 85%; animation-delay: 1s; }
-.particle.p3 { top: 45%; left: 5%; animation-delay: 2s; }
-.particle.p4 { top: 60%; left: 90%; animation-delay: 3s; }
-.particle.p5 { top: 75%; left: 15%; animation-delay: 4s; }
-.particle.p6 { top: 85%; left: 80%; animation-delay: 5s; }
-
-@keyframes particle-float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-30rpx) scale(1.2);
-    opacity: 1;
-  }
-}
-
-/* 声波装饰 - 录制时显示 */
+/* 声波装饰 - 录制时显示，简化为2个 */
 .sound-waves {
   position: absolute;
-  top: 50%;
+  top: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -139,8 +95,8 @@
 .sound-wave {
   position: absolute;
   border-radius: 50%;
-  border: 3rpx solid rgba(24, 144, 255, 0.4);
-  animation: sound-wave-pulse 2s ease-out infinite;
+  border: 3rpx solid rgba(24, 144, 255, 0.35);
+  animation: sound-wave-pulse 2.5s ease-out infinite;
 }
 
 .sound-wave.sw1 {
@@ -152,35 +108,27 @@
 }
 
 .sound-wave.sw2 {
-  width: 650rpx;
-  height: 650rpx;
-  top: -325rpx;
-  left: -325rpx;
-  animation-delay: 0.4s;
-}
-
-.sound-wave.sw3 {
-  width: 800rpx;
-  height: 800rpx;
-  top: -400rpx;
-  left: -400rpx;
-  animation-delay: 0.8s;
+  width: 700rpx;
+  height: 700rpx;
+  top: -350rpx;
+  left: -350rpx;
+  animation-delay: 0.5s;
 }
 
 @keyframes sound-wave-pulse {
   0% {
     transform: scale(0.8);
     opacity: 0.8;
-    border-color: rgba(24, 144, 255, 0.6);
+    border-color: rgba(24, 144, 255, 0.5);
   }
   100% {
-    transform: scale(1.3);
+    transform: scale(1.25);
     opacity: 0;
     border-color: rgba(24, 144, 255, 0);
   }
 }
 
-/* ==================== 顶部Header ==================== */
+/* ==================== 顶部Header - 简化版 ==================== */
 .header {
   width: 100%;
   padding: 100rpx 32rpx 24rpx;
@@ -191,53 +139,8 @@
   z-index: 10;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-}
-
-/* 录制标识 */
-.recording-badge {
-  display: flex;
-  align-items: center;
-  padding: 12rpx 24rpx;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 32rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.1);
-}
-
-.recording-badge.active {
-  background: rgba(244, 67, 54, 0.15);
-  border-color: rgba(244, 67, 54, 0.3);
-}
-
-.rec-dot {
-  width: 16rpx;
-  height: 16rpx;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  margin-right: 12rpx;
-}
-
-.recording-badge.active .rec-dot {
-  background: #F44336;
-  animation: rec-blink 1s ease-in-out infinite;
-}
-
-@keyframes rec-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.rec-text {
-  font-size: 24rpx;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 2rpx;
-}
-
-.recording-badge.active .rec-text {
-  color: #F44336;
+.header-spacer {
+  flex: 1;
 }
 
 /* 关闭按钮 */
@@ -272,7 +175,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20rpx;
+  margin-top: 10rpx;
   position: relative;
 }
 
@@ -282,27 +185,27 @@
   width: 400rpx;
   height: 400rpx;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(24, 144, 255, 0.2) 0%, transparent 70%);
-  filter: blur(30rpx);
+  background: radial-gradient(circle, rgba(24, 144, 255, 0.18) 0%, transparent 70%);
+  filter: blur(25rpx);
   opacity: 0.5;
   transition: opacity 0.3s ease;
 }
 
 .countdown-glow.active {
   opacity: 1;
-  animation: glow-pulse 2s ease-in-out infinite;
+  animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
 @keyframes glow-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.08); opacity: 1; }
 }
 
 /* 倒计时环容器 */
 .countdown-ring-wrapper {
   position: relative;
-  width: 340rpx;
-  height: 340rpx;
+  width: 320rpx;
+  height: 320rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,18 +214,18 @@
 /* 外圈装饰 */
 .countdown-ring-outer {
   position: absolute;
-  width: 340rpx;
-  height: 340rpx;
+  width: 320rpx;
+  height: 320rpx;
   border-radius: 50%;
   border: 1rpx solid rgba(255, 255, 255, 0.1);
 }
 
 /* 进度环 */
 .countdown-ring {
-  width: 320rpx;
-  height: 320rpx;
+  width: 300rpx;
+  height: 300rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,17 +246,17 @@
     #1890FF 0%,
     #36CFC9 calc(var(--progress, 0%) * 0.5),
     #1890FF var(--progress, 0%),
-    rgba(255, 255, 255, 0.08) var(--progress, 0%),
-    rgba(255, 255, 255, 0.08) 100%
+    rgba(255, 255, 255, 0.06) var(--progress, 0%),
+    rgba(255, 255, 255, 0.06) 100%
   );
-  mask: radial-gradient(transparent 125rpx, #000 126rpx);
-  -webkit-mask: radial-gradient(transparent 125rpx, #000 126rpx);
+  mask: radial-gradient(transparent 115rpx, #000 116rpx);
+  -webkit-mask: radial-gradient(transparent 115rpx, #000 116rpx);
 }
 
 /* 内圈 */
 .countdown-inner {
-  width: 260rpx;
-  height: 260rpx;
+  width: 240rpx;
+  height: 240rpx;
   border-radius: 50%;
   background: linear-gradient(180deg, #1A1A2E 0%, #16213E 100%);
   display: flex;
@@ -370,48 +273,49 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 180rpx;
-  height: 180rpx;
+  width: 160rpx;
+  height: 160rpx;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(24, 144, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(24, 144, 255, 0.08) 0%, transparent 70%);
 }
 
 .countdown-number {
-  font-size: 100rpx;
+  font-size: 88rpx;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1;
-  text-shadow: 0 0 30rpx rgba(24, 144, 255, 0.5);
+  text-shadow: 0 0 25rpx rgba(24, 144, 255, 0.4);
 }
 
 .countdown-unit {
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 4rpx;
+  letter-spacing: 2rpx;
 }
 
 /* 刻度线 */
 .ring-ticks {
   position: absolute;
-  width: 340rpx;
-  height: 340rpx;
+  width: 320rpx;
+  height: 320rpx;
 }
 
 .tick {
   position: absolute;
   width: 2rpx;
-  height: 12rpx;
-  background: rgba(255, 255, 255, 0.3);
+  height: 10rpx;
+  background: rgba(255, 255, 255, 0.25);
   top: 0;
   left: 50%;
-  transform-origin: center 170rpx;
+  transform-origin: center 160rpx;
 }
 
 /* 状态文字 */
 .status-wrapper {
   display: flex;
   align-items: center;
-  margin-top: 40rpx;
+  margin-top: 36rpx;
 }
 
 .status-text {
@@ -444,26 +348,26 @@
   40% { transform: scale(1.3); opacity: 1; }
 }
 
-/* ==================== 波形区域 ==================== */
+/* ==================== 波形区域 - 整合心率 ==================== */
 .waveform-section {
   width: 100%;
-  padding: 32rpx;
+  padding: 28rpx 32rpx;
   position: relative;
 }
 
 .waveform-card {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 24rpx;
-  padding: 24rpx;
+  border-radius: 20rpx;
   border: 1rpx solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10rpx);
+  overflow: hidden;
 }
 
 .waveform-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20rpx;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
 }
 
 .waveform-title {
@@ -523,20 +427,8 @@
 /* 波形容器 */
 .waveform-container {
   position: relative;
-  border-radius: 16rpx;
-  overflow: hidden;
+  height: 130rpx;
   background: rgba(0, 0, 0, 0.2);
-}
-
-.waveform-glow {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 60rpx;
-  transform: translateY(-50%);
-  background: linear-gradient(90deg, transparent, rgba(24, 144, 255, 0.1), transparent);
-  pointer-events: none;
 }
 
 /* 网格叠加层 */
@@ -563,7 +455,6 @@
 .grid-line.horizontal:nth-child(1) { top: 25%; }
 .grid-line.horizontal:nth-child(2) { top: 50%; }
 .grid-line.horizontal:nth-child(3) { top: 75%; }
-.grid-line.horizontal:nth-child(4) { top: 100%; }
 
 .grid-line.vertical {
   top: 0;
@@ -571,101 +462,63 @@
   width: 1rpx;
 }
 
-.grid-line.vertical:nth-child(5) { left: 12.5%; }
-.grid-line.vertical:nth-child(6) { left: 25%; }
-.grid-line.vertical:nth-child(7) { left: 37.5%; }
-.grid-line.vertical:nth-child(8) { left: 50%; }
-.grid-line.vertical:nth-child(9) { left: 62.5%; }
-.grid-line.vertical:nth-child(10) { left: 75%; }
-.grid-line.vertical:nth-child(11) { left: 87.5%; }
-.grid-line.vertical:nth-child(12) { left: 100%; }
+.grid-line.vertical:nth-child(4) { left: 16.6%; }
+.grid-line.vertical:nth-child(5) { left: 33.3%; }
+.grid-line.vertical:nth-child(6) { left: 50%; }
+.grid-line.vertical:nth-child(7) { left: 66.6%; }
+.grid-line.vertical:nth-child(8) { left: 83.3%; }
+.grid-line.vertical:nth-child(9) { left: 100%; }
 
-/* ==================== 心率显示 ==================== */
-.heart-rate-section {
+/* 心率整合到波形底部 */
+.heart-rate-inline {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background: rgba(0, 0, 0, 0.15);
+  gap: 8rpx;
   opacity: 0;
-  transform: translateY(20rpx);
-  transition: all 0.4s ease;
-  margin-top: 16rpx;
+  transform: translateY(10rpx);
+  transition: all 0.3s ease;
 }
 
-.heart-rate-section.show {
+.heart-rate-inline.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-.heart-rate-card {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 20rpx 32rpx;
-  border-radius: 48rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.1);
-}
-
-.heart-icon-wrapper {
-  position: relative;
-  width: 56rpx;
-  height: 56rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.heart-pulse {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: rgba(244, 67, 54, 0.2);
-  animation: heart-pulse 1s ease-out infinite;
-}
-
-@keyframes heart-pulse {
-  0% { transform: scale(0.8); opacity: 0.8; }
-  100% { transform: scale(1.5); opacity: 0; }
-}
-
-.heart-icon {
-  position: relative;
-  z-index: 1;
+.hr-icon-wrapper {
   animation: heartbeat 1s ease-in-out infinite;
 }
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.2); }
+  14% { transform: scale(1.15); }
   28% { transform: scale(1); }
-  42% { transform: scale(1.15); }
+  42% { transform: scale(1.1); }
 }
 
-.heart-rate-info {
-  display: flex;
-  align-items: baseline;
-  margin-left: 16rpx;
-}
-
-.heart-rate-value {
-  font-size: 48rpx;
+.hr-value {
+  font-size: 36rpx;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1;
 }
 
-.heart-rate-unit {
-  font-size: 24rpx;
+.hr-unit {
+  font-size: 22rpx;
   color: rgba(255, 255, 255, 0.5);
-  margin-left: 8rpx;
 }
 
-.heart-rate-status {
-  margin-left: 20rpx;
-  padding-left: 20rpx;
-  border-left: 1rpx solid rgba(255, 255, 255, 0.15);
+.hr-status {
+  margin-left: auto;
+  font-size: 22rpx;
+  padding: 6rpx 14rpx;
+  border-radius: 12rpx;
 }
 
-.status-label {
-  font-size: 24rpx;
+.hr-status.safe {
   color: #4CAF50;
+  background: rgba(76, 175, 80, 0.15);
 }
 
 /* ==================== 底部区域 ==================== */
@@ -677,25 +530,7 @@
 
 /* 进度区域 */
 .progress-section {
-  padding: 24rpx 48rpx;
-}
-
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16rpx;
-}
-
-.progress-label {
-  font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.progress-percent {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #1890FF;
+  padding: 20rpx 48rpx;
 }
 
 .progress-bar-wrapper {
@@ -732,65 +567,57 @@
 .progress-glow {
   position: absolute;
   top: 50%;
-  width: 20rpx;
-  height: 20rpx;
+  width: 18rpx;
+  height: 18rpx;
   background: #36CFC9;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 20rpx #36CFC9, 0 0 40rpx rgba(54, 207, 201, 0.5);
+  box-shadow: 0 0 16rpx #36CFC9, 0 0 32rpx rgba(54, 207, 201, 0.5);
   transition: left 0.3s ease;
 }
 
+/* 进度标签 - 修复WCAG对比度 */
 .progress-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 16rpx;
+  margin-top: 14rpx;
 }
 
-.progress-start,
-.progress-current,
-.progress-end {
-  font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.4);
+.progress-elapsed,
+.progress-total {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.75); /* 从0.4提升到0.75，满足WCAG AA */
 }
 
-.progress-current {
-  color: rgba(255, 255, 255, 0.7);
+.progress-elapsed {
   font-weight: 500;
 }
 
-/* 提示区域 */
-.tips-section {
-  display: flex;
-  justify-content: space-around;
-  padding: 32rpx 24rpx;
-  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
-}
-
-.tip-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20rpx 28rpx;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.08);
-  min-width: 160rpx;
-}
-
-.tip-icon-wrapper {
-  width: 64rpx;
-  height: 64rpx;
+/* 底部提示横幅 - 单行轮播 */
+.tip-banner {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(54, 207, 201, 0.1);
-  border-radius: 50%;
-  margin-bottom: 12rpx;
+  gap: 16rpx;
+  padding: 28rpx 32rpx;
+  padding-bottom: calc(28rpx + env(safe-area-inset-bottom));
+  background: rgba(54, 207, 201, 0.08);
+  border-top: 1rpx solid rgba(54, 207, 201, 0.15);
 }
 
-.tip-text {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.7);
+.tip-banner .tip-icon-wrapper {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(54, 207, 201, 0.12);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tip-banner .tip-text {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
 }

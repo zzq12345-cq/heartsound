@@ -1,81 +1,60 @@
-<!-- Detection Recording Page Template -->
+<!-- Detection Recording Page Template - 优化重构版 -->
 <view class="recording-page">
-  <!-- Background effects -->
+  <!-- 背景效果层 - 简化粒子数量 -->
   <view class="bg-effects">
-    <!-- Gradient overlay -->
     <view class="gradient-overlay"></view>
 
-    <!-- Pulse circles -->
+    <!-- 脉冲圆圈 - 减少到3个 -->
     <view class="pulse-bg">
       <view class="pulse-circle c1"></view>
       <view class="pulse-circle c2"></view>
       <view class="pulse-circle c3"></view>
-      <view class="pulse-circle c4"></view>
     </view>
 
-    <!-- Floating particles -->
-    <view class="particles">
-      <view class="particle p1"></view>
-      <view class="particle p2"></view>
-      <view class="particle p3"></view>
-      <view class="particle p4"></view>
-      <view class="particle p5"></view>
-      <view class="particle p6"></view>
-    </view>
-
-    <!-- Sound waves decoration -->
+    <!-- 声波装饰 - 录制时显示 -->
     <view class="sound-waves" wx:if="{{isRecording}}">
       <view class="sound-wave sw1"></view>
       <view class="sound-wave sw2"></view>
-      <view class="sound-wave sw3"></view>
     </view>
   </view>
 
-  <!-- Header -->
+  <!-- 顶部Header - 移除REC标签，仅保留关闭按钮 -->
   <view class="header">
-    <view class="header-left">
-      <view class="recording-badge {{isRecording ? 'active' : ''}}">
-        <view class="rec-dot"></view>
-        <text class="rec-text">{{isRecording ? 'REC' : 'READY'}}</text>
-      </view>
-    </view>
+    <view class="header-spacer"></view>
     <view class="close-btn" bindtap="stopRecording">
       <icon-svg name="close" size="28" color="rgba(255,255,255,0.8)" />
     </view>
   </view>
 
-  <!-- Main content -->
+  <!-- 核心内容区 -->
   <view class="main-content">
-    <!-- Countdown display -->
+    <!-- 倒计时显示 - 统一为"剩余时间"逻辑 -->
     <view class="countdown-section">
-      <!-- Glow effect behind ring -->
       <view class="countdown-glow {{isRecording ? 'active' : ''}}"></view>
 
       <view class="countdown-ring-wrapper">
-        <!-- Outer decorative ring -->
         <view class="countdown-ring-outer"></view>
 
-        <!-- Progress ring -->
         <view class="countdown-ring">
-          <!-- SVG-like progress using conic-gradient -->
+          <!-- 进度环: 逆向填充表示剩余时间 -->
           <view class="countdown-progress" style="--progress: {{progress}}%;"></view>
 
-          <!-- Inner circle -->
           <view class="countdown-inner">
             <view class="countdown-inner-glow"></view>
             <text class="countdown-number">{{countdown}}</text>
-            <text class="countdown-unit">秒</text>
+            <text class="countdown-unit">剩余秒</text>
           </view>
         </view>
 
-        <!-- Tick marks around the ring -->
+        <!-- 刻度线 -->
         <view class="ring-ticks">
           <view class="tick" wx:for="{{12}}" wx:key="index" style="transform: rotate({{index * 30}}deg);"></view>
         </view>
       </view>
 
+      <!-- 阶段状态文字 -->
       <view class="status-wrapper">
-        <text class="status-text">{{statusText}}</text>
+        <text class="status-text">{{phaseText}}</text>
         <view class="status-dots" wx:if="{{isRecording}}">
           <view class="dot d1"></view>
           <view class="dot d2"></view>
@@ -84,14 +63,14 @@
       </view>
     </view>
 
-    <!-- Waveform display -->
+    <!-- 波形显示区 - 整合心率 -->
     <view class="waveform-section">
       <view class="waveform-card">
-        <!-- Waveform header -->
+        <!-- 波形头部 -->
         <view class="waveform-header">
           <view class="waveform-title">
             <icon-svg name="waveform" size="24" color="#1890FF" />
-            <text class="waveform-label">实时波形</text>
+            <text class="waveform-label">实时心音</text>
           </view>
           <view class="waveform-indicator {{isRecording ? 'active' : ''}}">
             <view class="indicator-dot"></view>
@@ -99,51 +78,39 @@
           </view>
         </view>
 
-        <!-- Waveform canvas -->
+        <!-- 波形Canvas -->
         <view class="waveform-container">
-          <view class="waveform-glow"></view>
           <waveform
-            height="160"
+            height="130"
             lineColor="#1890FF"
             lineWidth="2.5"
             showDemo="{{!isRecording}}"
             bindready="onWaveformReady"
           ></waveform>
-          <!-- Grid overlay -->
+          <!-- 网格叠加层 -->
           <view class="waveform-grid">
-            <view class="grid-line horizontal" wx:for="{{4}}" wx:key="index"></view>
-            <view class="grid-line vertical" wx:for="{{8}}" wx:key="index"></view>
+            <view class="grid-line horizontal" wx:for="{{3}}" wx:key="index"></view>
+            <view class="grid-line vertical" wx:for="{{6}}" wx:key="index"></view>
           </view>
         </view>
-      </view>
-    </view>
 
-    <!-- Heart rate display -->
-    <view class="heart-rate-section {{heartRate !== '--' ? 'show' : ''}}">
-      <view class="heart-rate-card">
-        <view class="heart-icon-wrapper">
-          <view class="heart-pulse"></view>
-          <icon-svg name="heart" size="28" color="#F44336" class="heart-icon" />
-        </view>
-        <view class="heart-rate-info">
-          <text class="heart-rate-value">{{heartRate}}</text>
-          <text class="heart-rate-unit">BPM</text>
-        </view>
-        <view class="heart-rate-status">
-          <text class="status-label">心率正常</text>
+        <!-- 心率整合到波形卡片底部 -->
+        <view class="heart-rate-inline {{heartRate !== '--' ? 'show' : ''}}">
+          <view class="hr-icon-wrapper">
+            <icon-svg name="heart" size="20" color="#F44336" />
+          </view>
+          <text class="hr-value">{{heartRate}}</text>
+          <text class="hr-unit">BPM</text>
+          <text class="hr-status safe" wx:if="{{heartRate !== '--'}}">正常</text>
         </view>
       </view>
     </view>
   </view>
 
-  <!-- Bottom section -->
+  <!-- 底部区域 -->
   <view class="bottom-section">
-    <!-- Progress bar -->
+    <!-- 进度条 - 统一"已采集"表述 -->
     <view class="progress-section">
-      <view class="progress-info">
-        <text class="progress-label">采集进度</text>
-        <text class="progress-percent">{{progressRound}}%</text>
-      </view>
       <view class="progress-bar-wrapper">
         <view class="progress-bar">
           <view class="progress-fill" style="width: {{progress}}%;">
@@ -153,32 +120,17 @@
         </view>
       </view>
       <view class="progress-labels">
-        <text class="progress-start">0秒</text>
-        <text class="progress-current">{{totalDuration - countdown}}秒</text>
-        <text class="progress-end">{{totalDuration}}秒</text>
+        <text class="progress-elapsed">已采集 {{elapsedTime}}秒</text>
+        <text class="progress-total">共 {{totalDuration}}秒</text>
       </view>
     </view>
 
-    <!-- Tips -->
-    <view class="tips-section">
-      <view class="tip-card">
-        <view class="tip-icon-wrapper">
-          <icon-svg name="quiet" size="32" color="#36CFC9" />
-        </view>
-        <text class="tip-text">保持安静</text>
+    <!-- 底部提示 - 简化为单行动态轮播 -->
+    <view class="tip-banner">
+      <view class="tip-icon-wrapper">
+        <icon-svg name="{{currentTip.icon}}" size="28" color="#36CFC9" />
       </view>
-      <view class="tip-card">
-        <view class="tip-icon-wrapper">
-          <icon-svg name="breathe" size="32" color="#36CFC9" />
-        </view>
-        <text class="tip-text">放松呼吸</text>
-      </view>
-      <view class="tip-card">
-        <view class="tip-icon-wrapper">
-          <icon-svg name="pin" size="32" color="#36CFC9" />
-        </view>
-        <text class="tip-text">保持位置</text>
-      </view>
+      <text class="tip-text">{{currentTip.text}}</text>
     </view>
   </view>
 </view>

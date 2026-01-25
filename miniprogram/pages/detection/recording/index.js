@@ -1,6 +1,6 @@
 /**
  * Detection Recording Page
- * 录制页 - 30秒心音采集
+ * 录制页 - 30秒心音采集 (优化重构版)
  */
 
 const detectionService = require('../../../services/detection');
@@ -16,14 +16,24 @@ Page({
     // 进度百分比
     progress: 0,
     progressRound: 0,
+    // 已采集时间
+    elapsedTime: 0,
     // 波形数据
     waveData: [],
     // 会话ID
     sessionId: null,
-    // 提示文字
-    statusText: '准备开始录制...',
-    // 心率显示 (如果可用)
-    heartRate: '--'
+    // 阶段状态文字
+    phaseText: '准备开始采集...',
+    // 心率显示
+    heartRate: '--',
+    // 动态提示轮播
+    tips: [
+      { icon: 'quiet', text: '请保持安静，避免说话或移动' },
+      { icon: 'breathe', text: '自然呼吸，放松身体' },
+      { icon: 'pin', text: '保持听诊器位置不变' }
+    ],
+    currentTipIndex: 0,
+    currentTip: { icon: 'quiet', text: '请保持安静，避免说话或移动' }
   },
 
   onLoad() {
@@ -57,6 +67,9 @@ Page({
     if (this.countdownTimer) {
       clearInterval(this.countdownTimer);
     }
+    if (this.tipTimer) {
+      clearInterval(this.tipTimer);
+    }
   },
 
   /**
@@ -80,22 +93,26 @@ Page({
 
     this.setData({
       isRecording: true,
-      statusText: '正在录制心音...',
+      phaseText: '开始检测心音...',
       countdown: this.data.totalDuration,
+      elapsedTime: 0,
       progress: 0,
-      progressRound: 0
+      progressRound: 0,
+      currentTipIndex: 0,
+      currentTip: this.data.tips[0]
     });
 
     try {
-      // 开始检测会话（不传deviceIP，服务内部会获取）
+      // 开始检测会话
       const result = await detectionService.startDetection({ duration: this.data.totalDuration });
-
-      // result可能是对象 {sessionId, websocketUrl}
       const sessionId = typeof result === 'object' ? result.sessionId : result;
       this.setData({ sessionId });
 
       // 开始倒计时
       this.startCountdown();
+
+      // 开始提示轮播
+      this.startTipRotation();
 
     } catch (error) {
       console.error('开始录制失败:', error);
@@ -104,30 +121,50 @@ Page({
   },
 
   /**
-   * 倒计时
+   * 倒计时 - 优化版
    */
   startCountdown() {
     this.countdownTimer = setInterval(() => {
       const newCountdown = this.data.countdown - 1;
-      const progress = ((this.data.totalDuration - newCountdown) / this.data.totalDuration) * 100;
+      const elapsed = this.data.totalDuration - newCountdown;
+      const progress = (elapsed / this.data.totalDuration) * 100;
+
+      // 阶段性状态文字
+      let phaseText = '正在采集心音...';
+      if (elapsed <= 3) {
+        phaseText = '开始检测心音...';
+      } else if (newCountdown <= 5) {
+        phaseText = '即将完成采集';
+      } else if (elapsed >= 10 && elapsed <= 12) {
+        phaseText = '信号采集中...';
+      }
 
       if (newCountdown <= 0) {
-        // 录制完成
         clearInterval(this.countdownTimer);
         this.finishRecording();
       } else {
         this.setData({
           countdown: newCountdown,
+          elapsedTime: elapsed,
           progress,
-          progressRound: Math.round(progress)
+          progressRound: Math.round(progress),
+          phaseText
         });
-
-        // 最后5秒提示
-        if (newCountdown <= 5) {
-          this.setData({ statusText: `即将完成... ${newCountdown}秒` });
-        }
       }
     }, 1000);
+  },
+
+  /**
+   * 提示轮播
+   */
+  startTipRotation() {
+    this.tipTimer = setInterval(() => {
+      const nextIndex = (this.data.currentTipIndex + 1) % this.data.tips.length;
+      this.setData({
+        currentTipIndex: nextIndex,
+        currentTip: this.data.tips[nextIndex]
+      });
+    }, 5000); // 每5秒切换一次提示
   },
 
   /**
@@ -139,7 +176,7 @@ Page({
       this.waveformComponent.drawWaveform(frame.waveform || frame.data);
     }
 
-    // 更新心率 (如果数据中包含)
+    // 更新心率
     if (frame.heartRate) {
       this.setData({ heartRate: frame.heartRate });
     }
@@ -151,12 +188,12 @@ Page({
   handleStatusChange(status) {
     const statusMap = {
       connecting: '正在连接设备...',
-      recording: '正在录制心音...',
-      processing: '录制完成，正在处理...'
+      recording: '正在采集心音...',
+      processing: '采集完成，正在处理...'
     };
 
     if (statusMap[status]) {
-      this.setData({ statusText: statusMap[status] });
+      this.setData({ phaseText: statusMap[status] });
     }
   },
 
@@ -165,13 +202,14 @@ Page({
    */
   handleError(error) {
     clearInterval(this.countdownTimer);
+    clearInterval(this.tipTimer);
     this.setData({
       isRecording: false,
-      statusText: '录制出错'
+      phaseText: '采集出错'
     });
 
     wx.showModal({
-      title: '录制失败',
+      title: '采集失败',
       content: error.message || '请检查设备连接后重试',
       showCancel: true,
       confirmText: '重试',
@@ -190,11 +228,13 @@ Page({
    * 完成录制
    */
   finishRecording() {
+    clearInterval(this.tipTimer);
     this.setData({
       isRecording: false,
       progress: 100,
       progressRound: 100,
-      statusText: '录制完成，正在分析...'
+      elapsedTime: this.data.totalDuration,
+      phaseText: '采集完成，正在分析...'
     });
 
     // 振动反馈
@@ -214,10 +254,11 @@ Page({
   stopRecording() {
     wx.showModal({
       title: '确认停止',
-      content: '停止录制将无法获得分析结果，确定要停止吗？',
+      content: '停止采集将无法获得分析结果，确定要停止吗？',
       success: (res) => {
         if (res.confirm) {
           clearInterval(this.countdownTimer);
+          clearInterval(this.tipTimer);
           detectionService.stopDetection();
           wx.navigateBack();
         }

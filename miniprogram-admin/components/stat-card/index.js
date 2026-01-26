@@ -47,18 +47,28 @@ Component({
   data: {
     formattedValue: '0',
     trendIcon: '',
-    trendClass: ''
+    trendClass: '',
+    _ready: false
   },
 
   observers: {
     'value, trend': function(value, trend) {
+      // 组件未就绪时不执行，避免 _getData 报错
+      if (!this.data._ready) return;
       this.updateDisplay(value, trend);
     }
   },
 
   lifetimes: {
     attached() {
-      this.updateDisplay(this.properties.value, this.properties.trend);
+      // 延迟标记就绪，确保组件完全初始化
+      wx.nextTick(() => {
+        this.setData({ _ready: true });
+        this.updateDisplay(this.properties.value, this.properties.trend);
+      });
+    },
+    detached() {
+      this.setData({ _ready: false });
     }
   },
 
@@ -113,7 +123,7 @@ Component({
      * 卡片点击
      */
     onTap() {
-      this.triggerEvent('tap');
+      this.triggerEvent('cardtap');
     }
   }
 });

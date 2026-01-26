@@ -8,7 +8,7 @@
 Component({
   properties: {
     // 图表数据 [{date: '01-15', count: 120}, ...]
-    data: {
+    chartData: {
       type: Array,
       value: []
     },
@@ -45,8 +45,8 @@ Component({
   },
 
   observers: {
-    'data': function(data) {
-      if (data && data.length > 0 && this.ctx) {
+    'chartData': function(chartData) {
+      if (chartData && chartData.length > 0 && this.ctx) {
         this.drawChart();
       }
     }
@@ -68,7 +68,7 @@ Component({
   pageLifetimes: {
     show() {
       // 页面显示时重新绘制（从其他页面返回时）
-      if (this.ctx && this.properties.data && this.properties.data.length > 0) {
+      if (this.ctx && this.properties.chartData && this.properties.chartData.length > 0) {
         setTimeout(() => this.drawChart(), 100);
       }
     }
@@ -106,13 +106,14 @@ Component({
 
           this.canvas = canvas;
           this.ctx = ctx;
+          this._bindReadydpr = dpr;
           this.setData({
             canvasWidth: width,
             canvasHeight: height
           });
 
           // 有数据就绘制
-          if (this.properties.data && this.properties.data.length > 0) {
+          if (this.properties.chartData && this.properties.chartData.length > 0) {
             this.drawChart();
           }
 
@@ -126,14 +127,15 @@ Component({
     drawChart() {
       if (!this.ctx) return;
 
-      const { data } = this.properties;
+      const { chartData } = this.properties;
       const { canvasWidth, canvasHeight } = this.data;
       const ctx = this.ctx;
+      const dpr = this._bindReadydpr || 1;
 
-      // 清空画布
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-      if (!data || data.length === 0) return;
+      if (!chartData || chartData.length === 0) return;
 
       // 图表边距
       const padding = {
@@ -147,13 +149,13 @@ Component({
       const chartHeight = canvasHeight - padding.top - padding.bottom;
 
       // 计算数据范围
-      const values = data.map(d => d.count);
+      const values = chartData.map(d => d.count);
       const maxValue = Math.max(...values, 1);
       const minValue = 0;
 
       // 计算坐标点
-      const points = data.map((item, index) => ({
-        x: padding.left + (index / (data.length - 1)) * chartWidth,
+      const points = chartData.map((item, index) => ({
+        x: padding.left + (index / (chartData.length - 1)) * chartWidth,
         y: padding.top + chartHeight - ((item.count - minValue) / (maxValue - minValue)) * chartHeight
       }));
 
@@ -170,7 +172,7 @@ Component({
       this.drawPoints(ctx, points);
 
       // 绘制X轴标签
-      this.drawXLabels(ctx, data, padding, chartWidth, chartHeight);
+      this.drawXLabels(ctx, chartData, padding, chartWidth, chartHeight);
     },
 
     /**

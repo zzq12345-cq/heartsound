@@ -8,7 +8,7 @@
 Component({
   properties: {
     // 饼图数据 {safe: 85.2, warning: 11.8, danger: 3.0}
-    data: {
+    chartData: {
       type: Object,
       value: {}
     },
@@ -36,8 +36,8 @@ Component({
   },
 
   observers: {
-    'data': function(data) {
-      if (data && this.ctx) {
+    'chartData': function(chartData) {
+      if (chartData && this.ctx) {
         this.drawChart();
       }
     }
@@ -59,7 +59,7 @@ Component({
   pageLifetimes: {
     show() {
       // 页面显示时重新绘制（从其他页面返回时）
-      if (this.ctx && this.properties.data) {
+      if (this.ctx && this.properties.chartData) {
         setTimeout(() => this.drawChart(), 100);
       }
     }
@@ -97,12 +97,13 @@ Component({
 
           this.canvas = canvas;
           this.ctx = ctx;
+          this._bindReadydpr = dpr;
           this.setData({
             canvasWidth: width,
             canvasHeight: height
           });
 
-          if (this.properties.data) {
+          if (this.properties.chartData) {
             this.drawChart();
           }
 
@@ -116,11 +117,12 @@ Component({
     drawChart() {
       if (!this.ctx) return;
 
-      const { data } = this.properties;
+      const { chartData } = this.properties;
       const { canvasWidth, canvasHeight } = this.data;
       const ctx = this.ctx;
+      const dpr = this._bindReadydpr || 1;
 
-      // 清空画布
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
       // 颜色配置
@@ -140,15 +142,15 @@ Component({
       const items = [];
       let total = 0;
 
-      Object.keys(data).forEach(key => {
-        if (data[key] > 0) {
+      Object.keys(chartData).forEach(key => {
+        if (chartData[key] > 0) {
           items.push({
             key,
-            value: data[key],
+            value: chartData[key],
             color: colors[key] || '#999999',
             label: labels[key] || key
           });
-          total += data[key];
+          total += chartData[key];
         }
       });
 

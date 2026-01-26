@@ -24,7 +24,7 @@
 
     <!-- 趋势/副标题 -->
     <view class="stat-footer">
-      <view wx:if="{{trend !== null}}" class="stat-trend {{trendClass}}">
+      <view wx:if="{{trendIcon}}" class="stat-trend {{trendClass}}">
         <text class="trend-icon">{{trendIcon}}</text>
         <text class="trend-value">{{trend >= 0 ? '+' : ''}}{{trend}}%</text>
       </view>

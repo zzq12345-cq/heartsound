@@ -31,17 +31,42 @@ Component({
     keyword: '',
     showFilter: false,
     debounceTimer: null,
-    currentFilterLabel: '筛选'
+    currentFilterLabel: '筛选',
+    _ready: false
   },
 
   observers: {
     'filters, filterValue': function(filters, filterValue) {
+      // 组件未就绪时不执行，避免 _getData 报错
+      if (!this.data._ready) return;
       // 计算当前筛选项的label
       if (filters && filters.length > 0) {
         const found = filters.find(f => f.value === filterValue);
         this.setData({
           currentFilterLabel: found ? found.label : '筛选'
         });
+      }
+    }
+  },
+
+  lifetimes: {
+    attached() {
+      wx.nextTick(() => {
+        this.setData({ _ready: true });
+        // 初始化时计算一次 label
+        const { filters, filterValue } = this.properties;
+        if (filters && filters.length > 0) {
+          const found = filters.find(f => f.value === filterValue);
+          this.setData({
+            currentFilterLabel: found ? found.label : '筛选'
+          });
+        }
+      });
+    },
+    detached() {
+      this.setData({ _ready: false });
+      if (this.data.debounceTimer) {
+        clearTimeout(this.data.debounceTimer);
       }
     }
   },

@@ -1,28 +1,38 @@
 /**
  * Line Chart Component Styles
+ * 折线图组件样式 - 现代简洁风格
  */
 
 .line-chart-container {
   position: relative;
-  background-color: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  overflow: hidden; /* 防止Canvas内容溢出 */
+  /* Soft UI 阴影 */
+  box-shadow:
+    0 4rpx 16rpx rgba(149, 157, 165, 0.08),
+    0 12rpx 32rpx rgba(149, 157, 165, 0.06);
 }
 
 .chart-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: 24rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 28rpx;
+  letter-spacing: 0.5rpx;
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
 .chart-canvas {
   width: 100%;
-}
-
-.canvas-hidden {
-  opacity: 0;
+  height: 100%;
+  display: block;
 }
 
 .chart-overlay {
@@ -35,14 +45,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #999999;
+  color: #A8B5C2;
 }
 
 .loading-spinner {
   width: 48rpx;
   height: 48rpx;
-  border: 4rpx solid #E8E8E8;
-  border-top-color: #1890FF;
+  border: 4rpx solid #F0F7FF;
+  border-top-color: #4A90E2;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16rpx;
@@ -57,4 +67,5 @@
 .loading-text,
 .empty-text {
   font-size: 26rpx;
+  color: #A8B5C2;
 }

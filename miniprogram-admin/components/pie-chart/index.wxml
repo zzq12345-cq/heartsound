@@ -8,14 +8,16 @@
   <view wx:if="{{title}}" class="chart-title">{{title}}</view>
 
   <!-- 图表内容 -->
-  <view class="chart-content">
-    <!-- 饼图画布 - 始终存在 -->
-    <canvas
-      type="2d"
-      id="pieChart"
-      class="chart-canvas"
-      style="width: 100%; height: {{height}}rpx;"
-    ></canvas>
+  <view class="chart-content" style="height: {{height}}rpx;">
+    <!-- 饼图画布容器 -->
+    <view class="chart-canvas-wrap">
+      <canvas
+        type="2d"
+        id="pieChart"
+        class="chart-canvas"
+        style="width: 100%; height: 100%;"
+      ></canvas>
+    </view>
 
     <!-- 加载状态遮罩 -->
     <view wx:if="{{loading}}" class="chart-overlay">

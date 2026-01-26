@@ -7,7 +7,8 @@
     "pages/devices/index",
     "pages/devices/detail/index",
     "pages/devices/assign/index",
-    "pages/reports/index"
+    "pages/reports/index",
+    "pages/reports/history/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -52,6 +53,5 @@
     "request": 10000,
     "connectSocket": 10000
   },
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "sitemapLocation": "sitemap.json"
 }

@@ -1,12 +1,179 @@
 <!--
-  Reports Page - Placeholder
+  Reports Page - Report Export
+  报表导出页面
 -->
 
-<view class="container">
-  <view class="placeholder-content">
-    <view class="placeholder-icon">📊</view>
-    <text class="placeholder-title">报表导出</text>
-    <text class="placeholder-desc">功能开发中，敬请期待...</text>
-    <text class="placeholder-hint">将在 IMPL-009 中实现</text>
+<view class="page">
+  <!-- Header -->
+  <view class="header">
+    <text class="header-title">报表导出</text>
+    <text class="header-desc">选择报表类型和时间范围，生成数据报表</text>
   </view>
+
+  <!-- Report Type Selection -->
+  <view class="section">
+    <view class="section-title">选择报表类型</view>
+    <radio-group class="type-group" bindchange="onTypeChange">
+      <view
+        class="type-option {{selectedType === item.type ? 'active' : ''}}"
+        wx:for="{{reportTypes}}"
+        wx:key="type"
+      >
+        <radio value="{{item.type}}" checked="{{selectedType === item.type}}" color="#1890FF" />
+        <view class="type-content">
+          <text class="type-label">{{item.label}}</text>
+          <text class="type-desc">{{item.description}}</text>
+        </view>
+      </view>
+    </radio-group>
+  </view>
+
+  <!-- Date Range Selection -->
+  <view class="section">
+    <view class="section-title">选择时间范围</view>
+
+    <!-- Quick options -->
+    <view class="quick-options">
+      <view
+        class="quick-btn {{activeQuick === item.value ? 'active' : ''}}"
+        wx:for="{{quickOptions}}"
+        wx:key="value"
+        data-option="{{item.value}}"
+        bindtap="onQuickSelect"
+      >
+        {{item.label}}
+      </view>
+    </view>
+
+    <!-- Date pickers -->
+    <view class="date-row">
+      <view class="date-item">
+        <text class="date-label">开始日期</text>
+        <picker mode="date" value="{{startDate}}" end="{{today}}" bindchange="onStartDateChange">
+          <view class="date-value">
+            <text>{{startDate || '请选择'}}</text>
+            <image class="date-icon" src="/static/images/icon-calendar.svg" mode="aspectFit" />
+          </view>
+        </picker>
+      </view>
+      <view class="date-sep">至</view>
+      <view class="date-item">
+        <text class="date-label">结束日期</text>
+        <picker mode="date" value="{{endDate}}" end="{{today}}" bindchange="onEndDateChange">
+          <view class="date-value">
+            <text>{{endDate || '请选择'}}</text>
+            <image class="date-icon" src="/static/images/icon-calendar.svg" mode="aspectFit" />
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- Export Format Selection -->
+  <view class="section">
+    <view class="section-title">导出格式</view>
+    <view class="format-options">
+      <view
+        class="format-btn {{selectedFormat === item.format ? 'active' : ''}}"
+        wx:for="{{formats}}"
+        wx:key="format"
+        data-format="{{item.format}}"
+        bindtap="onFormatChange"
+      >
+        <image
+          class="format-icon"
+          src="{{item.format === 'xlsx' ? '/static/images/icon-excel.svg' : '/static/images/icon-csv.svg'}}"
+          mode="aspectFit"
+        />
+        <text class="format-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Generate Button -->
+  <view class="action-section">
+    <button
+      class="generate-btn {{isGenerating ? 'generating' : ''}}"
+      bindtap="onGenerateReport"
+      disabled="{{isGenerating}}"
+    >
+      <block wx:if="{{!isGenerating}}">
+        <image class="btn-icon" src="/static/images/icon-report.svg" mode="aspectFit" />
+        <text>生成报表</text>
+      </block>
+      <block wx:else>
+        <view class="btn-spinner"></view>
+        <text>生成中 {{currentTask.progress || 0}}%</text>
+      </block>
+    </button>
+
+    <view class="cancel-link" wx:if="{{isGenerating}}" bindtap="onCancelGeneration">
+      取消
+    </view>
+  </view>
+
+  <!-- Progress indicator -->
+  <view class="progress-section" wx:if="{{isGenerating && currentTask}}">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{currentTask.progress || 0}}%;"></view>
+    </view>
+    <view class="progress-info">
+      <text class="progress-status">
+        {{currentTask.status === 'pending' ? '等待处理...' :
+          currentTask.status === 'processing' ? '正在生成...' : '处理中...'}}
+      </text>
+    </view>
+  </view>
+
+  <!-- Recent Reports -->
+  <view class="section recent-section">
+    <view class="section-header">
+      <text class="section-title">最近生成</text>
+      <view class="view-all" bindtap="onViewHistory">
+        <text>查看全部</text>
+        <image class="arrow-icon" src="/static/images/icon-arrow-right.svg" mode="aspectFit" />
+      </view>
+    </view>
+
+    <view class="recent-list" wx:if="{{recentReports.length > 0}}">
+      <view
+        class="report-item {{item.isExpired ? 'expired' : ''}}"
+        wx:for="{{recentReports}}"
+        wx:key="id"
+      >
+        <image class="report-icon" src="/static/images/icon-file.svg" mode="aspectFit" />
+        <view class="report-info">
+          <text class="report-name">{{item.fileName || item.reportLabel}}</text>
+          <text class="report-meta">{{item.createdAtFormatted}} · {{item.fileSizeFormatted}}</text>
+        </view>
+        <view class="report-action">
+          <block wx:if="{{item.isExpired}}">
+            <text class="expired-tag">已过期</text>
+          </block>
+          <block wx:else>
+            <view
+              class="download-btn"
+              data-report="{{item}}"
+              catchtap="onDownloadReport"
+            >
+              下载
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-recent" wx:elif="{{!loadingRecent}}">
+      <image class="empty-icon" src="/static/images/icon-clipboard.svg" mode="aspectFit" />
+      <text class="empty-text">暂无历史报表</text>
+    </view>
+
+    <view class="loading-recent" wx:if="{{loadingRecent}}">
+      <view class="loading-spinner small"></view>
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- Bottom padding for tab bar -->
+  <view class="bottom-padding"></view>
 </view>

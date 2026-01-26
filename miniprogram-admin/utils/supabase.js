@@ -451,6 +451,7 @@ class SupabaseClient {
       'apikey': anonKey,
       'Authorization': `Bearer ${anonKey}`
     };
+    this.storage = new SupabaseStorage(url, anonKey);
   }
 
   from(tableName) {
@@ -466,10 +467,105 @@ class SupabaseClient {
   }
 }
 
+/**
+ * Supabase storage operations
+ */
+class SupabaseStorage {
+  constructor(baseUrl, anonKey) {
+    this.baseUrl = baseUrl;
+    this.anonKey = anonKey;
+  }
+
+  from(bucketName) {
+    return new SupabaseStorageBucket(this.baseUrl, this.anonKey, bucketName);
+  }
+}
+
+/**
+ * Supabase storage bucket operations
+ */
+class SupabaseStorageBucket {
+  constructor(baseUrl, anonKey, bucketName) {
+    this.baseUrl = baseUrl;
+    this.anonKey = anonKey;
+    this.bucketName = bucketName;
+  }
+
+  /**
+   * Create signed URL for file download
+   */
+  async createSignedUrl(filePath, expiresIn = 3600) {
+    const url = `${this.baseUrl}/storage/v1/object/sign/${this.bucketName}/${filePath}`;
+
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url,
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/json',
+          'apikey': this.anonKey,
+          'Authorization': `Bearer ${this.anonKey}`
+        },
+        data: { expiresIn },
+        success: (res) => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            const signedUrl = `${this.baseUrl}/storage/v1${res.data.signedURL}`;
+            resolve({ data: { signedUrl }, error: null });
+          } else {
+            resolve({ data: null, error: res.data });
+          }
+        },
+        fail: (err) => {
+          resolve({ data: null, error: { message: err.errMsg } });
+        }
+      });
+    });
+  }
+
+  /**
+   * Get public URL for file
+   */
+  getPublicUrl(filePath) {
+    const publicUrl = `${this.baseUrl}/storage/v1/object/public/${this.bucketName}/${filePath}`;
+    return { data: { publicUrl } };
+  }
+
+  /**
+   * Remove files from storage
+   */
+  async remove(filePaths) {
+    const url = `${this.baseUrl}/storage/v1/object/${this.bucketName}`;
+
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url,
+        method: 'DELETE',
+        header: {
+          'Content-Type': 'application/json',
+          'apikey': this.anonKey,
+          'Authorization': `Bearer ${this.anonKey}`
+        },
+        data: { prefixes: filePaths },
+        success: (res) => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve({ data: res.data, error: null });
+          } else {
+            resolve({ data: null, error: res.data });
+          }
+        },
+        fail: (err) => {
+          resolve({ data: null, error: { message: err.errMsg } });
+        }
+      });
+    });
+  }
+}
+
 // Create and export singleton instance
 const supabase = new SupabaseClient(config.url, config.anonKey);
 
 module.exports = {
   supabase,
-  SupabaseClient
+  SupabaseClient,
+  SUPABASE_CONFIG: config
 };

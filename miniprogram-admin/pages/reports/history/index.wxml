@@ -1,0 +1,109 @@
+<!--
+  Report History Page - View and download generated reports
+  历史报表页面
+-->
+
+<view class="page">
+  <!-- Filter tabs -->
+  <view class="filter-bar">
+    <view
+      class="filter-item {{filterStatus === item.value ? 'active' : ''}}"
+      wx:for="{{statusOptions}}"
+      wx:key="value"
+      data-status="{{item.value}}"
+      bindtap="onFilterChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <!-- Stats bar -->
+  <view class="stats-bar" wx:if="{{!loading}}">
+    <text class="stats-text">共 {{total}} 条记录</text>
+  </view>
+
+  <!-- Loading state -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- Report list -->
+  <view class="report-list" wx:elif="{{reports.length > 0}}">
+    <view
+      class="report-card {{item.isExpired ? 'expired' : ''}} {{item.statusClass}}"
+      wx:for="{{reports}}"
+      wx:key="id"
+      data-report="{{item}}"
+      bindtap="onShowDetail"
+    >
+      <!-- Icon -->
+      <view class="card-icon">
+        <image wx:if="{{item.status === 'completed'}}" src="/static/images/icon-success.svg" mode="aspectFit" />
+        <image wx:elif="{{item.status === 'processing'}}" src="/static/images/icon-hourglass.svg" mode="aspectFit" />
+        <image wx:elif="{{item.status === 'failed'}}" src="/static/images/icon-error.svg" mode="aspectFit" />
+        <image wx:else src="/static/images/icon-clipboard.svg" mode="aspectFit" />
+      </view>
+
+      <!-- Info -->
+      <view class="card-info">
+        <view class="card-header">
+          <text class="report-type">{{item.reportLabel}}</text>
+          <text class="report-status status-{{item.status}}">{{item.statusLabel}}</text>
+        </view>
+
+        <view class="card-meta">
+          <text>{{item.createdAtFormatted}}</text>
+          <text wx:if="{{item.fileSize}}"> · {{item.fileSizeFormatted}}</text>
+        </view>
+
+        <view class="card-params" wx:if="{{item.params}}">
+          <text class="param-label">{{item.params.start_date}} 至 {{item.params.end_date}}</text>
+          <text class="param-format">{{item.params.format}}</text>
+        </view>
+
+        <view class="card-expire" wx:if="{{item.status === 'completed'}}">
+          <text wx:if="{{item.isExpired}}" class="expire-text expired">已过期</text>
+          <text wx:else class="expire-text">{{item.expiresAtFormatted}} 过期</text>
+        </view>
+      </view>
+
+      <!-- Actions -->
+      <view class="card-actions" catchtap="">
+        <block wx:if="{{item.status === 'completed' && !item.isExpired}}">
+          <view class="action-btn download" data-report="{{item}}" catchtap="onDownload">
+            下载
+          </view>
+        </block>
+        <block wx:elif="{{item.status === 'failed'}}">
+          <view class="action-btn retry" data-report="{{item}}" catchtap="onRetry">
+            重试
+          </view>
+        </block>
+        <block wx:elif="{{item.status === 'processing' || item.status === 'pending'}}">
+          <view class="progress-indicator">
+            <view class="mini-spinner"></view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- Load more -->
+    <view class="loading-more" wx:if="{{loadingMore}}">
+      <view class="loading-spinner small"></view>
+      <text>加载中...</text>
+    </view>
+
+    <view class="no-more" wx:if="{{!hasMore && reports.length > 0}}">
+      - 没有更多了 -
+    </view>
+  </view>
+
+  <!-- Empty state -->
+  <view class="empty-wrap" wx:elif="{{!loading}}">
+    <image class="empty-icon" src="/static/images/icon-clipboard.svg" mode="aspectFit" />
+    <text class="empty-title">暂无历史报表</text>
+    <text class="empty-desc">生成的报表将在这里显示</text>
+    <button class="empty-btn" bindtap="onGoExport">去生成报表</button>
+  </view>
+</view>

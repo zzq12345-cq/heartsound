@@ -21,22 +21,26 @@ const corsHeaders = {
 // Report type configurations
 const REPORT_CONFIGS = {
   detection_data: {
-    name: '检测数据报表',
+    name: 'detection_data',
+    label: '检测数据报表',
     headers: ['检测ID', '用户昵称', '设备ID', '结果', '置信度', '风险等级', '检测时间'],
     columns: ['id', 'user_nickname', 'device_id', 'result_label', 'confidence', 'risk_level', 'created_at']
   },
   user_stats: {
-    name: '用户统计报表',
+    name: 'user_stats',
+    label: '用户统计报表',
     headers: ['用户ID', '昵称', '手机号', '检测次数', '最近检测', '注册时间'],
     columns: ['id', 'nickname', 'phone', 'detection_count', 'last_detection', 'created_at']
   },
   device_usage: {
-    name: '设备使用报表',
+    name: 'device_usage',
+    label: '设备使用报表',
     headers: ['设备ID', '设备编号', '固件版本', '检测次数', '最后在线', '分配用户', '创建时间'],
     columns: ['id', 'device_id', 'firmware_version', 'detection_count', 'last_seen_at', 'assigned_user', 'created_at']
   },
   risk_analysis: {
-    name: '风险分析报表',
+    name: 'risk_analysis',
+    label: '风险分析报表',
     headers: ['日期', '总检测数', '安全', '中等风险', '高风险', '安全占比'],
     columns: ['date', 'total', 'safe_count', 'warning_count', 'danger_count', 'safe_ratio']
   }
@@ -64,16 +68,19 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Get task details
+    console.log('Looking for task:', taskId);
     const { data: task, error: taskError } = await supabase
       .from('report_tasks')
       .select('*')
       .eq('id', taskId)
       .single();
 
+    console.log('Task query result:', { task, taskError });
+
     if (taskError || !task) {
       console.error('Task not found:', taskError);
       return new Response(
-        JSON.stringify({ error: 'Task not found' }),
+        JSON.stringify({ error: 'Task not found', details: taskError?.message }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -87,7 +94,10 @@ serve(async (req) => {
     try {
       // Generate report data
       const { params, report_type } = task;
+      console.log('Generating report:', { report_type, params });
+
       const data = await generateReportData(supabase, report_type, params);
+      console.log('Report data generated, rows:', data.length);
 
       // Update progress
       await supabase
@@ -120,8 +130,10 @@ serve(async (req) => {
         .update({ progress: 80 })
         .eq('id', taskId);
 
-      // Upload to storage
-      const filePath = `reports/${task.admin_id}/${taskId}/${fileName}`;
+      // Upload to storage (path relative to bucket, no bucket name prefix)
+      const filePath = `${task.admin_id}/${taskId}/${fileName}`;
+      console.log('Uploading to storage:', filePath);
+
       const { error: uploadError } = await supabase.storage
         .from('reports')
         .upload(filePath, fileContent, {
@@ -130,8 +142,11 @@ serve(async (req) => {
         });
 
       if (uploadError) {
+        console.error('Upload error:', uploadError);
         throw new Error(`Upload failed: ${uploadError.message}`);
       }
+
+      console.log('Upload successful!');
 
       // Update task as completed
       await supabase

@@ -1,9 +1,22 @@
-<!-- Detection Page Template - Entry Point -->
+<!-- Detection Page Template - Entry Point (美化版) -->
 <view class="detection-page">
-  <!-- Header section -->
+  <!-- Animated Background -->
+  <view class="animated-bg">
+    <view class="bg-circle c1"></view>
+    <view class="bg-circle c2"></view>
+    <view class="bg-circle c3"></view>
+  </view>
+
+  <!-- Header section with wave -->
   <view class="header-section">
     <view class="header-bg"></view>
+    <view class="header-wave">
+      <view class="wave-shape"></view>
+    </view>
     <view class="header-content">
+      <view class="header-icon-wrapper">
+        <icon-svg name="stethoscope" size="48" color="#FFFFFF" />
+      </view>
       <text class="header-title">心音检测</text>
       <text class="header-subtitle">AI智能分析，守护心脏健康</text>
     </view>
@@ -11,39 +24,95 @@
 
   <!-- Main content -->
   <view class="main-content">
-    <!-- Device status card -->
+    <!-- Device status card with glow effect -->
     <view class="status-card {{deviceConnected ? 'connected' : 'disconnected'}}">
+      <view class="status-glow" wx:if="{{deviceConnected}}"></view>
       <view class="status-icon-wrapper">
-        <icon-svg name="{{deviceConnected ? 'check-circle' : 'warning'}}" size="40" color="{{deviceConnected ? '#4CAF50' : '#FF9800'}}" />
+        <view class="status-icon-bg {{deviceConnected ? 'connected' : 'disconnected'}}">
+          <icon-svg name="{{deviceConnected ? 'wifi' : 'wifi-off'}}" size="36" color="{{deviceConnected ? '#4CAF50' : '#FF9800'}}" />
+        </view>
+        <view class="status-pulse" wx:if="{{deviceConnected}}"></view>
       </view>
       <view class="status-info">
-        <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
+        <view class="status-row">
+          <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
+          <view class="status-badge {{deviceConnected ? 'online' : 'offline'}}">
+            <view class="badge-dot"></view>
+            <text class="badge-text">{{deviceConnected ? '在线' : '离线'}}</text>
+          </view>
+        </view>
         <text class="status-hint" wx:if="{{deviceInfo}}">{{deviceInfo.device_name}}</text>
         <text class="status-hint" wx:else>请在首页连接设备后开始检测</text>
       </view>
+      <view class="status-arrow" wx:if="{{deviceConnected}}">
+        <icon-svg name="chevron-right" size="28" color="#BDBDBD" />
+      </view>
     </view>
 
-    <!-- Start detection button -->
+    <!-- Start detection button with enhanced animation -->
     <view class="start-section">
       <view class="start-btn-wrapper" bindtap="onStartTap">
+        <!-- Outer rings animation -->
+        <view class="outer-ring-container" wx:if="{{deviceConnected}}">
+          <view class="outer-ring r1"></view>
+          <view class="outer-ring r2"></view>
+          <view class="outer-ring r3"></view>
+        </view>
+
+        <!-- Main button -->
         <view class="start-btn {{deviceConnected ? 'active' : 'disabled'}}">
-          <view class="pulse-ring r1" wx:if="{{deviceConnected}}"></view>
-          <view class="pulse-ring r2" wx:if="{{deviceConnected}}"></view>
           <view class="btn-inner">
-            <icon-svg name="stethoscope" size="72" color="#FFFFFF" />
-            <text class="btn-text">开始检测</text>
+            <view class="btn-icon-wrapper">
+              <icon-svg name="heart-pulse" size="64" color="#FFFFFF" />
+            </view>
+            <text class="btn-text">{{deviceConnected ? '开始检测' : '未连接'}}</text>
           </view>
         </view>
       </view>
-      <text class="start-hint">点击开始30秒心音采集</text>
+
+      <!-- Info cards below button -->
+      <view class="info-cards">
+        <view class="info-card">
+          <icon-svg name="clock" size="28" color="#1890FF" />
+          <text class="info-text">30秒</text>
+          <text class="info-label">检测时长</text>
+        </view>
+        <view class="info-card">
+          <icon-svg name="target" size="28" color="#52C41A" />
+          <text class="info-text">AI分析</text>
+          <text class="info-label">智能诊断</text>
+        </view>
+        <view class="info-card">
+          <icon-svg name="chart" size="28" color="#722ED1" />
+          <text class="info-text">报告</text>
+          <text class="info-label">详细结果</text>
+        </view>
+      </view>
     </view>
 
-    <!-- Health tip carousel -->
+    <!-- Health tip carousel with swiper -->
     <view class="tip-section">
-      <view class="tip-card">
-        <icon-svg name="lightbulb" size="32" color="#F57C00" />
-        <text class="tip-content">{{tips[currentTip]}}</text>
+      <view class="section-header">
+        <view class="section-title-wrapper">
+          <icon-svg name="lightbulb" size="28" color="#FF9800" />
+          <text class="section-title">检测小贴士</text>
+        </view>
       </view>
+      <swiper
+        class="tip-swiper"
+        autoplay="{{true}}"
+        interval="{{5000}}"
+        circular="{{true}}"
+        indicator-dots="{{false}}"
+        bindchange="onTipChange"
+      >
+        <swiper-item wx:for="{{tips}}" wx:key="index">
+          <view class="tip-card">
+            <view class="tip-number">{{index + 1}}</view>
+            <text class="tip-content">{{item}}</text>
+          </view>
+        </swiper-item>
+      </swiper>
       <view class="tip-indicators">
         <view
           class="tip-dot {{index === currentTip ? 'active' : ''}}"
@@ -53,11 +122,17 @@
       </view>
     </view>
 
-    <!-- Recent records -->
+    <!-- Recent records with enhanced styling -->
     <view class="records-section" wx:if="{{recentRecords.length > 0}}">
       <view class="section-header">
-        <text class="section-title">最近检测</text>
-        <text class="section-more" bindtap="viewAllRecords">查看全部 ></text>
+        <view class="section-title-wrapper">
+          <icon-svg name="clock" size="28" color="#1890FF" />
+          <text class="section-title">最近检测</text>
+        </view>
+        <view class="section-more" bindtap="viewAllRecords">
+          <text>查看全部</text>
+          <icon-svg name="chevron-right" size="20" color="#1890FF" />
+        </view>
       </view>
 
       <view class="records-list">
@@ -67,26 +142,42 @@
           wx:key="index"
           data-index="{{index}}"
           bindtap="onRecordTap"
+          hover-class="record-item-hover"
         >
-          <view class="record-icon {{item.risk_level}}">
-            <icon-svg wx:if="{{item.risk_level === 'safe'}}" name="check-circle" size="28" color="#4CAF50" />
-            <icon-svg wx:elif="{{item.risk_level === 'warning'}}" name="warning" size="28" color="#FF9800" />
-            <icon-svg wx:else name="alert" size="28" color="#F44336" />
+          <view class="record-icon-wrapper {{item.risk_level}}">
+            <icon-svg wx:if="{{item.risk_level === 'safe'}}" name="check-circle" size="32" color="#4CAF50" />
+            <icon-svg wx:elif="{{item.risk_level === 'warning'}}" name="warning" size="32" color="#FF9800" />
+            <icon-svg wx:else name="alert" size="32" color="#F44336" />
           </view>
           <view class="record-info">
             <text class="record-label">{{item.label || '心音检测'}}</text>
-            <text class="record-time">{{item.timestamp ? '刚刚' : '--'}}</text>
+            <text class="record-time">{{item.timeAgo || '刚刚'}}</text>
+          </view>
+          <view class="record-result {{item.risk_level}}">
+            <text wx:if="{{item.risk_level === 'safe'}}">正常</text>
+            <text wx:elif="{{item.risk_level === 'warning'}}">注意</text>
+            <text wx:else>异常</text>
           </view>
           <view class="record-arrow">
-            <icon-svg name="chevron-right" size="24" color="#CCC" />
+            <icon-svg name="chevron-right" size="24" color="#BDBDBD" />
           </view>
         </view>
       </view>
     </view>
+
+    <!-- Empty state when no records -->
+    <view class="empty-records" wx:if="{{recentRecords.length === 0}}">
+      <view class="empty-icon">
+        <icon-svg name="clipboard" size="64" color="#E0E0E0" />
+      </view>
+      <text class="empty-text">暂无检测记录</text>
+      <text class="empty-hint">完成首次检测后，记录将显示在这里</text>
+    </view>
   </view>
 
-  <!-- Disclaimer -->
+  <!-- Disclaimer with icon -->
   <view class="disclaimer">
+    <icon-svg name="alert" size="20" color="#BDBDBD" />
     <text>本检测结果仅供参考，不作为医学诊断依据</text>
   </view>
 </view>

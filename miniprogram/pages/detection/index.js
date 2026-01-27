@@ -65,10 +65,16 @@ Page({
    * 轮播健康小贴士
    */
   startTipRotation() {
-    this.tipTimer = setInterval(() => {
-      const nextTip = (this.data.currentTip + 1) % this.data.tips.length;
-      this.setData({ currentTip: nextTip });
-    }, 5000);
+    // Swiper handles autoplay, no need for manual timer
+    // Keep this for backward compatibility
+  },
+
+  /**
+   * Swiper change event handler
+   */
+  onTipChange(e) {
+    const { current } = e.detail;
+    this.setData({ currentTip: current });
   },
 
   /**

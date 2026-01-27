@@ -21,7 +21,14 @@ Page({
     healthTips: [],
 
     // UI state
-    canStartDetection: false
+    canStartDetection: false,
+
+    // Welcome greeting
+    greeting: '你好',
+
+    // Last detection result (for quick stats)
+    lastDetectionResult: null,
+    lastDetectionTime: ''
   },
 
   /**
@@ -29,6 +36,7 @@ Page({
    */
   onLoad() {
     console.log('[IndexPage] Page loaded');
+    this.updateGreeting();
   },
 
   /**
@@ -36,8 +44,63 @@ Page({
    */
   onShow() {
     console.log('[IndexPage] Page shown');
+    this.updateGreeting();
     this.refreshDeviceStatus();
     this.loadHealthTips();
+    this.loadLastDetection();
+  },
+
+  /**
+   * Update greeting based on time of day
+   */
+  updateGreeting() {
+    const hour = new Date().getHours();
+    let greeting = '你好';
+
+    if (hour >= 5 && hour < 12) {
+      greeting = '早上好';
+    } else if (hour >= 12 && hour < 14) {
+      greeting = '中午好';
+    } else if (hour >= 14 && hour < 18) {
+      greeting = '下午好';
+    } else if (hour >= 18 && hour < 22) {
+      greeting = '晚上好';
+    } else {
+      greeting = '夜深了';
+    }
+
+    this.setData({ greeting });
+  },
+
+  /**
+   * Load last detection result for quick stats
+   */
+  loadLastDetection() {
+    // Try to get from storage or global data
+    const lastResult = app.globalData.lastDetectionResult;
+    if (lastResult) {
+      this.setData({
+        lastDetectionResult: lastResult,
+        lastDetectionTime: this.formatTime(lastResult.detected_at)
+      });
+    }
+  },
+
+  /**
+   * Format timestamp to relative time
+   */
+  formatTime(timestamp) {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now - date;
+
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
+    if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`;
+
+    return `${date.getMonth() + 1}月${date.getDate()}日`;
   },
 
   /**
@@ -91,8 +154,9 @@ Page({
    * 模拟设备连接（开发测试用）
    */
   mockDeviceConnect() {
+    // 使用合法的UUID格式作为模拟设备ID（数据库要求UUID类型）
     const mockDeviceInfo = {
-      device_id: 'MOCK-HS-001',
+      device_id: '00000000-0000-0000-0000-000000000001',
       device_name: '心音智鉴(模拟)',
       ip_address: '192.168.1.100',
       firmware_version: 'v1.0.0-mock',

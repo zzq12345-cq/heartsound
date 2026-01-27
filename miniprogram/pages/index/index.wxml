@@ -1,61 +1,160 @@
-<!-- Index Page Template -->
+<!-- Index Page Template - 首页 -->
 <view class="page-container">
+  <!-- Header Welcome Section -->
+  <view class="header-section">
+    <view class="welcome-area">
+      <view class="welcome-text">
+        <text class="greeting">{{greeting}}</text>
+        <text class="welcome-subtitle">开启您的心脏健康之旅</text>
+      </view>
+      <view class="header-icon-wrapper">
+        <icon-svg name="heart-pulse" size="56" color="#1890FF" />
+      </view>
+    </view>
+  </view>
+
   <!-- Device Status Card -->
   <view class="section">
-    <device-card
-      status="{{deviceStatus}}"
-      deviceInfo="{{deviceInfo}}"
-      loading="{{connecting}}"
-      errorMessage="{{errorMessage}}"
-      bind:retry="onDeviceRetry"
-      bind:disconnect="onDeviceDisconnect"
-      bind:viewInfo="onDeviceViewInfo"
-    />
+    <view class="section-title">
+      <text class="section-title-text">设备状态</text>
+      <view class="status-badge {{deviceStatus}}">
+        <view class="status-dot"></view>
+        <text class="status-badge-text">{{deviceStatus === 'connected' ? '在线' : '离线'}}</text>
+      </view>
+    </view>
+    <view class="device-card {{deviceStatus}}">
+      <view class="card-content">
+        <view class="device-icon-wrapper {{deviceStatus}}">
+          <icon-svg name="{{deviceStatus === 'connected' ? 'wifi' : 'wifi-off'}}" size="44" color="{{deviceStatus === 'connected' ? '#4CAF50' : '#BDBDBD'}}" />
+        </view>
+        <view class="device-info">
+          <text class="device-status-text">{{deviceStatus === 'connected' ? '已连接设备' : '未连接设备'}}</text>
+          <text class="device-status-hint">{{deviceStatus === 'connected' ? deviceInfo.device_name || '心音智鉴检测设备' : '请先连接树莓派设备'}}</text>
+        </view>
+        <view class="device-arrow" wx:if="{{deviceStatus === 'connected'}}">
+          <icon-svg name="chevron-right" size="32" color="#BDBDBD" />
+        </view>
+      </view>
+    </view>
   </view>
 
   <!-- Connection Buttons -->
-  <view class="section connection-buttons">
-    <view class="btn-row">
-      <view class="btn-item" bindtap="onScanTap" bindlongpress="onLongPressScan">
-        <view class="btn-icon scan-icon">
-          <icon-svg name="scan" size="48" color="#FFFFFF" />
+  <view class="section">
+    <view class="section-title">
+      <text class="section-title-text">连接设备</text>
+    </view>
+    <view class="connection-buttons">
+      <view class="btn-row">
+        <!-- Scan QR Code -->
+        <view class="connect-btn-item" bindtap="onScanTap" bindlongpress="onLongPressScan">
+          <view class="connect-icon-outer scan-outer">
+            <view class="connect-icon scan-bg">
+              <icon-svg name="scan" size="48" color="#FFFFFF" />
+            </view>
+          </view>
+          <text class="connect-title">扫码连接</text>
+          <text class="connect-desc">扫描设备二维码</text>
+          <text class="dev-mode-hint">长按模拟连接</text>
         </view>
-        <text class="btn-text">扫码连接</text>
-        <text class="btn-hint">扫描设备二维码</text>
-        <text class="btn-dev-hint">长按3秒模拟连接</text>
-      </view>
 
-      <view class="btn-item" bindtap="onManualInputTap">
-        <view class="btn-icon input-icon">
-          <icon-svg name="keyboard" size="48" color="#FFFFFF" />
+        <!-- Manual Input -->
+        <view class="connect-btn-item" bindtap="onManualInputTap">
+          <view class="connect-icon-outer input-outer">
+            <view class="connect-icon input-bg">
+              <icon-svg name="keyboard" size="48" color="#FFFFFF" />
+            </view>
+          </view>
+          <text class="connect-title">手动输入</text>
+          <text class="connect-desc">输入设备IP地址</text>
         </view>
-        <text class="btn-text">手动输入</text>
-        <text class="btn-hint">输入设备IP地址</text>
       </view>
     </view>
   </view>
 
   <!-- Start Detection Button -->
   <view class="section">
-    <button
-      class="btn btn-primary btn-block start-btn {{!canStartDetection ? 'btn-disabled' : ''}}"
+    <view
+      class="start-detection-btn {{canStartDetection ? 'active' : 'disabled'}}"
       bindtap="onStartDetectionTap"
-      disabled="{{!canStartDetection}}"
     >
-      <icon-svg name="heart" size="40" color="#FFFFFF" />
-      <text>开始检测</text>
-    </button>
+      <view class="start-btn-icon-wrapper">
+        <icon-svg name="heart" size="36" color="{{canStartDetection ? '#FFFFFF' : '#BDBDBD'}}" />
+      </view>
+      <view class="start-btn-content">
+        <text class="start-btn-text">{{canStartDetection ? '开始心音检测' : '请先连接设备'}}</text>
+        <text class="start-btn-hint" wx:if="{{canStartDetection}}">约30秒完成检测</text>
+      </view>
+      <view class="start-btn-arrow" wx:if="{{canStartDetection}}">
+        <icon-svg name="arrow-right" size="28" color="#FFFFFF" />
+      </view>
+    </view>
+  </view>
+
+  <!-- Quick Stats (when connected) -->
+  <view class="section" wx:if="{{deviceStatus === 'connected' && lastDetectionResult}}">
+    <view class="section-title">
+      <text class="section-title-text">上次检测</text>
+      <text class="section-subtitle">{{lastDetectionTime}}</text>
+    </view>
+    <view class="quick-stats-card">
+      <view class="stat-item">
+        <text class="stat-value {{lastDetectionResult.riskLevel}}">{{lastDetectionResult.confidence}}%</text>
+        <text class="stat-label">置信度</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value {{lastDetectionResult.riskLevel}}">{{lastDetectionResult.result}}</text>
+        <text class="stat-label">检测结果</text>
+      </view>
+    </view>
   </view>
 
   <!-- Health Tips -->
   <view class="section">
-    <health-tip tips="{{healthTips}}" interval="{{5000}}" />
+    <view class="section-title">
+      <text class="section-title-text">健康小贴士</text>
+      <view class="tip-icon-badge">
+        <icon-svg name="lightbulb" size="28" color="#FF9800" />
+      </view>
+    </view>
+    <view class="health-tip-card">
+      <swiper
+        class="tip-swiper"
+        autoplay="{{true}}"
+        interval="{{5000}}"
+        circular="{{true}}"
+        indicator-dots="{{true}}"
+        indicator-color="rgba(24, 144, 255, 0.2)"
+        indicator-active-color="#1890FF"
+      >
+        <swiper-item wx:for="{{healthTips}}" wx:key="id">
+          <view class="tip-content-wrapper">
+            <view class="tip-category-wrapper">
+              <text class="tip-category">{{item.category || '健康建议'}}</text>
+            </view>
+            <text class="tip-text">{{item.content}}</text>
+          </view>
+        </swiper-item>
+
+        <!-- Default tip if empty -->
+        <swiper-item wx:if="{{healthTips.length === 0}}">
+          <view class="tip-content-wrapper">
+            <view class="tip-category-wrapper">
+              <text class="tip-category">健康建议</text>
+            </view>
+            <text class="tip-text">规律运动有助于降低静息心率，改善心脏功能。建议每周进行至少150分钟的中等强度有氧运动。</text>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
   </view>
 
   <!-- Footer Disclaimer -->
   <view class="footer">
+    <view class="footer-divider"></view>
     <text class="disclaimer">
       本检测结果仅供参考，不能作为诊断依据。如有不适，请及时就医。
     </text>
+    <text class="version-text">心音智鉴 v1.0.0</text>
   </view>
 </view>

@@ -7,6 +7,15 @@ const { supabase } = require('../utils/supabase');
 const adminService = require('./admin');
 
 /**
+ * 转义搜索关键词中的特殊字符
+ * 防止 % 和 _ 在LIKE查询中被当作通配符
+ */
+function escapeKeyword(keyword) {
+  if (!keyword) return '';
+  return keyword.replace(/[%_\\]/g, '\\$&');
+}
+
+/**
  * 获取设备列表（分页）
  *
  * @param {object} options - 查询选项
@@ -25,19 +34,19 @@ async function getDevices({ page = 1, pageSize = 20, status = 'all', keyword = '
       .from('devices')
       .select('*', { count: 'exact' });
 
-    // 状态筛选
+    // 状态筛选 - 5分钟内有心跳视为在线
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
     if (status === 'online') {
-      // 5分钟内有心跳视为在线
-      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       query = query.gte('last_seen_at', fiveMinutesAgo);
     } else if (status === 'offline') {
-      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-      query = query.lt('last_seen_at', fiveMinutesAgo);
+      // 离线包括：超过5分钟未心跳 或 从未上报过心跳(null)
+      query = query.or(`last_seen_at.lt.${fiveMinutesAgo},last_seen_at.is.null`);
     }
 
-    // 关键词搜索
+    // 关键词搜索 - 转义特殊字符防止查询异常
     if (keyword) {
-      query = query.or(`device_id.ilike.%${keyword}%,ip_address.ilike.%${keyword}%`);
+      const escaped = escapeKeyword(keyword);
+      query = query.or(`device_id.ilike.%${escaped}%,ip_address.ilike.%${escaped}%`);
     }
 
     const { data, error, count } = await query
@@ -188,9 +197,10 @@ async function getDeviceStats(deviceId) {
  * @param {string} deviceId - 设备ID（数据库ID）
  * @param {string} userId - 用户ID
  * @param {boolean} isPrimary - 是否为主设备
+ * @param {string} adminId - 操作管理员ID（用于日志记录）
  * @returns {Promise<boolean>}
  */
-async function assignDevice(deviceId, userId, isPrimary = true) {
+async function assignDevice(deviceId, userId, isPrimary = true, adminId = null) {
   try {
     // 检查是否已分配
     const existing = await getDeviceAssignment(deviceId);
@@ -213,10 +223,9 @@ async function assignDevice(deviceId, userId, isPrimary = true) {
     }
 
     // 记录操作日志
-    const app = getApp();
-    if (app && app.globalData.adminInfo) {
+    if (adminId) {
       await adminService.logAdminAction(
-        app.globalData.adminInfo.id,
+        adminId,
         'assign_device',
         'device',
         deviceId,
@@ -236,9 +245,10 @@ async function assignDevice(deviceId, userId, isPrimary = true) {
  * 解绑设备
  *
  * @param {string} deviceId - 设备ID
+ * @param {string} adminId - 操作管理员ID（用于日志记录）
  * @returns {Promise<boolean>}
  */
-async function unassignDevice(deviceId) {
+async function unassignDevice(deviceId, adminId = null) {
   try {
     // 获取当前分配信息（用于日志）
     const currentAssignment = await getDeviceAssignment(deviceId);
@@ -253,10 +263,9 @@ async function unassignDevice(deviceId) {
     }
 
     // 记录操作日志
-    const app = getApp();
-    if (app && app.globalData.adminInfo) {
+    if (adminId) {
       await adminService.logAdminAction(
-        app.globalData.adminInfo.id,
+        adminId,
         'unassign_device',
         'device',
         deviceId,
@@ -276,9 +285,10 @@ async function unassignDevice(deviceId) {
  * 添加新设备
  *
  * @param {object} deviceInfo - 设备信息
+ * @param {string} adminId - 操作管理员ID（用于日志记录）
  * @returns {Promise<object>}
  */
-async function addDevice(deviceInfo) {
+async function addDevice(deviceInfo, adminId = null) {
   try {
     const { data, error } = await supabase
       .from('devices')
@@ -297,10 +307,9 @@ async function addDevice(deviceInfo) {
     }
 
     // 记录操作日志
-    const app = getApp();
-    if (app && app.globalData.adminInfo) {
+    if (adminId) {
       await adminService.logAdminAction(
-        app.globalData.adminInfo.id,
+        adminId,
         'add_device',
         'device',
         data.id,
@@ -327,10 +336,11 @@ async function searchDevices(keyword, limit = 10) {
   if (!keyword) return [];
 
   try {
+    const escaped = escapeKeyword(keyword);
     const { data, error } = await supabase
       .from('devices')
       .select('id, device_id, ip_address, last_seen_at')
-      .or(`device_id.ilike.%${keyword}%,ip_address.ilike.%${keyword}%`)
+      .or(`device_id.ilike.%${escaped}%,ip_address.ilike.%${escaped}%`)
       .limit(limit);
 
     if (error) {

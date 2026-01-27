@@ -3,27 +3,42 @@
  * 心音智鉴管理后台 - 全局样式
  */
 
-/* ========== CSS变量 ========== */
+/* ========== CSS变量 - 现代医疗风格配色 ========== */
 page {
-  --primary-color: #1890FF;
-  --primary-light: #E6F7FF;
-  --success-color: #52C41A;
-  --warning-color: #FAAD14;
-  --danger-color: #FF4D4F;
-  --text-primary: #333333;
-  --text-secondary: #666666;
-  --text-tertiary: #999999;
-  --bg-primary: #F5F5F5;
-  --bg-white: #FFFFFF;
-  --border-color: #E8E8E8;
-  --shadow-light: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  --shadow-medium: 0 4rpx 20rpx rgba(0, 0, 0, 0.12);
+  /* 主色系 - 柔和医疗蓝 */
+  --primary-color: #4A90E2;
+  --primary-light: #F0F7FF;
+  --primary-gradient: linear-gradient(135deg, #667EEA 0%, #64B5F6 100%);
 
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* 功能色 - 低饱和度 */
+  --success-color: #5CB85C;
+  --success-light: #F0FAF0;
+  --warning-color: #F5A623;
+  --warning-light: #FFF9F0;
+  --danger-color: #E25C5C;
+  --danger-light: #FFF0F0;
+
+  /* 文字色 - 深灰蓝替代纯黑 */
+  --text-primary: #2C3E50;
+  --text-secondary: #7F8C9A;
+  --text-tertiary: #A8B5C2;
+
+  /* 背景色 */
+  --bg-primary: #F8FAFB;
+  --bg-white: #FFFFFF;
+  --border-color: #E8EEF3;
+
+  /* 阴影 - Soft UI风格 */
+  --shadow-soft: 0 4rpx 16rpx rgba(149, 157, 165, 0.08), 0 12rpx 32rpx rgba(149, 157, 165, 0.06);
+  --shadow-light: 0 2rpx 8rpx rgba(149, 157, 165, 0.08);
+  --shadow-medium: 0 8rpx 24rpx rgba(149, 157, 165, 0.12);
+
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 28rpx;
   color: var(--text-primary);
   background-color: var(--bg-primary);
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ========== 通用布局 ========== */

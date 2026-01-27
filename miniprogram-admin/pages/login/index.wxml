@@ -1,61 +1,47 @@
 <!--
   Login Page - Admin Authentication
-  管理员登录页面模板
+  管理员登录页面 - 临床洁净风设计
 -->
 
 <view class="container">
-  <!-- 背景装饰 -->
-  <view class="bg-decoration">
-    <view class="bg-circle circle-1"></view>
-    <view class="bg-circle circle-2"></view>
+  <!-- 品牌区域 -->
+  <view class="brand-section">
+    <!-- Logo -->
+    <view class="logo">
+      <image class="logo-image" src="/static/images/logo.svg" mode="aspectFit" />
+    </view>
+
+    <!-- 品牌名称 -->
+    <text class="brand-title">心音智鉴</text>
+    <text class="brand-subtitle">HeartSound Admin</text>
   </view>
 
-  <!-- 登录内容 -->
-  <view class="login-content">
-    <!-- Logo和标题 -->
-    <view class="login-header">
-      <view class="logo">
-        <view class="logo-icon">
-          <!-- 心形图标 -->
-          <view class="heart-icon"></view>
-        </view>
+  <!-- 登录区域 -->
+  <view class="login-section">
+    <text class="login-hint">使用已授权的微信账号登录管理后台</text>
+
+    <!-- 登录按钮 -->
+    <button
+      class="login-btn {{loading ? 'is-loading' : ''}}"
+      bindtap="onLoginTap"
+      disabled="{{loading}}"
+    >
+      <view wx:if="{{loading}}" class="btn-loading">
+        <view class="spinner"></view>
+        <text>验证身份中</text>
       </view>
-      <text class="app-title">心音智鉴</text>
-      <text class="app-subtitle">管理后台</text>
+      <text wx:else>微信一键登录</text>
+    </button>
+
+    <!-- 错误提示 -->
+    <view wx:if="{{errorMessage}}" class="error-toast" bindtap="clearError">
+      <text class="error-text">{{errorMessage}}</text>
+      <text class="error-close">×</text>
     </view>
+  </view>
 
-    <!-- 登录卡片 -->
-    <view class="login-card">
-      <text class="card-title">管理员登录</text>
-      <text class="card-desc">请使用授权的微信账号登录</text>
-
-      <!-- 登录按钮 -->
-      <button
-        class="login-btn {{loading ? 'loading' : ''}}"
-        bindtap="onLoginTap"
-        disabled="{{loading}}"
-      >
-        <view wx:if="{{loading}}" class="btn-loading">
-          <view class="loading-spinner"></view>
-          <text>验证中...</text>
-        </view>
-        <view wx:else class="btn-content">
-          <text class="btn-icon">🔐</text>
-          <text>微信登录</text>
-        </view>
-      </button>
-
-      <!-- 错误提示 -->
-      <view wx:if="{{errorMessage}}" class="error-message" bindtap="clearError">
-        <text class="error-icon">⚠️</text>
-        <text class="error-text">{{errorMessage}}</text>
-      </view>
-    </view>
-
-    <!-- 底部说明 -->
-    <view class="login-footer">
-      <text class="footer-text">仅限授权管理员访问</text>
-      <text class="footer-hint">如需权限请联系系统管理员</text>
-    </view>
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text class="footer-text">仅限授权管理员访问</text>
   </view>
 </view>

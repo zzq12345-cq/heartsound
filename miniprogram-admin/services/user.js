@@ -7,6 +7,15 @@
 const { supabase } = require('../utils/supabase');
 
 /**
+ * 转义搜索关键词中的特殊字符
+ * 防止 % 和 _ 在LIKE查询中被当作通配符
+ */
+function escapeKeyword(keyword) {
+  if (!keyword) return '';
+  return keyword.replace(/[%_\\]/g, '\\$&');
+}
+
+/**
  * 获取用户列表（分页）
  *
  * @param {object} options - 查询选项
@@ -24,9 +33,10 @@ async function getUsers({ page = 1, pageSize = 20, keyword = '' } = {}) {
       .from('users')
       .select('*', { count: 'exact' });
 
-    // 关键词搜索（昵称或手机号）
+    // 关键词搜索（昵称或手机号）- 转义特殊字符防止查询异常
     if (keyword) {
-      query = query.or(`nickname.ilike.%${keyword}%,phone.ilike.%${keyword}%`);
+      const escaped = escapeKeyword(keyword);
+      query = query.or(`nickname.ilike.%${escaped}%,phone.ilike.%${escaped}%`);
     }
 
     const { data, error, count } = await query
@@ -216,10 +226,11 @@ async function searchUsers(keyword, limit = 10) {
   if (!keyword) return [];
 
   try {
+    const escaped = escapeKeyword(keyword);
     const { data, error } = await supabase
       .from('users')
       .select('id, nickname, avatar_url, phone')
-      .or(`nickname.ilike.%${keyword}%,phone.ilike.%${keyword}%`)
+      .or(`nickname.ilike.%${escaped}%,phone.ilike.%${escaped}%`)
       .limit(limit);
 
     if (error) {

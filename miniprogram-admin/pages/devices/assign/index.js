@@ -143,10 +143,15 @@ Page({
     wx.showLoading({ title: '分配中...' });
 
     try {
+      // 获取当前管理员ID用于日志记录
+      const app = getApp();
+      const adminId = app.globalData.adminInfo?.id || null;
+
       await deviceService.assignDevice(
         this.data.deviceId,
         this.data.selectedUser.id,
-        true // 设为主设备
+        true, // 设为主设备
+        adminId
       );
 
       wx.hideLoading();

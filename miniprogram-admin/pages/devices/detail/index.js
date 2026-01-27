@@ -111,7 +111,12 @@ Page({
         if (res.confirm) {
           try {
             wx.showLoading({ title: '解绑中...' });
-            await deviceService.unassignDevice(this.data.deviceId);
+
+            // 获取当前管理员ID用于日志记录
+            const app = getApp();
+            const adminId = app.globalData.adminInfo?.id || null;
+
+            await deviceService.unassignDevice(this.data.deviceId, adminId);
             wx.hideLoading();
             wx.showToast({
               title: '解绑成功',

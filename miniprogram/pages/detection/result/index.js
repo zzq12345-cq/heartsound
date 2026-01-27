@@ -143,10 +143,16 @@ Page({
           duration_seconds: 30
         };
 
-        // 修复：使用 device_id 而不是 id
+        // 注意：device_id 需要是 devices 表的 UUID 主键
+        // 模拟设备没有真实的数据库记录，传 null
+        // 真实设备应该有 db_id 字段（设备注册时获取）
+        const isMockDevice = deviceInfo?.device_id?.startsWith('00000000-') ||
+                             deviceInfo?.device_name?.includes('模拟');
+        const dbDeviceId = isMockDevice ? null : (deviceInfo?.db_id || null);
+
         await userService.saveDetectionRecord(
           userId,
-          deviceInfo?.device_id || null,
+          dbDeviceId,
           recordData
         );
         console.log('[Result] 检测记录已同步到云端');

@@ -1,163 +1,44 @@
 /**
  * Detection Recording Page Styles
- * 检测录制页样式 - 优化重构版 (MedTech专业风格)
+ * 检测录制页样式 - 统一设计语言版
  */
 
-/* 页面容器 */
+/* ==================== 页面容器 ==================== */
 .recording-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1A1A2E 0%, #0F3460 50%, #16213E 100%);
+  background: linear-gradient(180deg, #F0F7FF 0%, #F8FAFC 15%, #F5F7FA 100%);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
 }
 
-/* ==================== 背景特效 ==================== */
-.bg-effects {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* 渐变遮罩 */
-.gradient-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(ellipse at 50% 30%, rgba(24, 144, 255, 0.12) 0%, transparent 60%);
-}
-
-/* 脉冲背景 - 简化为3个 */
-.pulse-bg {
-  position: absolute;
-  top: 32%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.pulse-circle {
-  position: absolute;
-  border-radius: 50%;
-  border: 2rpx solid rgba(24, 144, 255, 0.2);
-  animation: pulse-expand 4s ease-out infinite;
-}
-
-.pulse-circle.c1 {
-  width: 420rpx;
-  height: 420rpx;
-  top: -210rpx;
-  left: -210rpx;
-  animation-delay: 0s;
-}
-
-.pulse-circle.c2 {
-  width: 600rpx;
-  height: 600rpx;
-  top: -300rpx;
-  left: -300rpx;
-  animation-delay: 1.3s;
-}
-
-.pulse-circle.c3 {
-  width: 780rpx;
-  height: 780rpx;
-  top: -390rpx;
-  left: -390rpx;
-  animation-delay: 2.6s;
-}
-
-@keyframes pulse-expand {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1.3);
-    opacity: 0;
-  }
-}
-
-/* 声波装饰 - 录制时显示，简化为2个 */
-.sound-waves {
-  position: absolute;
-  top: 32%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.sound-wave {
-  position: absolute;
-  border-radius: 50%;
-  border: 3rpx solid rgba(24, 144, 255, 0.35);
-  animation: sound-wave-pulse 2.5s ease-out infinite;
-}
-
-.sound-wave.sw1 {
-  width: 500rpx;
-  height: 500rpx;
-  top: -250rpx;
-  left: -250rpx;
-  animation-delay: 0s;
-}
-
-.sound-wave.sw2 {
-  width: 700rpx;
-  height: 700rpx;
-  top: -350rpx;
-  left: -350rpx;
-  animation-delay: 0.5s;
-}
-
-@keyframes sound-wave-pulse {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.8;
-    border-color: rgba(24, 144, 255, 0.5);
-  }
-  100% {
-    transform: scale(1.25);
-    opacity: 0;
-    border-color: rgba(24, 144, 255, 0);
-  }
-}
-
-/* ==================== 顶部Header - 简化版 ==================== */
+/* ==================== 顶部Header ==================== */
 .header {
   width: 100%;
   padding: 100rpx 32rpx 24rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  z-index: 10;
 }
 
 .header-spacer {
   flex: 1;
 }
 
-/* 关闭按钮 */
 .close-btn {
-  width: 80rpx;
-  height: 80rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-  border: 1rpx solid rgba(255, 255, 255, 0.1);
+  padding: 16rpx 24rpx;
+  background: #FFFFFF;
+  border-radius: 999rpx;
+  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
 .close-btn:active {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(0.95);
+  background: #F5F7FA;
+  transform: scale(0.98);
 }
 
 /* ==================== 主内容区 ==================== */
@@ -166,8 +47,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 10;
+  padding: 0 32rpx;
 }
 
 /* ==================== 倒计时区域 ==================== */
@@ -175,30 +55,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10rpx;
-  position: relative;
-}
-
-/* 发光效果 */
-.countdown-glow {
-  position: absolute;
-  width: 400rpx;
-  height: 400rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(24, 144, 255, 0.18) 0%, transparent 70%);
-  filter: blur(25rpx);
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-
-.countdown-glow.active {
-  opacity: 1;
-  animation: glow-pulse 2.5s ease-in-out infinite;
-}
-
-@keyframes glow-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.08); opacity: 1; }
+  margin-top: 20rpx;
 }
 
 /* 倒计时环容器 */
@@ -211,29 +68,20 @@
   justify-content: center;
 }
 
-/* 外圈装饰 */
-.countdown-ring-outer {
-  position: absolute;
+/* 进度环 */
+.countdown-ring {
   width: 320rpx;
   height: 320rpx;
   border-radius: 50%;
-  border: 1rpx solid rgba(255, 255, 255, 0.1);
-}
-
-/* 进度环 */
-.countdown-ring {
-  width: 300rpx;
-  height: 300rpx;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
+  background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
-/* 进度条 - 使用conic-gradient */
+/* 进度条 - conic-gradient */
 .countdown-progress {
   position: absolute;
   top: 0;
@@ -242,86 +90,57 @@
   height: 100%;
   border-radius: 50%;
   background: conic-gradient(
-    from 0deg,
+    from -90deg,
     #1890FF 0%,
-    #36CFC9 calc(var(--progress, 0%) * 0.5),
-    #1890FF var(--progress, 0%),
-    rgba(255, 255, 255, 0.06) var(--progress, 0%),
-    rgba(255, 255, 255, 0.06) 100%
+    #40A9FF var(--progress, 0%),
+    #E8E8E8 var(--progress, 0%),
+    #E8E8E8 100%
   );
-  mask: radial-gradient(transparent 115rpx, #000 116rpx);
-  -webkit-mask: radial-gradient(transparent 115rpx, #000 116rpx);
+  mask: radial-gradient(transparent 125rpx, #000 126rpx);
+  -webkit-mask: radial-gradient(transparent 125rpx, #000 126rpx);
+  transition: all 1s linear;
 }
 
-/* 内圈 */
+/* 内圈 - 显示倒计时数字 */
 .countdown-inner {
-  width: 240rpx;
-  height: 240rpx;
+  width: 260rpx;
+  height: 260rpx;
   border-radius: 50%;
-  background: linear-gradient(180deg, #1A1A2E 0%, #16213E 100%);
+  background: #FFFFFF;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 2;
-  box-shadow: inset 0 4rpx 20rpx rgba(0, 0, 0, 0.3);
-}
-
-.countdown-inner-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(24, 144, 255, 0.08) 0%, transparent 70%);
 }
 
 .countdown-number {
-  font-size: 88rpx;
+  font-size: 96rpx;
   font-weight: 700;
-  color: #FFFFFF;
   line-height: 1;
-  text-shadow: 0 0 25rpx rgba(24, 144, 255, 0.4);
+  color: #1890FF;
 }
 
 .countdown-unit {
   font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.55);
-  margin-top: 4rpx;
-  letter-spacing: 2rpx;
+  color: #999;
+  margin-top: 8rpx;
+  letter-spacing: 4rpx;
 }
 
-/* 刻度线 */
-.ring-ticks {
-  position: absolute;
-  width: 320rpx;
-  height: 320rpx;
-}
-
-.tick {
-  position: absolute;
-  width: 2rpx;
-  height: 10rpx;
-  background: rgba(255, 255, 255, 0.25);
-  top: 0;
-  left: 50%;
-  transform-origin: center 160rpx;
-}
-
-/* 状态文字 */
+/* ==================== 状态文字 ==================== */
 .status-wrapper {
   display: flex;
   align-items: center;
-  margin-top: 36rpx;
+  margin-top: 40rpx;
 }
 
 .status-text {
-  font-size: 30rpx;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 28rpx;
+  color: #666;
   font-weight: 500;
+  letter-spacing: 2rpx;
 }
 
 .status-dots {
@@ -333,7 +152,7 @@
 .status-dots .dot {
   width: 8rpx;
   height: 8rpx;
-  background: rgba(255, 255, 255, 0.6);
+  background: #999;
   border-radius: 50%;
   margin-left: 6rpx;
   animation: dot-bounce 1.4s ease-in-out infinite;
@@ -348,76 +167,79 @@
   40% { transform: scale(1.3); opacity: 1; }
 }
 
-/* ==================== 波形区域 - 整合心率 ==================== */
+/* ==================== 波形区域 ==================== */
 .waveform-section {
   width: 100%;
-  padding: 28rpx 32rpx;
-  position: relative;
+  padding: 32rpx 0;
 }
 
 .waveform-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(0, 0, 0, 0.04);
   overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
 .waveform-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20rpx 24rpx;
-  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+  padding: 24rpx 28rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.04);
+  background: #F8FAFC;
 }
 
 .waveform-title {
   display: flex;
   align-items: center;
+  gap: 12rpx;
 }
 
 .waveform-label {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
-  margin-left: 12rpx;
-  font-weight: 500;
+  color: #333;
+  font-weight: 600;
 }
 
-/* 实时指示器 */
+/* LIVE指示器 */
 .waveform-indicator {
   display: flex;
   align-items: center;
-  padding: 8rpx 16rpx;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 20rpx;
+  gap: 10rpx;
+  padding: 10rpx 18rpx;
+  background: #F0F0F0;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(0, 0, 0, 0.04);
 }
 
 .waveform-indicator.active {
-  background: rgba(76, 175, 80, 0.15);
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.2);
 }
 
 .indicator-dot {
   width: 12rpx;
   height: 12rpx;
-  background: rgba(255, 255, 255, 0.4);
+  background: #999;
   border-radius: 50%;
-  margin-right: 8rpx;
 }
 
 .waveform-indicator.active .indicator-dot {
   background: #4CAF50;
-  animation: live-blink 1s ease-in-out infinite;
+  animation: live-pulse 1s ease-in-out infinite;
 }
 
-@keyframes live-blink {
-  0%, 100% { opacity: 1; box-shadow: 0 0 8rpx #4CAF50; }
-  50% { opacity: 0.5; box-shadow: none; }
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .indicator-text {
-  font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 600;
-  letter-spacing: 1rpx;
+  font-size: 20rpx;
+  color: #999;
+  font-weight: 700;
+  letter-spacing: 2rpx;
 }
 
 .waveform-indicator.active .indicator-text {
@@ -427,55 +249,17 @@
 /* 波形容器 */
 .waveform-container {
   position: relative;
-  height: 130rpx;
-  background: rgba(0, 0, 0, 0.2);
+  height: 160rpx;
+  background: #F8FAFC;
 }
-
-/* 网格叠加层 */
-.waveform-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.grid-line {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.grid-line.horizontal {
-  left: 0;
-  right: 0;
-  height: 1rpx;
-}
-
-.grid-line.horizontal:nth-child(1) { top: 25%; }
-.grid-line.horizontal:nth-child(2) { top: 50%; }
-.grid-line.horizontal:nth-child(3) { top: 75%; }
-
-.grid-line.vertical {
-  top: 0;
-  bottom: 0;
-  width: 1rpx;
-}
-
-.grid-line.vertical:nth-child(4) { left: 16.6%; }
-.grid-line.vertical:nth-child(5) { left: 33.3%; }
-.grid-line.vertical:nth-child(6) { left: 50%; }
-.grid-line.vertical:nth-child(7) { left: 66.6%; }
-.grid-line.vertical:nth-child(8) { left: 83.3%; }
-.grid-line.vertical:nth-child(9) { left: 100%; }
 
 /* 心率整合到波形底部 */
 .heart-rate-inline {
   display: flex;
   align-items: center;
-  padding: 16rpx 24rpx;
-  background: rgba(0, 0, 0, 0.15);
-  gap: 8rpx;
+  padding: 20rpx 28rpx;
+  background: #F8FAFC;
+  gap: 12rpx;
   opacity: 0;
   transform: translateY(10rpx);
   transition: all 0.3s ease;
@@ -498,39 +282,41 @@
 }
 
 .hr-value {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #333;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .hr-unit {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.5);
+  color: #999;
 }
 
 .hr-status {
   margin-left: auto;
   font-size: 22rpx;
-  padding: 6rpx 14rpx;
-  border-radius: 12rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-weight: 500;
 }
 
 .hr-status.safe {
   color: #4CAF50;
-  background: rgba(76, 175, 80, 0.15);
+  background: rgba(76, 175, 80, 0.1);
 }
 
 /* ==================== 底部区域 ==================== */
 .bottom-section {
-  position: relative;
-  z-index: 10;
+  margin-top: auto;
+  padding: 0 32rpx;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 进度区域 */
 .progress-section {
-  padding: 20rpx 48rpx;
+  padding: 24rpx 16rpx;
 }
 
 .progress-bar-wrapper {
@@ -540,84 +326,63 @@
 .progress-bar {
   width: 100%;
   height: 12rpx;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6rpx;
+  background: #E8E8E8;
+  border-radius: 8rpx;
   overflow: hidden;
-  position: relative;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #1890FF, #36CFC9);
-  border-radius: 6rpx;
+  background: linear-gradient(90deg, #1890FF, #40A9FF);
+  border-radius: 8rpx;
   transition: width 0.3s ease;
-  position: relative;
 }
 
-.progress-shine {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
-  border-radius: 6rpx 6rpx 0 0;
-}
-
-.progress-glow {
-  position: absolute;
-  top: 50%;
-  width: 18rpx;
-  height: 18rpx;
-  background: #36CFC9;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 16rpx #36CFC9, 0 0 32rpx rgba(54, 207, 201, 0.5);
-  transition: left 0.3s ease;
-}
-
-/* 进度标签 - 修复WCAG对比度 */
+/* 进度标签 */
 .progress-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 14rpx;
+  margin-top: 16rpx;
 }
 
 .progress-elapsed,
 .progress-total {
   font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.75); /* 从0.4提升到0.75，满足WCAG AA */
-}
-
-.progress-elapsed {
+  color: #999;
   font-weight: 500;
 }
 
-/* 底部提示横幅 - 单行轮播 */
+.progress-elapsed {
+  color: #666;
+}
+
+/* 底部提示横幅 */
 .tip-banner {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16rpx;
+  gap: 20rpx;
   padding: 28rpx 32rpx;
-  padding-bottom: calc(28rpx + env(safe-area-inset-bottom));
-  background: rgba(54, 207, 201, 0.08);
-  border-top: 1rpx solid rgba(54, 207, 201, 0.15);
+  margin-top: 16rpx;
+  margin-bottom: 24rpx;
+  background: rgba(24, 144, 255, 0.06);
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(24, 144, 255, 0.1);
 }
 
 .tip-banner .tip-icon-wrapper {
-  width: 48rpx;
-  height: 48rpx;
+  width: 56rpx;
+  height: 56rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(54, 207, 201, 0.12);
+  background: rgba(24, 144, 255, 0.1);
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .tip-banner .tip-text {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.85);
+  color: #666;
   font-weight: 500;
 }

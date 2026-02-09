@@ -1,54 +1,24 @@
-<!-- Detection Recording Page Template - 优化重构版 -->
+<!-- Detection Recording Page Template -->
 <view class="recording-page">
-  <!-- 背景效果层 - 简化粒子数量 -->
-  <view class="bg-effects">
-    <view class="gradient-overlay"></view>
-
-    <!-- 脉冲圆圈 - 减少到3个 -->
-    <view class="pulse-bg">
-      <view class="pulse-circle c1"></view>
-      <view class="pulse-circle c2"></view>
-      <view class="pulse-circle c3"></view>
-    </view>
-
-    <!-- 声波装饰 - 录制时显示 -->
-    <view class="sound-waves" wx:if="{{isRecording}}">
-      <view class="sound-wave sw1"></view>
-      <view class="sound-wave sw2"></view>
-    </view>
-  </view>
-
-  <!-- 顶部Header - 移除REC标签，仅保留关闭按钮 -->
+  <!-- 顶部Header -->
   <view class="header">
     <view class="header-spacer"></view>
     <view class="close-btn" bindtap="stopRecording">
-      <icon-svg name="close" size="28" color="rgba(255,255,255,0.8)" />
+      <icon-svg name="close" size="28" color="#666" />
     </view>
   </view>
 
   <!-- 核心内容区 -->
   <view class="main-content">
-    <!-- 倒计时显示 - 统一为"剩余时间"逻辑 -->
+    <!-- 倒计时显示 -->
     <view class="countdown-section">
-      <view class="countdown-glow {{isRecording ? 'active' : ''}}"></view>
-
       <view class="countdown-ring-wrapper">
-        <view class="countdown-ring-outer"></view>
-
         <view class="countdown-ring">
-          <!-- 进度环: 逆向填充表示剩余时间 -->
           <view class="countdown-progress" style="--progress: {{progress}}%;"></view>
-
           <view class="countdown-inner">
-            <view class="countdown-inner-glow"></view>
             <text class="countdown-number">{{countdown}}</text>
             <text class="countdown-unit">剩余秒</text>
           </view>
-        </view>
-
-        <!-- 刻度线 -->
-        <view class="ring-ticks">
-          <view class="tick" wx:for="{{12}}" wx:key="index" style="transform: rotate({{index * 30}}deg);"></view>
         </view>
       </view>
 
@@ -63,7 +33,7 @@
       </view>
     </view>
 
-    <!-- 波形显示区 - 整合心率 -->
+    <!-- 波形显示区 -->
     <view class="waveform-section">
       <view class="waveform-card">
         <!-- 波形头部 -->
@@ -87,11 +57,6 @@
             showDemo="{{!isRecording}}"
             bindready="onWaveformReady"
           ></waveform>
-          <!-- 网格叠加层 -->
-          <view class="waveform-grid">
-            <view class="grid-line horizontal" wx:for="{{3}}" wx:key="index"></view>
-            <view class="grid-line vertical" wx:for="{{6}}" wx:key="index"></view>
-          </view>
         </view>
 
         <!-- 心率整合到波形卡片底部 -->
@@ -109,14 +74,11 @@
 
   <!-- 底部区域 -->
   <view class="bottom-section">
-    <!-- 进度条 - 统一"已采集"表述 -->
+    <!-- 进度条 -->
     <view class="progress-section">
       <view class="progress-bar-wrapper">
         <view class="progress-bar">
-          <view class="progress-fill" style="width: {{progress}}%;">
-            <view class="progress-shine"></view>
-          </view>
-          <view class="progress-glow" style="left: {{progress}}%;"></view>
+          <view class="progress-fill" style="width: {{progress}}%;"></view>
         </view>
       </view>
       <view class="progress-labels">
@@ -125,10 +87,10 @@
       </view>
     </view>
 
-    <!-- 底部提示 - 简化为单行动态轮播 -->
+    <!-- 底部提示 -->
     <view class="tip-banner">
       <view class="tip-icon-wrapper">
-        <icon-svg name="{{currentTip.icon}}" size="28" color="#36CFC9" />
+        <icon-svg name="{{currentTip.icon}}" size="28" color="#1890FF" />
       </view>
       <text class="tip-text">{{currentTip.text}}</text>
     </view>

@@ -19,6 +19,17 @@ const REPORT_TYPES = [
   { type: 'monthly', label: '月报', period: 30 }
 ];
 
+/**
+ * Format timestamp or ISO string to YYYY-MM-DD HH:mm
+ */
+function formatTime(value) {
+  if (!value) return '';
+  const date = typeof value === 'number' ? new Date(value) : new Date(value);
+  if (isNaN(date.getTime())) return '';
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 Page({
   data: {
     reportTypes: REPORT_TYPES,
@@ -122,11 +133,21 @@ Page({
         return;
       }
 
-      // TODO: 从Supabase获取报告历史
-      // const reports = await userService.getAIReports(userId);
-      // this.setData({ reportHistory: reports });
+      const result = await userService.getAIReports(userId, {
+        page: 1,
+        pageSize: 20
+      });
 
-      this.setData({ loading: false });
+      // 格式化历史记录的时间
+      const history = (result.data || []).map(item => ({
+        ...item,
+        created_at: formatTime(item.created_at)
+      }));
+
+      this.setData({
+        reportHistory: history,
+        loading: false
+      });
     } catch (error) {
       console.error('[ReportPage] Load history failed:', error);
       this.setData({ loading: false });
@@ -190,20 +211,37 @@ Page({
       if (response && response.data) {
         // 解析报告内容
         const reportContent = this.parseReportContent(response.data);
+        const periodLabel = selectedType === 'weekly' ? '近7天' : '近30天';
+        const now = new Date().toISOString();
 
         this.setData({
           currentReport: {
             type: selectedType,
             content: reportContent,
-            generatedAt: Date.now(),
+            generatedAt: formatTime(now),
+            reportPeriod: periodLabel,
             stats: detectionStats
           },
           generating: false,
           progressText: ''
         });
 
-        // TODO: 保存报告到Supabase
-        // await userService.saveAIReport(userId, reportData);
+        // 保存报告到Supabase
+        try {
+          await userService.saveAIReport(userId, {
+            reportType: selectedType,
+            reportPeriod: periodLabel,
+            reportContent: {
+              content: reportContent,
+              stats: detectionStats
+            }
+          });
+          // 刷新历史列表
+          this.loadReportHistory();
+        } catch (saveErr) {
+          console.error('[ReportPage] Save report failed:', saveErr);
+          // 保存失败不影响展示，只打个日志
+        }
 
         wx.showToast({
           title: '报告生成成功',
@@ -277,12 +315,32 @@ Page({
   },
 
   /**
-   * 查看历史报告
+   * 查看历史报告（复用现有报告卡片UI展示）
    */
   viewHistoryReport(e) {
     const reportId = e.currentTarget.dataset.id;
-    // TODO: 跳转到报告详情页
-    console.log('[ReportPage] View report:', reportId);
+    const { reportHistory } = this.data;
+    const report = reportHistory.find(r => r.id === reportId);
+
+    if (!report) {
+      wx.showToast({ title: '报告不存在', icon: 'none' });
+      return;
+    }
+
+    const content = report.report_content;
+    this.setData({
+      selectedType: report.report_type === 'monthly' ? 'monthly' : 'weekly',
+      currentReport: {
+        type: report.report_type,
+        content: typeof content === 'object' ? (content.content || JSON.stringify(content, null, 2)) : content,
+        generatedAt: report.created_at,
+        reportPeriod: report.report_period || '',
+        stats: (typeof content === 'object' && content.stats) ? content.stats : null
+      }
+    });
+
+    // 滚动到报告区域
+    wx.pageScrollTo({ scrollTop: 0, duration: 300 });
   },
 
   /**

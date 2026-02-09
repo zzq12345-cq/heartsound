@@ -269,6 +269,75 @@ async function getUserStats(userId) {
   return stats;
 }
 
+/**
+ * Save AI health report
+ * 保存AI健康报告到 ai_reports 表
+ *
+ * @param {string} userId - User ID
+ * @param {object} reportData - Report data
+ * @param {string} reportData.reportType - 'weekly' | 'monthly'
+ * @param {string} reportData.reportPeriod - e.g. '近7天', '近30天'
+ * @param {object} reportData.reportContent - Report content (JSONB)
+ * @returns {Promise<object>} Inserted record
+ */
+async function saveAIReport(userId, reportData) {
+  const { data, error } = await supabase
+    .from('ai_reports')
+    .insert({
+      user_id: userId,
+      report_type: reportData.reportType || 'health_summary',
+      report_period: reportData.reportPeriod || null,
+      report_content: reportData.reportContent || {}
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[UserService] Failed to save AI report:', error);
+    throw new Error('保存报告失败');
+  }
+
+  console.log('[UserService] Saved AI report:', data.id);
+  return data;
+}
+
+/**
+ * Get AI report history with pagination
+ * 获取AI报告历史（分页）
+ *
+ * @param {string} userId - User ID
+ * @param {object} options - Query options
+ * @param {number} options.page - Page number (1-based)
+ * @param {number} options.pageSize - Records per page
+ * @returns {Promise<object>} { data, hasMore, total }
+ */
+async function getAIReports(userId, options = {}) {
+  const { page = 1, pageSize = 10 } = options;
+  const offset = (page - 1) * pageSize;
+
+  const { data, error, count } = await supabase
+    .from('ai_reports')
+    .select('*', { count: 'exact' })
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + pageSize - 1);
+
+  if (error) {
+    console.error('[UserService] Failed to get AI reports:', error);
+    throw new Error('获取报告历史失败');
+  }
+
+  const records = data || [];
+  const total = count || 0;
+  const hasMore = offset + records.length < total;
+
+  return {
+    data: records,
+    hasMore,
+    total
+  };
+}
+
 module.exports = {
   getOrCreateUser,
   updateProfile,
@@ -276,5 +345,7 @@ module.exports = {
   getRecordById,
   saveDetectionRecord,
   getHealthTips,
-  getUserStats
+  getUserStats,
+  saveAIReport,
+  getAIReports
 };

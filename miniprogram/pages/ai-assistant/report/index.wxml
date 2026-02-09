@@ -82,7 +82,10 @@
     <view class="report-card">
       <view class="report-header-bar">
         <view class="report-type-badge">
-          <text>{{selectedType === 'weekly' ? '周报' : '月报'}}</text>
+          <text>{{currentReport.type === 'weekly' ? '周报' : '月报'}}</text>
+        </view>
+        <view class="report-period-tag" wx:if="{{currentReport.reportPeriod}}">
+          <text>{{currentReport.reportPeriod}}</text>
         </view>
         <view class="report-actions">
           <view class="share-btn" bindtap="shareReport">
@@ -110,9 +113,9 @@
   </view>
 
   <!-- Report History -->
-  <view class="history-section" wx:if="{{reportHistory.length > 0}}">
+  <view class="history-section">
     <view class="section-title">历史报告</view>
-    <view class="history-list">
+    <view class="history-list" wx:if="{{reportHistory.length > 0}}">
       <view
         class="history-item"
         wx:for="{{reportHistory}}"
@@ -121,11 +124,19 @@
         bindtap="viewHistoryReport"
       >
         <view class="history-info">
-          <text class="history-type">{{item.report_type === 'weekly' ? '周报' : '月报'}}</text>
+          <view class="history-title-row">
+            <text class="history-type">{{item.report_type === 'weekly' ? '周报' : '月报'}}</text>
+            <text class="history-period-tag" wx:if="{{item.report_period}}">{{item.report_period}}</text>
+          </view>
           <text class="history-date">{{item.created_at}}</text>
         </view>
         <icon-svg name="chevron-right" size="28" color="#CCCCCC" />
       </view>
+    </view>
+    <!-- 空状态 -->
+    <view class="history-empty" wx:if="{{reportHistory.length === 0 && !loading}}">
+      <text class="history-empty-text">暂无历史报告</text>
+      <text class="history-empty-tip">生成报告后将自动保存在这里</text>
     </view>
   </view>
 </view>

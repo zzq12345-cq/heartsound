@@ -391,3 +391,53 @@
   font-size: 22rpx;
   color: #999999;
 }
+
+/* Report Period Tag (in header bar) */
+.report-period-tag {
+  padding: 6rpx 16rpx;
+  background: #E6F4FF;
+  border-radius: 16rpx;
+  margin-left: 12rpx;
+}
+
+.report-period-tag text {
+  font-size: 20rpx;
+  color: #1890FF;
+}
+
+/* History Title Row */
+.history-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+/* History Period Tag */
+.history-period-tag {
+  font-size: 20rpx;
+  color: #1890FF;
+  background: #E6F4FF;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+}
+
+/* History Empty State */
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 30rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+}
+
+.history-empty-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.history-empty-tip {
+  font-size: 24rpx;
+  color: #CCCCCC;
+  margin-top: 12rpx;
+}

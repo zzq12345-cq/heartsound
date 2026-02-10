@@ -1,35 +1,30 @@
-<!-- Detection Page Template - Entry Point (美化版) -->
+<!-- Detection Page Template - Entry Point -->
 <view class="detection-page">
-  <!-- Animated Background -->
-  <view class="animated-bg">
-    <view class="bg-circle c1"></view>
-    <view class="bg-circle c2"></view>
-    <view class="bg-circle c3"></view>
-  </view>
+  <!-- Static Background Orbs -->
+  <view class="hero-bg-orb hero-orb-1"></view>
+  <view class="hero-bg-orb hero-orb-2"></view>
 
-  <!-- Header section with wave -->
+  <!-- Header section - simplified -->
   <view class="header-section">
-    <view class="header-bg"></view>
-    <view class="header-wave">
-      <view class="wave-shape"></view>
-    </view>
     <view class="header-content">
       <view class="header-icon-wrapper">
-        <icon-svg name="stethoscope" size="48" color="#FFFFFF" />
+        <icon-svg name="stethoscope" size="48" color="#2E8B8B" />
       </view>
-      <text class="header-title">心音检测</text>
-      <text class="header-subtitle">AI智能分析，守护心脏健康</text>
+      <view class="header-text-group">
+        <text class="header-title">心音检测</text>
+        <text class="header-subtitle">AI智能分析，守护心脏健康</text>
+      </view>
     </view>
   </view>
 
   <!-- Main content -->
   <view class="main-content">
-    <!-- Device status card with glow effect -->
+    <!-- Device status card -->
     <view class="status-card {{deviceConnected ? 'connected' : 'disconnected'}}">
       <view class="status-glow" wx:if="{{deviceConnected}}"></view>
       <view class="status-icon-wrapper">
         <view class="status-icon-bg {{deviceConnected ? 'connected' : 'disconnected'}}">
-          <icon-svg name="{{deviceConnected ? 'wifi' : 'wifi-off'}}" size="36" color="{{deviceConnected ? '#4CAF50' : '#FF9800'}}" />
+          <icon-svg name="{{deviceConnected ? 'wifi' : 'wifi-off'}}" size="36" color="{{deviceConnected ? '#3CB371' : '#D4A24C'}}" />
         </view>
         <view class="status-pulse" wx:if="{{deviceConnected}}"></view>
       </view>
@@ -45,7 +40,7 @@
         <text class="status-hint" wx:else>请在首页连接设备后开始检测</text>
       </view>
       <view class="status-arrow" wx:if="{{deviceConnected}}">
-        <icon-svg name="chevron-right" size="28" color="#BDBDBD" />
+        <icon-svg name="chevron-right" size="28" color="#A0A3AB" />
       </view>
     </view>
 
@@ -73,17 +68,17 @@
       <!-- Info cards below button -->
       <view class="info-cards">
         <view class="info-card">
-          <icon-svg name="clock" size="28" color="#1890FF" />
+          <icon-svg name="clock" size="28" color="#2E8B8B" />
           <text class="info-text">30秒</text>
           <text class="info-label">检测时长</text>
         </view>
         <view class="info-card">
-          <icon-svg name="target" size="28" color="#52C41A" />
+          <icon-svg name="target" size="28" color="#3CB371" />
           <text class="info-text">AI分析</text>
           <text class="info-label">智能诊断</text>
         </view>
         <view class="info-card">
-          <icon-svg name="chart" size="28" color="#722ED1" />
+          <icon-svg name="chart" size="28" color="#5B7FA5" />
           <text class="info-text">报告</text>
           <text class="info-label">详细结果</text>
         </view>
@@ -94,7 +89,7 @@
     <view class="tip-section">
       <view class="section-header">
         <view class="section-title-wrapper">
-          <icon-svg name="lightbulb" size="28" color="#FF9800" />
+          <icon-svg name="lightbulb" size="28" color="#D4A24C" />
           <text class="section-title">检测小贴士</text>
         </view>
       </view>
@@ -126,12 +121,12 @@
     <view class="records-section" wx:if="{{recentRecords.length > 0}}">
       <view class="section-header">
         <view class="section-title-wrapper">
-          <icon-svg name="clock" size="28" color="#1890FF" />
+          <icon-svg name="clock" size="28" color="#2E8B8B" />
           <text class="section-title">最近检测</text>
         </view>
         <view class="section-more" bindtap="viewAllRecords">
           <text>查看全部</text>
-          <icon-svg name="chevron-right" size="20" color="#1890FF" />
+          <icon-svg name="chevron-right" size="20" color="#2E8B8B" />
         </view>
       </view>
 
@@ -145,9 +140,9 @@
           hover-class="record-item-hover"
         >
           <view class="record-icon-wrapper {{item.risk_level}}">
-            <icon-svg wx:if="{{item.risk_level === 'safe'}}" name="check-circle" size="32" color="#4CAF50" />
-            <icon-svg wx:elif="{{item.risk_level === 'warning'}}" name="warning" size="32" color="#FF9800" />
-            <icon-svg wx:else name="alert" size="32" color="#F44336" />
+            <icon-svg wx:if="{{item.risk_level === 'safe'}}" name="check-circle" size="32" color="#3CB371" />
+            <icon-svg wx:elif="{{item.risk_level === 'warning'}}" name="warning" size="32" color="#D4A24C" />
+            <icon-svg wx:else name="alert" size="32" color="#C75450" />
           </view>
           <view class="record-info">
             <text class="record-label">{{item.label || '心音检测'}}</text>
@@ -159,7 +154,7 @@
             <text wx:else>异常</text>
           </view>
           <view class="record-arrow">
-            <icon-svg name="chevron-right" size="24" color="#BDBDBD" />
+            <icon-svg name="chevron-right" size="24" color="#A0A3AB" />
           </view>
         </view>
       </view>
@@ -168,7 +163,7 @@
     <!-- Empty state when no records -->
     <view class="empty-records" wx:if="{{recentRecords.length === 0}}">
       <view class="empty-icon">
-        <icon-svg name="clipboard" size="64" color="#E0E0E0" />
+        <icon-svg name="clipboard" size="64" color="#C2C7CF" />
       </view>
       <text class="empty-text">暂无检测记录</text>
       <text class="empty-hint">完成首次检测后，记录将显示在这里</text>
@@ -177,7 +172,7 @@
 
   <!-- Disclaimer with icon -->
   <view class="disclaimer">
-    <icon-svg name="alert" size="20" color="#BDBDBD" />
+    <icon-svg name="alert" size="20" color="#A0A3AB" />
     <text>本检测结果仅供参考，不作为医学诊断依据</text>
   </view>
 </view>

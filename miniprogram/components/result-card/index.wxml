@@ -40,7 +40,7 @@
             style="width: {{item.value}}%; background-color: {{item.isTop ? riskColor : '#78909C'}};"
           ></view>
         </view>
-        <text class="prob-value" style="color: {{item.isTop ? riskColor : '#666'}};">
+        <text class="prob-value" style="color: {{item.isTop ? riskColor : '#5A5D66'}};">
           {{item.value}}%
         </text>
       </view>

@@ -1,12 +1,12 @@
 /**
  * Detection Recording Page Styles
- * 检测录制页样式 - 统一设计语言版
+ * 设计语言：静谧医疗感 · 青蓝色点缀 · 雾面质感
  */
 
 /* ==================== 页面容器 ==================== */
 .recording-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #F0F7FF 0%, #F8FAFC 15%, #F5F7FA 100%);
+  background: #F4F5F7;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -32,12 +32,11 @@
   padding: 16rpx 24rpx;
   background: #FFFFFF;
   border-radius: 999rpx;
-  border: 1rpx solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
 }
 
 .close-btn:active {
-  background: #F5F7FA;
+  background: #F4F5F7;
   transform: scale(0.98);
 }
 
@@ -78,7 +77,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
 }
 
 /* 进度条 - conic-gradient */
@@ -91,10 +90,10 @@
   border-radius: 50%;
   background: conic-gradient(
     from -90deg,
-    #1890FF 0%,
-    #40A9FF var(--progress, 0%),
-    #E8E8E8 var(--progress, 0%),
-    #E8E8E8 100%
+    #2E8B8B 0%,
+    #3DA8A8 var(--progress, 0%),
+    #EBEBED var(--progress, 0%),
+    #EBEBED 100%
   );
   mask: radial-gradient(transparent 125rpx, #000 126rpx);
   -webkit-mask: radial-gradient(transparent 125rpx, #000 126rpx);
@@ -119,12 +118,12 @@
   font-size: 96rpx;
   font-weight: 700;
   line-height: 1;
-  color: #1890FF;
+  color: #2E8B8B;
 }
 
 .countdown-unit {
   font-size: 24rpx;
-  color: #999;
+  color: #7A7D85;
   margin-top: 8rpx;
   letter-spacing: 4rpx;
 }
@@ -138,7 +137,7 @@
 
 .status-text {
   font-size: 28rpx;
-  color: #666;
+  color: #5A5D66;
   font-weight: 500;
   letter-spacing: 2rpx;
 }
@@ -152,7 +151,7 @@
 .status-dots .dot {
   width: 8rpx;
   height: 8rpx;
-  background: #999;
+  background: #7A7D85;
   border-radius: 50%;
   margin-left: 6rpx;
   animation: dot-bounce 1.4s ease-in-out infinite;
@@ -176,9 +175,8 @@
 .waveform-card {
   background: #FFFFFF;
   border-radius: 24rpx;
-  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
   overflow: hidden;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
 .waveform-header {
@@ -186,8 +184,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 24rpx 28rpx;
-  border-bottom: 1rpx solid rgba(0, 0, 0, 0.04);
-  background: #F8FAFC;
+  border-bottom: 1rpx solid #EBEBED;
+  background: #F4F5F7;
 }
 
 .waveform-title {
@@ -198,7 +196,7 @@
 
 .waveform-label {
   font-size: 28rpx;
-  color: #333;
+  color: #2C2E33;
   font-weight: 600;
 }
 
@@ -210,23 +208,23 @@
   padding: 10rpx 18rpx;
   background: #F0F0F0;
   border-radius: 24rpx;
-  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
 }
 
 .waveform-indicator.active {
-  background: rgba(76, 175, 80, 0.1);
-  border-color: rgba(76, 175, 80, 0.2);
+  background: rgba(60, 179, 113, 0.1);
+  border-color: rgba(60, 179, 113, 0.2);
 }
 
 .indicator-dot {
   width: 12rpx;
   height: 12rpx;
-  background: #999;
+  background: #7A7D85;
   border-radius: 50%;
 }
 
 .waveform-indicator.active .indicator-dot {
-  background: #4CAF50;
+  background: #3CB371;
   animation: live-pulse 1s ease-in-out infinite;
 }
 
@@ -237,20 +235,20 @@
 
 .indicator-text {
   font-size: 20rpx;
-  color: #999;
+  color: #7A7D85;
   font-weight: 700;
   letter-spacing: 2rpx;
 }
 
 .waveform-indicator.active .indicator-text {
-  color: #4CAF50;
+  color: #3CB371;
 }
 
 /* 波形容器 */
 .waveform-container {
   position: relative;
   height: 160rpx;
-  background: #F8FAFC;
+  background: #F4F5F7;
 }
 
 /* 心率整合到波形底部 */
@@ -258,7 +256,7 @@
   display: flex;
   align-items: center;
   padding: 20rpx 28rpx;
-  background: #F8FAFC;
+  background: #F4F5F7;
   gap: 12rpx;
   opacity: 0;
   transform: translateY(10rpx);
@@ -284,14 +282,14 @@
 .hr-value {
   font-size: 40rpx;
   font-weight: 700;
-  color: #333;
+  color: #2C2E33;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .hr-unit {
   font-size: 22rpx;
-  color: #999;
+  color: #7A7D85;
 }
 
 .hr-status {
@@ -303,8 +301,8 @@
 }
 
 .hr-status.safe {
-  color: #4CAF50;
-  background: rgba(76, 175, 80, 0.1);
+  color: #3CB371;
+  background: rgba(60, 179, 113, 0.1);
 }
 
 /* ==================== 底部区域 ==================== */
@@ -326,14 +324,14 @@
 .progress-bar {
   width: 100%;
   height: 12rpx;
-  background: #E8E8E8;
+  background: #EBEBED;
   border-radius: 8rpx;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #1890FF, #40A9FF);
+  background: linear-gradient(90deg, #2E8B8B, #3DA8A8);
   border-radius: 8rpx;
   transition: width 0.3s ease;
 }
@@ -348,12 +346,12 @@
 .progress-elapsed,
 .progress-total {
   font-size: 24rpx;
-  color: #999;
+  color: #7A7D85;
   font-weight: 500;
 }
 
 .progress-elapsed {
-  color: #666;
+  color: #5A5D66;
 }
 
 /* 底部提示横幅 */
@@ -365,9 +363,9 @@
   padding: 28rpx 32rpx;
   margin-top: 16rpx;
   margin-bottom: 24rpx;
-  background: rgba(24, 144, 255, 0.06);
+  background: rgba(46, 139, 139, 0.06);
   border-radius: 24rpx;
-  border: 1rpx solid rgba(24, 144, 255, 0.1);
+  border: 1rpx solid rgba(46, 139, 139, 0.1);
 }
 
 .tip-banner .tip-icon-wrapper {
@@ -376,13 +374,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(24, 144, 255, 0.1);
+  background: rgba(46, 139, 139, 0.1);
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .tip-banner .tip-text {
   font-size: 28rpx;
-  color: #666;
+  color: #5A5D66;
   font-weight: 500;
 }

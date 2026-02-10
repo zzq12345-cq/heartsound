@@ -3,7 +3,7 @@
   <!-- Header -->
   <view class="header">
     <view class="back-btn" bindtap="goBack">
-      <icon-svg name="arrow-left" size="40" color="#333" />
+      <icon-svg name="arrow-left" size="40" color="#2C2E33" />
     </view>
     <text class="title">检测准备</text>
     <view class="placeholder"></view>
@@ -16,10 +16,10 @@
       <view class="heart-position-guide">
         <view class="body-outline">
           <view class="heart-marker pulse-animation">
-            <icon-svg name="heart" size="48" color="#F44336" />
+            <icon-svg name="heart" size="48" color="#C75450" />
           </view>
           <view class="stethoscope-marker">
-            <icon-svg name="stethoscope" size="64" color="#1890FF" />
+            <icon-svg name="stethoscope" size="64" color="#2E8B8B" />
           </view>
         </view>
       </view>
@@ -50,7 +50,7 @@
 
     <!-- Device status -->
     <view class="device-status {{deviceConnected ? 'connected' : 'disconnected'}}">
-      <icon-svg name="{{deviceConnected ? 'check-circle' : 'warning'}}" size="32" color="{{deviceConnected ? '#4CAF50' : '#FF9800'}}" />
+      <icon-svg name="{{deviceConnected ? 'check-circle' : 'warning'}}" size="32" color="{{deviceConnected ? '#3CB371' : '#D4A24C'}}" />
       <text class="status-text">{{deviceConnected ? '设备已连接' : '设备未连接'}}</text>
     </view>
   </view>

@@ -69,7 +69,12 @@ async function startDetection(options = {}) {
   notifyStatusChange(STATES.CONNECTING, '正在连接设备...');
 
   // 检查是否是模拟设备（开发测试模式）
-  const isMockDevice = deviceInfo && deviceInfo.device_id && deviceInfo.device_id.startsWith('MOCK-');
+  // 支持两种模拟设备格式：旧格式 MOCK-* 和新格式 00000000-* (UUID格式)
+  const isMockDevice = deviceInfo && (
+    (deviceInfo.device_id && deviceInfo.device_id.startsWith('MOCK-')) ||
+    (deviceInfo.device_id && deviceInfo.device_id.startsWith('00000000-')) ||
+    (deviceInfo.device_name && deviceInfo.device_name.includes('模拟'))
+  );
 
   if (isMockDevice) {
     console.log('[DetectionService] Mock mode detected, using simulated data');

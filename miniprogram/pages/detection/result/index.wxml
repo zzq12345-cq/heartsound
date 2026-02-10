@@ -30,7 +30,7 @@
         wx:key="index"
         style="animation-delay: {{index * 0.1}}s;"
       >
-        <icon-svg name="{{item.iconName}}" size="32" color="{{item.iconColor || '#1890FF'}}" />
+        <icon-svg name="{{item.iconName}}" size="32" color="{{item.iconColor || '#2E8B8B'}}" />
         <text class="suggestion-text">{{item.text}}</text>
       </view>
     </view>
@@ -47,11 +47,11 @@
 
     <view class="action-row secondary-actions">
       <button class="action-btn secondary" bindtap="viewHistory">
-        <icon-svg name="clipboard" size="32" color="#333" />
+        <icon-svg name="clipboard" size="32" color="#2C2E33" />
         <text class="btn-text">历史记录</text>
       </button>
       <button class="action-btn secondary" bindtap="consultAI">
-        <icon-svg name="robot" size="32" color="#333" />
+        <icon-svg name="robot" size="32" color="#2C2E33" />
         <text class="btn-text">咨询AI</text>
       </button>
     </view>
@@ -66,13 +66,13 @@
   <!-- Disclaimer -->
   <view class="disclaimer-section">
     <view class="disclaimer-card">
-      <icon-svg name="medical" size="32" color="#F57C00" />
+      <icon-svg name="medical" size="32" color="#C48A30" />
       <text class="disclaimer-text">{{disclaimer}}</text>
     </view>
   </view>
 
   <!-- Share button (fixed) -->
   <view class="share-float" wx:if="{{showShare}}" bindtap="shareResult">
-    <icon-svg name="share" size="48" color="#1890FF" />
+    <icon-svg name="share" size="48" color="#2E8B8B" />
   </view>
 </view>

@@ -17,12 +17,12 @@ Component({
     // Wave color
     color: {
       type: String,
-      value: '#1890FF'
+      value: '#2E8B8B'
     },
     // Second color for gradient effect
     colorSecondary: {
       type: String,
-      value: '#36CFC9'
+      value: '#3DA8A8'
     },
     // Background color (transparent for overlay)
     bgColor: {

@@ -4,7 +4,7 @@
   <view class="header">
     <view class="header-spacer"></view>
     <view class="close-btn" bindtap="stopRecording">
-      <icon-svg name="close" size="28" color="#666" />
+      <icon-svg name="close" size="28" color="#5A5D66" />
     </view>
   </view>
 
@@ -39,7 +39,7 @@
         <!-- 波形头部 -->
         <view class="waveform-header">
           <view class="waveform-title">
-            <icon-svg name="waveform" size="24" color="#1890FF" />
+            <icon-svg name="waveform" size="24" color="#2E8B8B" />
             <text class="waveform-label">实时心音</text>
           </view>
           <view class="waveform-indicator {{isRecording ? 'active' : ''}}">
@@ -52,7 +52,7 @@
         <view class="waveform-container">
           <waveform
             height="130"
-            lineColor="#1890FF"
+            lineColor="#2E8B8B"
             lineWidth="2.5"
             showDemo="{{!isRecording}}"
             bindready="onWaveformReady"
@@ -62,7 +62,7 @@
         <!-- 心率整合到波形卡片底部 -->
         <view class="heart-rate-inline {{heartRate !== '--' ? 'show' : ''}}">
           <view class="hr-icon-wrapper">
-            <icon-svg name="heart" size="20" color="#F44336" />
+            <icon-svg name="heart" size="20" color="#C75450" />
           </view>
           <text class="hr-value">{{heartRate}}</text>
           <text class="hr-unit">BPM</text>
@@ -90,7 +90,7 @@
     <!-- 底部提示 -->
     <view class="tip-banner">
       <view class="tip-icon-wrapper">
-        <icon-svg name="{{currentTip.icon}}" size="28" color="#1890FF" />
+        <icon-svg name="{{currentTip.icon}}" size="28" color="#2E8B8B" />
       </view>
       <text class="tip-text">{{currentTip.text}}</text>
     </view>

@@ -1,8 +1,9 @@
 /* Detection Result Page Styles */
+/* 设计语言：静谧医疗感 · 青蓝色点缀 · 雾面质感 */
 
 .result-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #F0F7FF 0%, #F8FAFC 15%, #F5F7FA 100%);
+  background: #F4F5F7;
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
 }
 
@@ -46,13 +47,13 @@
   display: block;
   font-size: 40rpx;
   font-weight: 700;
-  color: #333;
+  color: #2C2E33;
   margin-bottom: 8rpx;
 }
 
 .header-time {
   font-size: 26rpx;
-  color: #999;
+  color: #7A7D85;
 }
 
 /* Result section */
@@ -67,8 +68,7 @@
   background: #FFFFFF;
   border-radius: 24rpx;
   padding: 32rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
-  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
   opacity: 0;
 }
 
@@ -79,7 +79,7 @@
 .section-title {
   font-size: 32rpx;
   font-weight: 600;
-  color: #333;
+  color: #2C2E33;
 }
 
 .suggestions-list {
@@ -92,7 +92,7 @@
   display: flex;
   align-items: flex-start;
   padding: 20rpx;
-  background: #F8FAFC;
+  background: #F4F5F7;
   border-radius: 16rpx;
   opacity: 0;
   animation: fadeIn 0.4s ease forwards;
@@ -104,7 +104,7 @@
 
 .suggestion-text {
   font-size: 28rpx;
-  color: #666;
+  color: #5A5D66;
   line-height: 1.5;
   margin-left: 16rpx;
 }
@@ -147,21 +147,19 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #1890FF 0%, #096DD9 100%);
+  background: #2E8B8B;
   color: #FFFFFF;
-  box-shadow: 0 8rpx 24rpx rgba(24, 144, 255, 0.3);
 }
 
 .action-btn.secondary {
   background: #FFFFFF;
-  color: #333;
-  border: 1rpx solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  color: #2C2E33;
+  border: 1rpx solid #EBEBED;
 }
 
 .action-btn.text {
   background: transparent;
-  color: #999;
+  color: #7A7D85;
   height: 80rpx;
 }
 
@@ -179,14 +177,14 @@
   display: flex;
   align-items: flex-start;
   padding: 24rpx;
-  background: #FFF8E1;
+  background: #FBF6EC;
   border-radius: 24rpx;
-  border: 1rpx solid #FFE082;
+  border: 1rpx solid #E8D5A0;
 }
 
 .disclaimer-text {
   font-size: 24rpx;
-  color: #F57C00;
+  color: #C48A30;
   line-height: 1.6;
   margin-left: 16rpx;
 }
@@ -203,7 +201,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
   z-index: 100;
 }

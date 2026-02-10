@@ -67,7 +67,9 @@
 
 /* AI Bubble */
 .bubble-ai {
-  background: #F5F5F5;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
   border-bottom-left-radius: 4rpx;
 }
 

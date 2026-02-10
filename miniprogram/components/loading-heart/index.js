@@ -13,7 +13,7 @@ Component({
     // Primary color
     color: {
       type: String,
-      value: '#1890FF'
+      value: '#2E8B8B'
     },
     // Loading text
     text: {

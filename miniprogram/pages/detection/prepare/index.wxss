@@ -1,10 +1,11 @@
 /* Detection Prepare Page Styles */
+/* 设计语言：静谧医疗感 · 青蓝色点缀 · 雾面质感 */
 
 .prepare-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(180deg, #F0F7FF 0%, #F8FAFC 15%, #F5F7FA 100%);
+  background: #F4F5F7;
 }
 
 /* Header */
@@ -23,13 +24,13 @@
   justify-content: center;
   background: #FFFFFF;
   border-radius: 50%;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
 }
 
 .title {
   font-size: 36rpx;
   font-weight: 600;
-  color: #333;
+  color: #2C2E33;
 }
 
 .placeholder {
@@ -62,7 +63,7 @@
 .body-outline {
   width: 100%;
   height: 100%;
-  background: rgba(24, 144, 255, 0.06);
+  background: rgba(46, 139, 139, 0.06);
   border-radius: 200rpx 200rpx 100rpx 100rpx;
   position: relative;
   display: flex;
@@ -77,7 +78,7 @@
   transform: translate(-50%, -50%);
   width: 100rpx;
   height: 100rpx;
-  background: rgba(244, 67, 54, 0.15);
+  background: rgba(199, 84, 80, 0.15);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -91,7 +92,7 @@
   transform: translate(-50%, -50%);
 }
 
-/* Pulse animation - 降低幅度 */
+/* Pulse animation */
 .pulse-animation {
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -111,8 +112,7 @@
   background: #FFFFFF;
   border-radius: 24rpx;
   padding: 40rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
-  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  border: 1rpx solid #EBEBED;
   margin-bottom: 40rpx;
 }
 
@@ -124,7 +124,7 @@
 .instruction-title text {
   font-size: 32rpx;
   font-weight: 600;
-  color: #333;
+  color: #2C2E33;
 }
 
 .tips-carousel {
@@ -135,7 +135,7 @@
   display: none;
   align-items: center;
   padding: 24rpx;
-  background: #F8FAFC;
+  background: #F4F5F7;
   border-radius: 16rpx;
 }
 
@@ -152,7 +152,7 @@
 .tip-number {
   width: 48rpx;
   height: 48rpx;
-  background: #1890FF;
+  background: #2E8B8B;
   color: #FFFFFF;
   border-radius: 50%;
   display: flex;
@@ -166,7 +166,7 @@
 
 .tip-text {
   font-size: 28rpx;
-  color: #666;
+  color: #5A5D66;
   line-height: 1.5;
 }
 
@@ -181,7 +181,7 @@
 .indicator {
   width: 16rpx;
   height: 16rpx;
-  background: #E0E0E0;
+  background: #C2C7CF;
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -189,7 +189,7 @@
 .indicator.active {
   width: 32rpx;
   border-radius: 8rpx;
-  background: #1890FF;
+  background: #2E8B8B;
 }
 
 /* Device status */
@@ -201,11 +201,11 @@
 }
 
 .device-status.connected {
-  background: rgba(76, 175, 80, 0.1);
+  background: rgba(60, 179, 113, 0.1);
 }
 
 .device-status.disconnected {
-  background: rgba(255, 152, 0, 0.1);
+  background: rgba(212, 162, 76, 0.1);
 }
 
 .status-text {
@@ -213,11 +213,11 @@
 }
 
 .device-status.connected .status-text {
-  color: #4CAF50;
+  color: #3CB371;
 }
 
 .device-status.disconnected .status-text {
-  color: #FF9800;
+  color: #D4A24C;
 }
 
 /* Bottom action */
@@ -229,18 +229,16 @@
 .start-btn {
   width: 100%;
   height: 100rpx;
-  background: linear-gradient(135deg, #1890FF 0%, #096DD9 100%);
+  background: #2E8B8B;
   border-radius: 999rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  box-shadow: 0 8rpx 24rpx rgba(24, 144, 255, 0.3);
 }
 
 .start-btn.disabled {
-  background: #E0E0E0;
-  box-shadow: none;
+  background: #C2C7CF;
 }
 
 .start-btn::after {
@@ -260,5 +258,5 @@
 
 .disclaimer text {
   font-size: 22rpx;
-  color: #999;
+  color: #7A7D85;
 }

@@ -24,7 +24,7 @@ Component({
 
   data: {
     riskLevel: 'safe',
-    riskColor: '#4CAF50',
+    riskColor: '#3CB371',
     riskBgColor: '#E8F5E9',
     riskIconName: 'check-circle',
     riskText: '正常',
@@ -51,20 +51,20 @@ Component({
       // Risk level styling
       const riskConfig = {
         safe: {
-          color: '#4CAF50',
-          bgColor: '#E8F5E9',
+          color: '#3CB371',
+          bgColor: 'rgba(60, 179, 113, 0.08)',
           iconName: 'check-circle',
           text: '正常'
         },
         warning: {
-          color: '#FF9800',
-          bgColor: '#FFF3E0',
+          color: '#D4A24C',
+          bgColor: 'rgba(212, 162, 76, 0.08)',
           iconName: 'warning',
           text: '需关注'
         },
         danger: {
-          color: '#F44336',
-          bgColor: '#FFEBEE',
+          color: '#C75450',
+          bgColor: 'rgba(199, 84, 80, 0.08)',
           iconName: 'alert',
           text: '请就医'
         }

@@ -62,14 +62,14 @@
 .category-label {
   display: block;
   font-size: var(--font-size-body, 28rpx);
-  color: var(--color-text-primary, #333);
+  color: var(--color-text-primary, #2C2E33);
   margin-bottom: 4rpx;
 }
 
 .confidence {
   display: block;
   font-size: var(--font-size-caption, 24rpx);
-  color: var(--color-text-hint, #999);
+  color: var(--color-text-hint, #7A7D85);
 }
 
 /* Probability section */
@@ -86,7 +86,7 @@
 .section-title text {
   font-size: var(--font-size-body, 28rpx);
   font-weight: 600;
-  color: var(--color-text-primary, #333);
+  color: var(--color-text-primary, #2C2E33);
 }
 
 /* Probability list */
@@ -108,7 +108,7 @@
 .prob-label {
   width: 160rpx;
   font-size: var(--font-size-caption, 24rpx);
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-secondary, #5A5D66);
   flex-shrink: 0;
 }
 

@@ -1,15 +1,77 @@
 <!-- AI Health Assistant Chat Page -->
+<!-- 设计语言：静谧医疗感 · 青蓝色点缀 · 雾面质感 -->
+
+<!-- History Drawer Overlay -->
+<view
+  class="drawer-overlay {{showHistory ? 'visible' : ''}}"
+  bindtap="closeHistory"
+></view>
+
+<!-- History Drawer -->
+<view class="history-drawer {{showHistory ? 'open' : ''}}">
+  <!-- Drawer Header -->
+  <view class="drawer-header">
+    <text class="drawer-title">历史对话</text>
+    <view class="drawer-close" bindtap="closeHistory">
+      <icon-svg name="close" size="32" color="#7A7D85" />
+    </view>
+  </view>
+
+  <!-- New Chat Button -->
+  <view class="new-chat-btn" bindtap="startNewChat">
+    <icon-svg name="add" size="32" color="#FFFFFF" />
+    <text class="new-chat-text">新建对话</text>
+  </view>
+
+  <!-- Conversation List -->
+  <scroll-view class="conversation-list" scroll-y>
+    <view wx:if="{{historyLoading}}" class="history-loading">
+      <text class="history-loading-text">加载中...</text>
+    </view>
+
+    <view wx:elif="{{conversations.length === 0}}" class="history-empty">
+      <icon-svg name="chat" size="64" color="#C2C7CF" />
+      <text class="history-empty-text">暂无历史对话</text>
+    </view>
+
+    <block wx:else>
+      <view
+        class="conversation-item {{item.id === conversationId ? 'active' : ''}}"
+        wx:for="{{conversations}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="switchConversation"
+        bindlongpress="onConversationLongPress"
+      >
+        <view class="conv-content">
+          <text class="conv-name">{{item.name || '新对话'}}</text>
+          <text class="conv-time">{{item.timeLabel}}</text>
+        </view>
+        <view
+          class="conv-delete"
+          catchtap="deleteConversation"
+          data-id="{{item.id}}"
+        >
+          <icon-svg name="trash" size="28" color="#C2C7CF" />
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
+
+<!-- Main Chat Container -->
 <view class="chat-container">
   <!-- Header -->
   <view class="chat-header">
+    <view class="header-left" bindtap="openHistory">
+      <icon-svg name="menu" size="36" color="#5A5D66" />
+    </view>
     <view class="header-title">
-      <icon-svg name="robot" size="40" color="#1890FF" />
+      <icon-svg name="robot" size="36" color="#2E8B8B" />
       <text class="title-text">健康助手</text>
     </view>
-    <view class="header-actions">
-      <view class="action-btn" bindtap="clearConversation">
-        <icon-svg name="refresh" size="36" color="#666666" />
-      </view>
+    <view class="header-right" bindtap="startNewChat">
+      <icon-svg name="add" size="36" color="#5A5D66" />
     </view>
   </view>
 
@@ -22,7 +84,7 @@
   >
     <!-- Disclaimer Banner -->
     <view class="disclaimer-banner">
-      <icon-svg name="alert" size="28" color="#FF9800" />
+      <icon-svg name="alert" size="28" color="#C48A30" />
       <text class="disclaimer-text">{{disclaimer}}</text>
     </view>
 
@@ -55,7 +117,7 @@
           bindtap="onQuickQuestionTap"
         >
           <text class="quick-text">{{item}}</text>
-          <icon-svg name="chevron-right" size="28" color="#999999" />
+          <icon-svg name="chevron-right" size="28" color="#C2C7CF" />
         </view>
       </view>
     </view>
@@ -81,7 +143,7 @@
         class="send-btn {{inputValue.trim() && !loading ? 'active' : ''}}"
         bindtap="sendMessage"
       >
-        <icon-svg name="send" size="36" color="{{inputValue.trim() && !loading ? '#FFFFFF' : '#CCCCCC'}}" />
+        <icon-svg name="send" size="36" color="{{inputValue.trim() && !loading ? '#FFFFFF' : '#C2C7CF'}}" />
       </view>
     </view>
   </view>

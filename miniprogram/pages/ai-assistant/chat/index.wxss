@@ -1,10 +1,182 @@
 /* AI Health Assistant Chat Page Styles */
+/* 设计语言：静谧医疗感 · 青蓝色点缀 · 雾面质感 */
 
+/* ==================== Drawer Overlay ==================== */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  z-index: 998;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.drawer-overlay.visible {
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+}
+
+/* ==================== History Drawer ==================== */
+.history-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 580rpx;
+  height: 100%;
+  background: #FFFFFF;
+  z-index: 999;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  border-right: 1rpx solid #EBEBED;
+}
+
+.history-drawer.open {
+  transform: translateX(0);
+}
+
+/* Drawer Header */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 88rpx 28rpx 24rpx;
+  border-bottom: 1rpx solid #EBEBED;
+}
+
+.drawer-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #2C2E33;
+}
+
+.drawer-close {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.drawer-close:active {
+  background: #F4F5F7;
+}
+
+/* New Chat Button */
+.new-chat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  margin: 24rpx 28rpx;
+  height: 84rpx;
+  background: #2E8B8B;
+  border-radius: 16rpx;
+}
+
+.new-chat-btn:active {
+  background: #267878;
+}
+
+.new-chat-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+/* Conversation List */
+.conversation-list {
+  flex: 1;
+  padding: 8rpx 0;
+}
+
+.conversation-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  margin: 0 12rpx;
+  border-radius: 12rpx;
+  transition: background 0.2s;
+}
+
+.conversation-item:active {
+  background: #F4F5F7;
+}
+
+.conversation-item.active {
+  background: rgba(46, 139, 139, 0.08);
+}
+
+.conv-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.conv-name {
+  display: block;
+  font-size: 28rpx;
+  color: #2C2E33;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-item.active .conv-name {
+  color: #2E8B8B;
+}
+
+.conv-time {
+  display: block;
+  font-size: 22rpx;
+  color: #A0A3AB;
+  margin-top: 6rpx;
+}
+
+.conv-delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.conv-delete:active {
+  background: rgba(199, 84, 80, 0.08);
+  opacity: 1;
+}
+
+/* History Loading & Empty */
+.history-loading,
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+}
+
+.history-loading-text,
+.history-empty-text {
+  font-size: 26rpx;
+  color: #A0A3AB;
+  margin-top: 16rpx;
+}
+
+/* ==================== Chat Container ==================== */
 .chat-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #F5F7FA;
+  background: #F4F5F7;
 }
 
 /* Header */
@@ -12,40 +184,36 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20rpx 30rpx;
+  padding: 20rpx 24rpx;
   background: #FFFFFF;
-  border-bottom: 1rpx solid #EEEEEE;
+  border-bottom: 1rpx solid #EBEBED;
+}
+
+.header-left,
+.header-right {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.header-left:active,
+.header-right:active {
+  background: #F4F5F7;
 }
 
 .header-title {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: 12rpx;
 }
 
 .title-text {
   font-size: 32rpx;
   font-weight: 600;
-  color: #333333;
-}
-
-.header-actions {
-  display: flex;
-  gap: 20rpx;
-}
-
-.action-btn {
-  width: 64rpx;
-  height: 64rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #F5F5F5;
-}
-
-.action-btn:active {
-  background: #EEEEEE;
+  color: #2C2E33;
 }
 
 /* Messages Container */
@@ -62,15 +230,15 @@
   gap: 12rpx;
   margin: 0 30rpx 20rpx;
   padding: 16rpx 20rpx;
-  background: #FFF8E1;
-  border-radius: 12rpx;
-  border: 1rpx solid #FFE082;
+  background: #FBF6EC;
+  border-radius: 16rpx;
+  border: 1rpx solid #E8D5A0;
 }
 
 .disclaimer-banner .disclaimer-text {
   flex: 1;
   font-size: 22rpx;
-  color: #F57C00;
+  color: #C48A30;
   line-height: 1.4;
 }
 
@@ -86,15 +254,15 @@
 /* Quick Questions */
 .quick-questions {
   margin: 30rpx;
-  padding: 24rpx;
+  padding: 28rpx;
   background: #FFFFFF;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  border-radius: 20rpx;
+  border: 1rpx solid #EBEBED;
 }
 
 .quick-title {
   font-size: 26rpx;
-  color: #999999;
+  color: #A0A3AB;
   margin-bottom: 20rpx;
 }
 
@@ -109,18 +277,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 20rpx 24rpx;
-  background: #F8F9FA;
+  background: #F4F5F7;
   border-radius: 12rpx;
   transition: background 0.2s;
 }
 
 .quick-item:active {
-  background: #EEEEEE;
+  background: #EBEBED;
 }
 
 .quick-text {
   font-size: 28rpx;
-  color: #333333;
+  color: #2C2E33;
 }
 
 /* Bottom Spacing */
@@ -133,7 +301,7 @@
   padding: 16rpx 20rpx;
   padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
   background: #FFFFFF;
-  border-top: 1rpx solid #EEEEEE;
+  border-top: 1rpx solid #EBEBED;
 }
 
 .input-wrapper {
@@ -141,20 +309,20 @@
   align-items: center;
   gap: 16rpx;
   padding: 12rpx 16rpx;
-  background: #F5F5F5;
-  border-radius: 40rpx;
+  background: #F4F5F7;
+  border-radius: 999rpx;
 }
 
 .message-input {
   flex: 1;
   height: 64rpx;
   font-size: 28rpx;
-  color: #333333;
+  color: #2C2E33;
   padding: 0 16rpx;
 }
 
 .message-input::placeholder {
-  color: #BBBBBB;
+  color: #A0A3AB;
 }
 
 .send-btn {
@@ -163,13 +331,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #DDDDDD;
+  background: #EBEBED;
   border-radius: 50%;
   transition: background 0.2s;
 }
 
 .send-btn.active {
-  background: #1890FF;
+  background: #2E8B8B;
 }
 
 .send-btn:active {

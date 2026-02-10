@@ -4,7 +4,8 @@
  *
  * Features:
  * - 流式响应显示
- * - 对话历史记录
+ * - 对话历史记录（侧滑抽屉）
+ * - 会话切换 / 新建 / 删除
  * - 快捷问题入口
  * - 检测结果关联
  */
@@ -13,7 +14,7 @@ const app = getApp();
 const difyService = require('../../../services/dify');
 const userService = require('../../../services/user');
 
-// 快捷问题列表
+// Quick questions
 const QUICK_QUESTIONS = [
   '我的检测结果正常吗？',
   '心音检测需要注意什么？',
@@ -30,44 +31,287 @@ Page({
     quickQuestions: QUICK_QUESTIONS,
     showQuickQuestions: true,
     scrollToMessage: '',
-    // 用户最近检测结果（作为上下文）
     latestDetection: null,
-    // 免责声明
-    disclaimer: '本助手仅提供健康建议，不能替代专业医疗诊断。如有不适，请及时就医。'
+    disclaimer: '本助手仅提供健康建议，不能替代专业医疗诊断。如有不适，请及时就医。',
+    // History drawer
+    showHistory: false,
+    conversations: [],
+    historyLoading: false
   },
 
   onLoad(options) {
     console.log('[ChatPage] Page loaded');
-
-    // 添加欢迎消息
     this.addWelcomeMessage();
   },
 
   onShow() {
-    // 检查是否有从检测结果页传来的上下文
+    // Check for detection context from result page
     const pendingContext = app.globalData.pendingDetectionContext;
     if (pendingContext) {
       console.log('[ChatPage] Received detection context from result page');
       this.setData({ latestDetection: pendingContext });
-      // 清除，避免重复使用
       app.globalData.pendingDetectionContext = null;
-
-      // 自动发送分析请求
       this.autoAskAboutDetection(pendingContext);
     }
 
-    // 滚动到底部
     this.scrollToBottom();
   },
 
+  // ==================== History Drawer ====================
+
   /**
-   * 自动询问检测结果
+   * Open history drawer and load conversations
+   */
+  openHistory() {
+    this.setData({ showHistory: true });
+    this.loadConversations();
+  },
+
+  /**
+   * Close history drawer
+   */
+  closeHistory() {
+    this.setData({ showHistory: false });
+  },
+
+  /**
+   * Load conversation list from Dify
+   */
+  async loadConversations() {
+    if (this.data.historyLoading) return;
+
+    this.setData({ historyLoading: true });
+
+    try {
+      const result = await difyService.getConversations({ limit: 30 });
+      const conversations = (result.data || []).map(conv => ({
+        ...conv,
+        timeLabel: this.formatTimeLabel(conv.updated_at || conv.created_at)
+      }));
+
+      this.setData({ conversations, historyLoading: false });
+      console.log('[ChatPage] Loaded conversations:', conversations.length);
+    } catch (error) {
+      console.error('[ChatPage] Load conversations failed:', error);
+      this.setData({ historyLoading: false });
+    }
+  },
+
+  /**
+   * Format timestamp to readable label
+   */
+  formatTimeLabel(timestamp) {
+    if (!timestamp) return '';
+
+    const date = new Date(
+      typeof timestamp === 'number' ? timestamp * 1000 : timestamp
+    );
+    const now = new Date();
+    const diff = now - date;
+    const oneDay = 86400000;
+
+    if (diff < oneDay && now.getDate() === date.getDate()) {
+      return `今天 ${this.padZero(date.getHours())}:${this.padZero(date.getMinutes())}`;
+    } else if (diff < 2 * oneDay) {
+      return `昨天 ${this.padZero(date.getHours())}:${this.padZero(date.getMinutes())}`;
+    } else if (diff < 7 * oneDay) {
+      const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+      return days[date.getDay()];
+    } else {
+      return `${date.getMonth() + 1}/${date.getDate()}`;
+    }
+  },
+
+  padZero(n) {
+    return n < 10 ? '0' + n : '' + n;
+  },
+
+  /**
+   * Switch to an existing conversation
+   */
+  async switchConversation(e) {
+    const conversationId = e.currentTarget.dataset.id;
+    if (conversationId === this.data.conversationId) {
+      this.closeHistory();
+      return;
+    }
+
+    this.setData({
+      conversationId,
+      messages: [],
+      showQuickQuestions: false,
+      showHistory: false,
+      loading: true
+    });
+
+    // Add welcome message placeholder
+    this.addWelcomeMessage();
+
+    try {
+      // Load messages from Dify
+      const history = await difyService.getConversationHistory(conversationId);
+
+      if (history && history.length > 0) {
+        const messages = [];
+
+        history.forEach(msg => {
+          // User message
+          if (msg.query) {
+            messages.push({
+              id: `user-${msg.id || Date.now()}`,
+              type: 'user',
+              content: msg.query,
+              timestamp: new Date(msg.created_at).getTime()
+            });
+          }
+          // AI response
+          if (msg.answer) {
+            messages.push({
+              id: `ai-${msg.id || Date.now()}`,
+              type: 'ai',
+              content: this.filterThinking(msg.answer),
+              timestamp: new Date(msg.created_at).getTime(),
+              showDisclaimer: true
+            });
+          }
+        });
+
+        this.setData({ messages, loading: false });
+      } else {
+        this.setData({ loading: false });
+      }
+
+      this.scrollToBottom();
+      console.log('[ChatPage] Switched to conversation:', conversationId);
+    } catch (error) {
+      console.error('[ChatPage] Load history failed:', error);
+      this.setData({ loading: false });
+      wx.showToast({ title: '加载历史失败', icon: 'none' });
+    }
+  },
+
+  /**
+   * Filter thinking tags from content
+   */
+  filterThinking(text) {
+    if (!text) return text;
+    let filtered = text.replace(/<think>[\s\S]*?<\/think>/gi, '');
+    filtered = filtered.replace(/<think>[\s\S]*/gi, '');
+    return filtered.trimStart();
+  },
+
+  /**
+   * Start a new chat session
+   */
+  startNewChat() {
+    this.setData({
+      messages: [],
+      conversationId: null,
+      showQuickQuestions: true,
+      showHistory: false,
+      inputValue: '',
+      loading: false,
+      latestDetection: null
+    });
+
+    this.addWelcomeMessage();
+    console.log('[ChatPage] Started new chat');
+  },
+
+  /**
+   * Delete a conversation
+   */
+  deleteConversation(e) {
+    const conversationId = e.currentTarget.dataset.id;
+
+    wx.showModal({
+      title: '删除对话',
+      content: '确定删除这条对话记录？',
+      confirmColor: '#C75450',
+      success: async (res) => {
+        if (!res.confirm) return;
+
+        try {
+          await difyService.deleteConversation(conversationId);
+
+          // Remove from list
+          const conversations = this.data.conversations.filter(
+            c => c.id !== conversationId
+          );
+          this.setData({ conversations });
+
+          // If deleted conversation is current, start new chat
+          if (conversationId === this.data.conversationId) {
+            this.startNewChat();
+          }
+
+          wx.showToast({ title: '已删除', icon: 'none' });
+        } catch (error) {
+          console.error('[ChatPage] Delete failed:', error);
+          wx.showToast({ title: '删除失败', icon: 'none' });
+        }
+      }
+    });
+  },
+
+  /**
+   * Long press conversation for more actions
+   */
+  onConversationLongPress(e) {
+    const conversationId = e.currentTarget.dataset.id;
+    const conv = this.data.conversations.find(c => c.id === conversationId);
+
+    wx.showActionSheet({
+      itemList: ['重命名', '删除'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          this.renameConversation(conversationId, conv?.name || '');
+        } else if (res.tapIndex === 1) {
+          this.deleteConversation({ currentTarget: { dataset: { id: conversationId } } });
+        }
+      }
+    });
+  },
+
+  /**
+   * Rename a conversation
+   */
+  renameConversation(conversationId, currentName) {
+    // WeChat doesn't have a native prompt dialog, use modal workaround
+    wx.showModal({
+      title: '重命名对话',
+      content: currentName || '新对话',
+      editable: true,
+      placeholderText: '输入新名称',
+      success: async (res) => {
+        if (!res.confirm || !res.content?.trim()) return;
+
+        try {
+          await difyService.renameConversation(conversationId, res.content.trim());
+
+          const conversations = this.data.conversations.map(c => {
+            if (c.id === conversationId) {
+              return { ...c, name: res.content.trim() };
+            }
+            return c;
+          });
+          this.setData({ conversations });
+        } catch (error) {
+          console.error('[ChatPage] Rename failed:', error);
+          wx.showToast({ title: '重命名失败', icon: 'none' });
+        }
+      }
+    });
+  },
+
+  // ==================== Chat Logic ====================
+
+  /**
+   * Auto-ask about detection result
    */
   autoAskAboutDetection(detection) {
-    // 构建包含检测信息的详细提问
     const riskText = detection.risk_level === 'safe' ? '正常' :
                      detection.risk_level === 'warning' ? '需关注' : '高风险';
-
     const label = detection.label || '心音检测';
     const confidence = detection.confidence ? `${detection.confidence.toFixed(1)}%` : '未知';
 
@@ -85,7 +329,7 @@ Page({
   },
 
   /**
-   * 加载最近检测结果作为上下文
+   * Load latest detection for context
    */
   async loadLatestDetection() {
     try {
@@ -103,7 +347,7 @@ Page({
   },
 
   /**
-   * 添加欢迎消息
+   * Add welcome message
    */
   addWelcomeMessage() {
     const welcomeMessage = {
@@ -114,22 +358,18 @@ Page({
       showDisclaimer: false
     };
 
-    this.setData({
-      messages: [welcomeMessage]
-    });
+    this.setData({ messages: [welcomeMessage] });
   },
 
   /**
-   * 输入框内容变化
+   * Input change handler
    */
   onInputChange(e) {
-    this.setData({
-      inputValue: e.detail.value
-    });
+    this.setData({ inputValue: e.detail.value });
   },
 
   /**
-   * 点击快捷问题
+   * Quick question tap
    */
   onQuickQuestionTap(e) {
     const question = e.currentTarget.dataset.question;
@@ -141,7 +381,7 @@ Page({
   },
 
   /**
-   * 发送消息
+   * Send message
    */
   async sendMessage() {
     const { inputValue, loading, conversationId, latestDetection } = this.data;
@@ -155,10 +395,8 @@ Page({
       timestamp: Date.now()
     };
 
-    // 添加用户消息
     const messages = [...this.data.messages, userMessage];
 
-    // 添加AI加载状态
     const aiLoadingMessage = {
       id: `ai-${Date.now()}`,
       type: 'ai',
@@ -177,10 +415,8 @@ Page({
     });
 
     try {
-      // 构建输入上下文
       const inputs = {};
       if (latestDetection) {
-        // 构建详细的检测报告上下文
         const detectionContext = {
           risk_level: latestDetection.risk_level || 'unknown',
           label: latestDetection.label || latestDetection.result_label || '未知',
@@ -189,19 +425,15 @@ Page({
           created_at: latestDetection.created_at || new Date().toISOString(),
           probabilities: latestDetection.probabilities || null
         };
-
         inputs.latest_detection = JSON.stringify(detectionContext);
-
         console.log('[ChatPage] Sending detection context:', detectionContext);
       }
 
-      // 调用Dify API
       const response = await difyService.sendChatMessage({
         message: userMessage.content,
         conversationId: conversationId,
         inputs: inputs,
         onMessage: (data) => {
-          // 流式更新AI回复
           if (data.type === 'message') {
             this.updateAIMessage(aiLoadingMessage.id, {
               content: data.fullContent,
@@ -212,7 +444,6 @@ Page({
         }
       });
 
-      // 更新最终回复
       this.finalizeAIMessage(aiLoadingMessage.id, response.answer, response.conversationId);
 
     } catch (error) {
@@ -222,9 +453,7 @@ Page({
   },
 
   /**
-   * 流式更新AI消息
-   * @param {string} messageId - 消息ID
-   * @param {object} data - 包含content, thinking, isThinking
+   * Stream update AI message
    */
   updateAIMessage(messageId, data) {
     const messages = this.data.messages.map(msg => {
@@ -243,11 +472,7 @@ Page({
   },
 
   /**
-   * 完成AI消息
-   * @param {string} messageId - 消息ID
-   * @param {string} content - 最终内容
-   * @param {string} newConversationId - 对话ID
-   * @param {string} thinking - 思考内容（可选）
+   * Finalize AI message
    */
   finalizeAIMessage(messageId, content, newConversationId, thinking) {
     const messages = this.data.messages.map(msg => {
@@ -274,7 +499,7 @@ Page({
   },
 
   /**
-   * 处理错误
+   * Handle error
    */
   handleError(messageId, error) {
     const errorMessage = error.message || '网络错误，请稍后重试';
@@ -291,51 +516,29 @@ Page({
       return msg;
     });
 
-    this.setData({
-      messages,
-      loading: false
-    });
-
-    wx.showToast({
-      title: '发送失败',
-      icon: 'none'
-    });
+    this.setData({ messages, loading: false });
+    wx.showToast({ title: '发送失败', icon: 'none' });
   },
 
   /**
-   * 滚动到底部
+   * Scroll to bottom
    */
   scrollToBottom() {
     const lastMessage = this.data.messages[this.data.messages.length - 1];
     if (lastMessage) {
-      this.setData({
-        scrollToMessage: lastMessage.id
-      });
+      this.setData({ scrollToMessage: lastMessage.id });
     }
   },
 
   /**
-   * 清空对话
+   * Clear conversation (legacy, now redirects to new chat)
    */
   clearConversation() {
-    wx.showModal({
-      title: '清空对话',
-      content: '确定要清空当前对话吗？',
-      success: (res) => {
-        if (res.confirm) {
-          this.setData({
-            messages: [],
-            conversationId: null,
-            showQuickQuestions: true
-          });
-          this.addWelcomeMessage();
-        }
-      }
-    });
+    this.startNewChat();
   },
 
   /**
-   * 分享
+   * Share
    */
   onShareAppMessage() {
     return {

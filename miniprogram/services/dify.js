@@ -400,9 +400,126 @@ function extractThinkingContent(text) {
   return { thinking, answer, isThinking };
 }
 
+/**
+ * Get conversation list
+ * 获取会话列表
+ *
+ * @param {object} options - 请求参数
+ * @param {number} options.limit - 每页数量 (默认20)
+ * @param {string} options.lastId - 上一页最后一条ID (分页用)
+ * @returns {Promise<object>} 会话列表 { data: [...], has_more: bool }
+ */
+async function getConversations(options = {}) {
+  const { limit = 20, lastId } = options;
+
+  return new Promise((resolve, reject) => {
+    const data = {
+      user: 'miniprogram-user',
+      limit: limit,
+      sort_by: '-updated_at'
+    };
+    if (lastId) {
+      data.last_id = lastId;
+    }
+
+    wx.request({
+      url: `${config.baseUrl}/conversations`,
+      method: 'GET',
+      header: {
+        'Authorization': `Bearer ${config.chatflowApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      data: data,
+      timeout: config.apiSettings.timeout,
+      success(res) {
+        if (res.statusCode === 200) {
+          resolve(res.data || { data: [], has_more: false });
+        } else {
+          reject(new Error(res.data?.message || `HTTP ${res.statusCode}`));
+        }
+      },
+      fail(err) {
+        reject(new Error(err.errMsg || 'Network error'));
+      }
+    });
+  });
+}
+
+/**
+ * Delete a conversation
+ * 删除会话
+ *
+ * @param {string} conversationId - 会话ID
+ * @returns {Promise<void>}
+ */
+async function deleteConversation(conversationId) {
+  if (!conversationId) return;
+
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${config.baseUrl}/conversations/${conversationId}`,
+      method: 'DELETE',
+      header: {
+        'Authorization': `Bearer ${config.chatflowApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      data: { user: 'miniprogram-user' },
+      timeout: config.apiSettings.timeout,
+      success(res) {
+        if (res.statusCode === 200 || res.statusCode === 204) {
+          resolve();
+        } else {
+          reject(new Error(res.data?.message || `HTTP ${res.statusCode}`));
+        }
+      },
+      fail(err) {
+        reject(new Error(err.errMsg || 'Network error'));
+      }
+    });
+  });
+}
+
+/**
+ * Rename a conversation
+ * 重命名会话
+ *
+ * @param {string} conversationId - 会话ID
+ * @param {string} name - 新名称
+ * @returns {Promise<void>}
+ */
+async function renameConversation(conversationId, name) {
+  if (!conversationId) return;
+
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${config.baseUrl}/conversations/${conversationId}/name`,
+      method: 'POST',
+      header: {
+        'Authorization': `Bearer ${config.chatflowApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      data: { name, user: 'miniprogram-user' },
+      timeout: config.apiSettings.timeout,
+      success(res) {
+        if (res.statusCode === 200) {
+          resolve();
+        } else {
+          reject(new Error(res.data?.message || `HTTP ${res.statusCode}`));
+        }
+      },
+      fail(err) {
+        reject(new Error(err.errMsg || 'Network error'));
+      }
+    });
+  });
+}
+
 module.exports = {
   sendChatMessage,
   generateHealthReport,
   createConversation,
-  getConversationHistory
+  getConversationHistory,
+  getConversations,
+  deleteConversation,
+  renameConversation
 };

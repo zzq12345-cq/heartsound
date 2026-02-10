@@ -34,6 +34,31 @@ htmlcov/
 *.swp
 *.swo
 *.sublime-*
+.cursor/
+
+# AI Tools
+.agent/
+.agents/
+.claude/
+.factory/
+.goose/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.windsurf/
+.zencoder/
+skills/
+.workflow/
 
 # OS
 .DS_Store

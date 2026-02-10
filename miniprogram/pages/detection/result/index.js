@@ -17,7 +17,10 @@ Page({
     // 健康建议
     suggestions: [],
     // 免责声明
-    disclaimer: '本检测结果仅供参考，不能作为医学诊断依据。如有不适，请及时就医。'
+    disclaimer: '本检测结果仅供参考，不能作为医学诊断依据。如有不适，请及时就医。',
+    // 紧急联系人
+    emergencyContact: null,
+    showEmergencyBtn: false
   },
 
   onLoad(options) {
@@ -73,14 +76,70 @@ Page({
     // 生成健康建议
     const suggestions = this.generateSuggestions(result);
 
+    // 读取紧急联系人
+    const emergencyContact = wx.getStorageSync('emergencyContact') || null;
+    const isDanger = result.risk_level === 'danger';
+
     this.setData({
       result,
       suggestions,
-      showShare: true
+      showShare: true,
+      emergencyContact,
+      showEmergencyBtn: isDanger
     });
 
     // 保存到历史记录
     this.saveToHistory(result);
+
+    // danger级别且已设置联系人，延迟1秒弹窗提示拨打
+    if (isDanger && emergencyContact) {
+      setTimeout(() => {
+        this.showEmergencyCallModal(emergencyContact);
+      }, 1000);
+    }
+  },
+
+  /**
+   * 弹窗提示拨打紧急联系人
+   */
+  showEmergencyCallModal(contact) {
+    wx.showModal({
+      title: '检测到异常',
+      content: `是否拨打紧急联系人「${contact.name}」(${contact.phone})？`,
+      confirmText: '立即拨打',
+      confirmColor: '#C75450',
+      success: (res) => {
+        if (res.confirm) {
+          this.callEmergencyContact();
+        }
+      }
+    });
+  },
+
+  /**
+   * 拨打紧急联系人
+   */
+  callEmergencyContact() {
+    const contact = this.data.emergencyContact;
+    if (!contact || !contact.phone) return;
+
+    wx.makePhoneCall({
+      phoneNumber: contact.phone,
+      fail: (err) => {
+        if (err.errMsg && err.errMsg.indexOf('cancel') === -1) {
+          console.error('[Result] Emergency call failed:', err);
+        }
+      }
+    });
+  },
+
+  /**
+   * 跳转设置紧急联系人
+   */
+  goSetEmergencyContact() {
+    wx.navigateTo({
+      url: '/pages/emergency-contact/index'
+    });
   },
 
   /**

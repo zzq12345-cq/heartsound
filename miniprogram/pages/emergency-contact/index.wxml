@@ -1,0 +1,69 @@
+<!-- Emergency Contact Page Template -->
+<view class="page-container">
+  <!-- Header description -->
+  <view class="page-header">
+    <view class="header-icon-wrapper">
+      <icon-svg name="phone" size="48" color="#C75450" />
+    </view>
+    <text class="header-title">紧急联系人</text>
+    <text class="header-desc">检测结果异常时，可快速拨打预设联系人电话</text>
+  </view>
+
+  <!-- Form card -->
+  <view class="form-card card">
+    <view class="form-item">
+      <text class="form-label">联系人姓名</text>
+      <input
+        class="form-input"
+        placeholder="请输入姓名"
+        value="{{name}}"
+        bindinput="onNameInput"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="form-divider"></view>
+
+    <view class="form-item">
+      <text class="form-label">手机号码</text>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="请输入11位手机号"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+        maxlength="11"
+      />
+    </view>
+  </view>
+
+  <!-- Action buttons -->
+  <view class="action-section">
+    <button class="btn-save" bindtap="saveContact">
+      保存联系人
+    </button>
+
+    <view class="secondary-actions" wx:if="{{hasContact}}">
+      <button class="btn-test" bindtap="testCall">
+        <icon-svg name="phone" size="32" color="#2E8B8B" />
+        <text class="btn-test-text">测试拨打</text>
+      </button>
+      <button class="btn-delete" bindtap="deleteContact">
+        <icon-svg name="trash" size="32" color="#C75450" />
+        <text class="btn-delete-text">删除</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- Tips -->
+  <view class="tips-section">
+    <view class="tip-item">
+      <icon-svg name="lightbulb" size="28" color="#7A7D85" />
+      <text class="tip-text">联系人信息仅保存在本地，保护您的隐私</text>
+    </view>
+    <view class="tip-item">
+      <icon-svg name="alert" size="28" color="#7A7D85" />
+      <text class="tip-text">仅在检测结果为"高风险"时触发拨打提示</text>
+    </view>
+  </view>
+</view>

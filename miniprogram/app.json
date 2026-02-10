@@ -10,7 +10,8 @@
     "pages/records/index",
     "pages/profile/index",
     "pages/ai-assistant/chat/index",
-    "pages/ai-assistant/report/index"
+    "pages/ai-assistant/report/index",
+    "pages/emergency-contact/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

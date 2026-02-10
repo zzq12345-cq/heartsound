@@ -36,6 +36,26 @@
     </view>
   </view>
 
+  <!-- Emergency contact button (danger only) -->
+  <view class="emergency-section" wx:if="{{showEmergencyBtn}}">
+    <button
+      wx:if="{{emergencyContact}}"
+      class="emergency-btn"
+      bindtap="callEmergencyContact"
+    >
+      <icon-svg name="phone" size="36" color="#FFFFFF" />
+      <text class="emergency-btn-text">拨打紧急联系人({{emergencyContact.name}})</text>
+    </button>
+    <button
+      wx:else
+      class="emergency-btn outline"
+      bindtap="goSetEmergencyContact"
+    >
+      <icon-svg name="phone" size="36" color="#C75450" />
+      <text class="emergency-btn-text-outline">设置紧急联系人</text>
+    </button>
+  </view>
+
   <!-- Actions -->
   <view class="actions-section">
     <view class="action-row">

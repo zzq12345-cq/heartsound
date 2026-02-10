@@ -1,0 +1,160 @@
+/* Emergency Contact Page Styles */
+/* Design: Calm medical theme, teal accent, frosted texture */
+
+.page-container {
+  padding: 32rpx;
+  min-height: 100vh;
+  background: #F4F5F7;
+  padding-bottom: calc(64rpx + env(safe-area-inset-bottom));
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48rpx 0 40rpx;
+}
+
+.header-icon-wrapper {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: rgba(199, 84, 80, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2C2E33;
+  margin-bottom: 8rpx;
+}
+
+.header-desc {
+  font-size: 26rpx;
+  color: #7A7D85;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Form Card */
+.form-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  border: 1rpx solid #EBEBED;
+  margin-bottom: 32rpx;
+  overflow: hidden;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+}
+
+.form-label {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #2C2E33;
+  width: 180rpx;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #2C2E33;
+  text-align: right;
+}
+
+.form-input::placeholder {
+  color: #C0C2C8;
+}
+
+.form-divider {
+  height: 1rpx;
+  background: #EBEBED;
+  margin: 0 32rpx;
+}
+
+/* Action Buttons */
+.action-section {
+  margin-bottom: 40rpx;
+}
+
+.btn-save {
+  width: 100%;
+  height: 96rpx;
+  background: #C75450;
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 999rpx;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.btn-save::after {
+  border: none;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.btn-test,
+.btn-delete {
+  flex: 1;
+  height: 88rpx;
+  background: #FFFFFF;
+  border-radius: 999rpx;
+  border: 1rpx solid #EBEBED;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  padding: 0;
+}
+
+.btn-test::after,
+.btn-delete::after {
+  border: none;
+}
+
+.btn-test-text {
+  color: #2E8B8B;
+  font-weight: 500;
+  margin-left: 8rpx;
+}
+
+.btn-delete-text {
+  color: #C75450;
+  font-weight: 500;
+  margin-left: 8rpx;
+}
+
+/* Tips Section */
+.tips-section {
+  padding: 0 8rpx;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #7A7D85;
+  line-height: 1.5;
+  margin-left: 12rpx;
+}

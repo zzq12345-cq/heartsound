@@ -16,6 +16,7 @@ const userService = require('../../services/user');
 const MENU_ITEMS = [
   { key: 'records', icon: 'clipboard', color: '#1890FF', label: '健康档案', path: '/pages/records/index' },
   { key: 'ai-report', icon: 'document', color: '#722ED1', label: 'AI健康报告', path: '/pages/ai-assistant/report/index' },
+  { key: 'emergency', icon: 'phone', color: '#C75450', label: '紧急联系人', path: '/pages/emergency-contact/index' },
   { key: 'settings', icon: 'target', color: '#4CAF50', label: '设置', action: 'showDeveloping' },
   { key: 'help', icon: 'lightbulb', color: '#FF9800', label: '帮助与反馈', action: 'openHelp' }
 ];

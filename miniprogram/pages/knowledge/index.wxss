@@ -127,12 +127,12 @@
 
 .featured-card {
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   border: 1rpx solid #EBEBED;
-  padding: 32rpx;
+  padding: var(--spacing-lg);
   height: 100%;
   box-sizing: border-box;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
 }
@@ -194,7 +194,7 @@
 
 /* ── Category Tabs ─────────────────────────────────────────────────── */
 .category-section {
-  margin-bottom: 32rpx;
+  margin-bottom: var(--spacing-lg);
 }
 
 .category-scroll {
@@ -204,7 +204,7 @@
 
 .category-tabs {
   display: inline-flex;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
   padding: 4rpx 0;
 }
 
@@ -253,18 +253,18 @@
 
 .article-card {
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   border: 1rpx solid #EBEBED;
   padding: 28rpx 32rpx;
   margin-bottom: 20rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-md);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .article-card:active {
   transform: translateY(2rpx);
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .article-card-body {
@@ -344,7 +344,7 @@
 
 .skeleton-card {
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   padding: 28rpx 32rpx;
   border: 1rpx solid #EBEBED;
 }
@@ -353,7 +353,7 @@
   background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
 }
 
 .skeleton-title {

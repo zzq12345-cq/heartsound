@@ -2,7 +2,7 @@
 /* Design: Calm medical theme, teal accent, frosted texture */
 
 .page-container {
-  padding: 32rpx;
+  padding: var(--spacing-lg);
   min-height: 100vh;
   background: #F4F5F7;
   padding-bottom: calc(64rpx + env(safe-area-inset-bottom));
@@ -44,16 +44,16 @@
 /* Form Card */
 .form-card {
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   border: 1rpx solid #EBEBED;
-  margin-bottom: 32rpx;
+  margin-bottom: var(--spacing-lg);
   overflow: hidden;
 }
 
 .form-item {
   display: flex;
   align-items: center;
-  padding: 32rpx;
+  padding: var(--spacing-lg);
 }
 
 .form-label {
@@ -93,7 +93,7 @@
   color: #FFFFFF;
   font-size: 32rpx;
   font-weight: 600;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
   border: none;
   display: flex;
   align-items: center;
@@ -115,7 +115,7 @@
   flex: 1;
   height: 88rpx;
   background: #FFFFFF;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
   border: 1rpx solid #EBEBED;
   display: flex;
   align-items: center;

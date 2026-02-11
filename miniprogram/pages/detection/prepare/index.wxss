@@ -110,7 +110,7 @@
 .instructions {
   width: 100%;
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   padding: 40rpx;
   border: 1rpx solid #EBEBED;
   margin-bottom: 40rpx;
@@ -118,7 +118,7 @@
 
 .instruction-title {
   text-align: center;
-  margin-bottom: 32rpx;
+  margin-bottom: var(--spacing-lg);
 }
 
 .instruction-title text {
@@ -136,7 +136,7 @@
   align-items: center;
   padding: 24rpx;
   background: #F4F5F7;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
 }
 
 .tip-item.active {
@@ -174,7 +174,7 @@
 .tip-indicators {
   display: flex;
   justify-content: center;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
   margin-top: 24rpx;
 }
 
@@ -188,7 +188,7 @@
 
 .indicator.active {
   width: 32rpx;
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
   background: #4A90D9;
 }
 
@@ -197,7 +197,7 @@
   display: flex;
   align-items: center;
   padding: 20rpx 32rpx;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
 }
 
 .device-status.connected {
@@ -222,7 +222,7 @@
 
 /* Bottom action */
 .bottom-action {
-  padding: 32rpx;
+  padding: var(--spacing-lg);
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
 }
 
@@ -230,7 +230,7 @@
   width: 100%;
   height: 100rpx;
   background: #4A90D9;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;

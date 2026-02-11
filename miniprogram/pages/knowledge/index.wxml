@@ -130,8 +130,11 @@
 
     <!-- Empty state -->
     <view wx:if="{{!loading && articles.length === 0}}" class="empty-state">
-      <icon-svg name="lightbulb" size="64" color="#C2C7CF" />
-      <text class="empty-text">暂无文章</text>
+      <view class="empty-state-icon">
+        <icon-svg name="lightbulb" size="64" color="#4A90D9" />
+      </view>
+      <text class="empty-state-title">暂无科普文章</text>
+      <text class="empty-state-desc">健康知识正在整理中，请稍后再来看看</text>
     </view>
 
     <!-- Loading more -->

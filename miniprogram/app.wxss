@@ -54,10 +54,10 @@ page {
   --radius-lg: 24rpx;
   --radius-full: 999rpx;
 
-  /* Shadows */
-  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.16);
+  /* Shadows — 清透系柔和阴影 */
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
 
   /* Global Settings */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
@@ -190,4 +190,56 @@ page {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+/* Empty State — 通用空状态设计 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx var(--spacing-lg);
+}
+
+.empty-state-icon {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(74, 144, 217, 0.06) 0%, rgba(74, 144, 217, 0.02) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-state-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-desc {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-hint);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-xl);
+}
+
+.empty-state-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72rpx;
+  padding: 0 48rpx;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-text-white);
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+  transition: transform 0.15s ease;
+}
+
+.empty-state-action:active {
+  transform: scale(0.96);
 }

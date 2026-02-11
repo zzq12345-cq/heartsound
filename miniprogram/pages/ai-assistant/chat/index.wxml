@@ -30,8 +30,11 @@
     </view>
 
     <view wx:elif="{{conversations.length === 0}}" class="history-empty">
-      <icon-svg name="chat" size="64" color="#C2C7CF" />
+      <view class="empty-state-icon">
+        <icon-svg name="chat" size="48" color="#4A90D9" />
+      </view>
       <text class="history-empty-text">暂无历史对话</text>
+      <text class="empty-state-desc">开始新对话后，记录会保存在这里</text>
     </view>
 
     <block wx:else>

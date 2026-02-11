@@ -1,5 +1,5 @@
 /* Detection Result Page Styles */
-/* 设计语言：静谧医疗感 · 青蓝色点缀 · 雾面质感 */
+/* 设计语言：清透医疗感 · 浅蓝色点缀 · 雾面质感 */
 
 .result-page {
   min-height: 100vh;
@@ -65,15 +65,16 @@
 /* Suggestions section */
 .suggestions-section {
   margin: 0 32rpx 32rpx;
-  background: #FFFFFF;
-  border-radius: 24rpx;
-  padding: 32rpx;
-  border: 1rpx solid #EBEBED;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1rpx solid var(--color-border);
+  box-shadow: var(--shadow-sm);
   opacity: 0;
 }
 
 .section-header {
-  margin-bottom: 24rpx;
+  margin-bottom: var(--spacing-md);
 }
 
 .section-title {
@@ -93,7 +94,7 @@
   align-items: flex-start;
   padding: 20rpx;
   background: #F4F5F7;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   opacity: 0;
   animation: fadeIn 0.4s ease forwards;
 }
@@ -137,9 +138,11 @@
   align-items: center;
   justify-content: center;
   height: 96rpx;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
   border: none;
-  font-size: 30rpx;
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .action-btn::after {
@@ -147,20 +150,34 @@
 }
 
 .action-btn.primary {
-  background: #4A90D9;
-  color: #FFFFFF;
+  background: var(--color-primary);
+  color: var(--color-text-white);
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.25);
+}
+
+.action-btn.primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 12rpx rgba(74, 144, 217, 0.15);
 }
 
 .action-btn.secondary {
-  background: #FFFFFF;
-  color: #2C2E33;
-  border: 1rpx solid #EBEBED;
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+  border: 1rpx solid var(--color-border);
+}
+
+.action-btn.secondary:active {
+  background: var(--color-border-light);
 }
 
 .action-btn.text {
   background: transparent;
-  color: #7A7D85;
+  color: var(--color-text-hint);
   height: 80rpx;
+}
+
+.action-btn.text:active {
+  opacity: 0.6;
 }
 
 .btn-text {
@@ -178,7 +195,7 @@
   align-items: flex-start;
   padding: 24rpx;
   background: #FBF6EC;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   border: 1rpx solid #E8D5A0;
 }
 
@@ -196,13 +213,19 @@
   bottom: calc(120rpx + env(safe-area-inset-bottom));
   width: 100rpx;
   height: 100rpx;
-  background: #FFFFFF;
+  background: var(--color-bg-card);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1rpx solid #EBEBED;
+  border: 1rpx solid var(--color-border);
+  box-shadow: var(--shadow-md);
   z-index: 100;
+  transition: transform 0.15s ease;
+}
+
+.share-float:active {
+  transform: scale(0.92);
 }
 
 /* Emergency contact section */
@@ -215,7 +238,7 @@
   height: 96rpx;
   background: #C75450;
   color: #FFFFFF;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
   border: none;
   display: flex;
   align-items: center;

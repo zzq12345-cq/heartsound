@@ -20,7 +20,7 @@
   margin: 0 32rpx;
   padding: 40rpx;
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   border: 1rpx solid #EBEBED;
 }
 
@@ -147,7 +147,7 @@
   height: 80rpx;
   background: transparent;
   border: 2rpx solid #EBEBED;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
   font-size: 28rpx;
   color: #7A7D85;
   display: flex;

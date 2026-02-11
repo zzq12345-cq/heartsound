@@ -64,7 +64,7 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 24rpx;
+  gap: var(--spacing-md);
 }
 
 .header-icon-wrapper {
@@ -117,9 +117,9 @@
   align-items: center;
   padding: 28rpx 24rpx;
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   border: 1rpx solid #EBEBED;
-  margin-bottom: 32rpx;
+  margin-bottom: var(--spacing-lg);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -355,7 +355,7 @@
 .info-cards {
   display: flex;
   justify-content: center;
-  gap: 24rpx;
+  gap: var(--spacing-md);
   margin-top: 40rpx;
   width: 100%;
 }
@@ -368,7 +368,7 @@
   align-items: center;
   padding: 20rpx 16rpx;
   background: #FFFFFF;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   border: 1rpx solid #EBEBED;
 }
 
@@ -486,7 +486,7 @@
    ============================================================================ */
 .records-section {
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   padding: 24rpx;
   margin-bottom: 28rpx;
   border: 1rpx solid #EBEBED;
@@ -503,7 +503,7 @@
   align-items: center;
   padding: 20rpx;
   background: #F4F5F7;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   transition: all 0.2s ease;
 }
 
@@ -515,7 +515,7 @@
 .record-icon-wrapper {
   width: 56rpx;
   height: 56rpx;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -553,7 +553,7 @@
 
 .record-result {
   padding: 6rpx 16rpx;
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
   margin-right: 12rpx;
 }
 
@@ -600,7 +600,7 @@
   align-items: center;
   padding: 60rpx 32rpx;
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   margin-bottom: 28rpx;
   border: 1rpx solid #EBEBED;
 }

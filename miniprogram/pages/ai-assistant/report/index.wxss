@@ -19,7 +19,7 @@
 .header-title {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
 }
 
 .title-text {
@@ -58,7 +58,7 @@
   align-items: center;
   padding: 24rpx 20rpx;
   background: #F8F9FA;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   border: 2rpx solid transparent;
   transition: all 0.2s;
 }
@@ -89,21 +89,21 @@
   margin: 0 30rpx 20rpx;
   padding: 30rpx;
   background: #FFFFFF;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .stats-title {
   font-size: 28rpx;
   font-weight: 600;
   color: #333333;
-  margin-bottom: 24rpx;
+  margin-bottom: var(--spacing-md);
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16rpx;
+  gap: var(--spacing-sm);
 }
 
 .stat-item {
@@ -167,7 +167,7 @@
   padding: 60rpx 30rpx;
   margin: 0 30rpx;
   background: #FFFFFF;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
 }
 
 .no-data-text {
@@ -192,7 +192,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
   width: 100%;
   height: 96rpx;
   background: linear-gradient(135deg, #4A90D9, #3A7BD5);
@@ -255,9 +255,9 @@
 
 .report-card {
   background: #FFFFFF;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .report-header-bar {
@@ -282,7 +282,7 @@
 
 .report-actions {
   display: flex;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
 }
 
 .share-btn {
@@ -356,7 +356,7 @@
 
 .history-list {
   background: #FFFFFF;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
@@ -396,7 +396,7 @@
 .report-period-tag {
   padding: 6rpx 16rpx;
   background: #E6F4FF;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   margin-left: 12rpx;
 }
 
@@ -428,7 +428,7 @@
   align-items: center;
   padding: 60rpx 30rpx;
   background: #FFFFFF;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
 }
 
 .history-empty-text {

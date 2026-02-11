@@ -116,14 +116,14 @@
   flex: 1;
   height: 16rpx;
   background-color: rgba(0, 0, 0, 0.12);
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
   margin: 0 var(--spacing-sm, 16rpx);
   overflow: hidden;
 }
 
 .prob-bar {
   height: 100%;
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
   transition: width 0.5s ease;
 }
 

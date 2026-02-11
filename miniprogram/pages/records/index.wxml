@@ -60,14 +60,12 @@
 
   <!-- Empty State -->
   <view class="empty-state" wx:if="{{isEmpty && !loading}}">
-    <view class="empty-icon-wrapper">
-      <icon-svg name="clipboard" size="120" color="#CCC" />
+    <view class="empty-state-icon">
+      <icon-svg name="clipboard" size="64" color="#4A90D9" />
     </view>
-    <text class="empty-title">暂无检测记录</text>
-    <text class="empty-hint">完成首次心音检测后，记录将显示在这里</text>
-    <button class="btn btn-primary empty-btn" bindtap="goToDetection">
-      开始检测
-    </button>
+    <text class="empty-state-title">暂无检测记录</text>
+    <text class="empty-state-desc">完成首次心音检测后，记录将显示在这里</text>
+    <view class="empty-state-action" bindtap="goToDetection">开始检测</view>
   </view>
 
   <!-- Initial Loading -->

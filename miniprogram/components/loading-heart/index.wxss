@@ -63,7 +63,7 @@
   align-items: center;
   justify-content: center;
   animation: heartbeat 0.8s ease-in-out infinite;
-  box-shadow: 0 8rpx 32rpx rgba(74, 144, 217, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .heart-emoji {
@@ -114,7 +114,7 @@
   margin-top: 60rpx;
   overflow: hidden;
   border-radius: 2rpx;
-  background-color: #EBEBED;
+  background-color: var(--color-border, #EBEBED);
 }
 
 .ecg-line {

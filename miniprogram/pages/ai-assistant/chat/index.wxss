@@ -76,7 +76,7 @@
   margin: 24rpx 28rpx;
   height: 84rpx;
   background: #4A90D9;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
 }
 
 .new-chat-btn:active {
@@ -231,7 +231,7 @@
   margin: 0 30rpx 20rpx;
   padding: 16rpx 20rpx;
   background: #FBF6EC;
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   border: 1rpx solid #E8D5A0;
 }
 
@@ -269,7 +269,7 @@
 .quick-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
 }
 
 .quick-item {
@@ -307,10 +307,10 @@
 .input-wrapper {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: var(--spacing-sm);
   padding: 12rpx 16rpx;
   background: #F4F5F7;
-  border-radius: 999rpx;
+  border-radius: var(--radius-full);
 }
 
 .message-input {

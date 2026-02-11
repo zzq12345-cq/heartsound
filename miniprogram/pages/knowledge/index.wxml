@@ -1,0 +1,154 @@
+<!-- Knowledge List Page - 健康科普列表页 -->
+<view class="page-container">
+
+  <!-- ========== Hero Section ========== -->
+  <view class="hero">
+    <view class="hero-deco hero-deco--circle1"></view>
+    <view class="hero-deco hero-deco--circle2"></view>
+    <view class="hero-deco hero-deco--wave"></view>
+    <view class="hero-content">
+      <view class="hero-text">
+        <text class="hero-greeting">健康科普</text>
+        <text class="hero-tagline">了解心脏，守护健康</text>
+      </view>
+      <view class="hero-icon-wrap">
+        <icon-svg name="lightbulb" size="48" color="#4A90D9" />
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== Featured Swiper ========== -->
+  <view class="card-section" wx:if="{{featuredArticles.length > 0}}">
+    <view class="card-header">
+      <text class="card-header-label">精选推荐</text>
+      <text class="card-header-sub">{{featuredArticles.length}}篇精选</text>
+    </view>
+    <swiper
+      class="featured-swiper"
+      autoplay="{{true}}"
+      interval="{{5000}}"
+      circular="{{true}}"
+      indicator-dots="{{true}}"
+      indicator-color="rgba(74,144,217,0.15)"
+      indicator-active-color="#4A90D9"
+      bindchange="onSwiperChange"
+    >
+      <swiper-item
+        wx:for="{{featuredArticles}}"
+        wx:key="id"
+      >
+        <view
+          class="featured-card"
+          data-id="{{item.id}}"
+          bindtap="onFeaturedTap"
+        >
+          <view class="featured-card-content">
+            <view class="featured-tag">精选</view>
+            <text class="featured-title">{{item.title}}</text>
+            <text class="featured-summary">{{item.summary}}</text>
+            <view class="featured-meta">
+              <text class="featured-meta-item">{{item.author}}</text>
+              <text class="featured-meta-sep">·</text>
+              <text class="featured-meta-item">{{item.read_time}}分钟阅读</text>
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- ========== Category Tabs ========== -->
+  <view class="category-section">
+    <scroll-view class="category-scroll" scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
+      <view class="category-tabs">
+        <view
+          class="category-tab {{activeCategoryId === null ? 'active' : ''}}"
+          data-id=""
+          bindtap="onCategoryTap"
+        >
+          <text class="category-tab-text">全部</text>
+          <text class="category-tab-count">{{total}}</text>
+        </view>
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="category-tab {{activeCategoryId === item.id ? 'active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onCategoryTap"
+        >
+          <icon-svg name="{{item.icon}}" size="20" color="{{activeCategoryId === item.id ? '#FFFFFF' : item.color}}" />
+          <text class="category-tab-text">{{item.name}}</text>
+          <text class="category-tab-count">{{item.article_count}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ========== Article List ========== -->
+  <view class="article-list">
+    <!-- Loading skeleton -->
+    <view wx:if="{{loading}}" class="skeleton-list">
+      <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeleton-line skeleton-title"></view>
+        <view class="skeleton-line skeleton-summary"></view>
+        <view class="skeleton-line skeleton-meta"></view>
+      </view>
+    </view>
+
+    <!-- Article cards -->
+    <view
+      wx:for="{{articles}}"
+      wx:key="id"
+      class="article-card"
+      data-id="{{item.id}}"
+      bindtap="onArticleTap"
+    >
+      <view class="article-card-body">
+        <text class="article-title">{{item.title}}</text>
+        <text class="article-summary">{{item.summary}}</text>
+        <view class="article-meta">
+          <view class="article-meta-left">
+            <text class="article-read-time">{{item.read_time}}分钟</text>
+            <text class="article-meta-sep">·</text>
+            <text class="article-views">{{item.view_count}}次阅读</text>
+          </view>
+          <view class="article-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+            <text
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:key="*this"
+              wx:if="{{index < 2}}"
+              class="article-tag"
+            >{{tag}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="article-card-arrow">
+        <icon-svg name="chevron-right" size="20" color="#C2C7CF" />
+      </view>
+    </view>
+
+    <!-- Empty state -->
+    <view wx:if="{{!loading && articles.length === 0}}" class="empty-state">
+      <icon-svg name="lightbulb" size="64" color="#C2C7CF" />
+      <text class="empty-text">暂无文章</text>
+    </view>
+
+    <!-- Loading more -->
+    <view wx:if="{{loadingMore}}" class="loading-more">
+      <text class="loading-more-text">加载中...</text>
+    </view>
+
+    <!-- No more -->
+    <view wx:if="{{!hasMore && articles.length > 0}}" class="no-more">
+      <text class="no-more-text">— 已经到底了 —</text>
+    </view>
+  </view>
+
+  <!-- ========== Footer ========== -->
+  <view class="page-footer">
+    <text class="footer-disclaimer">以上内容仅供健康科普参考，不能替代专业医疗诊断。如有不适，请及时就医。</text>
+    <text class="footer-ver">心音智鉴 v1.0.0</text>
+  </view>
+
+</view>

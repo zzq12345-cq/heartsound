@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "健康科普",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#F4F5F7",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "icon-svg": "/components/icon/index"
+  }
+}

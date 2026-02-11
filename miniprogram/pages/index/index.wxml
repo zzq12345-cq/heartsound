@@ -3,8 +3,10 @@
 
   <!-- ========== Hero Section ========== -->
   <view class="hero">
-    <view class="hero-bg-orb hero-orb-1"></view>
-    <view class="hero-bg-orb hero-orb-2"></view>
+    <!-- Decorative circles for texture -->
+    <view class="hero-deco hero-deco--circle1"></view>
+    <view class="hero-deco hero-deco--circle2"></view>
+    <view class="hero-deco hero-deco--wave"></view>
     <view class="hero-content">
       <view class="hero-text">
         <text class="hero-greeting">{{greeting}}</text>
@@ -13,7 +15,7 @@
       <view class="hero-pulse-ring">
         <view class="pulse-ring-outer"></view>
         <view class="pulse-ring-inner"></view>
-        <icon-svg name="heart-pulse" size="52" color="#2E8B8B" />
+        <icon-svg name="heart-pulse" size="52" color="#4A90D9" />
       </view>
     </view>
   </view>
@@ -35,6 +37,24 @@
     </view>
   </view>
 
+  <!-- ========== Feature Banner ========== -->
+  <view class="feature-banner">
+    <view class="feature-badge">
+      <text class="badge-num">30s</text>
+      <text class="badge-text">快速检测</text>
+    </view>
+    <view class="feature-badge-sep"></view>
+    <view class="feature-badge">
+      <text class="badge-num">AI</text>
+      <text class="badge-text">智能分析</text>
+    </view>
+    <view class="feature-badge-sep"></view>
+    <view class="feature-badge">
+      <text class="badge-num">0</text>
+      <text class="badge-text">无创伤害</text>
+    </view>
+  </view>
+
   <!-- ========== Device Status ========== -->
   <view class="card-section">
     <view class="card-header">
@@ -47,7 +67,7 @@
     <view class="device-card {{deviceStatus}}" bindtap="onDeviceViewInfo">
       <view class="device-card-row">
         <view class="device-avatar {{deviceStatus}}">
-          <icon-svg name="{{deviceStatus === 'connected' ? 'wifi' : 'wifi-off'}}" size="40" color="{{deviceStatus === 'connected' ? '#2E8B8B' : '#C2C7CF'}}" />
+          <icon-svg name="{{deviceStatus === 'connected' ? 'wifi' : 'wifi-off'}}" size="40" color="{{deviceStatus === 'connected' ? '#4A90D9' : '#C2C7CF'}}" />
         </view>
         <view class="device-meta">
           <text class="device-name">{{deviceStatus === 'connected' ? '已连接设备' : '未连接设备'}}</text>
@@ -68,14 +88,14 @@
     <view class="connect-grid">
       <view class="connect-card" bindtap="onScanTap" bindlongpress="onLongPressScan">
         <view class="connect-card-icon scan-icon">
-          <icon-svg name="scan" size="44" color="#FFFFFF" />
+          <icon-svg name="scan" size="48" color="#4A90D9" />
         </view>
         <text class="connect-card-title">扫码连接</text>
         <text class="connect-card-sub">扫描设备二维码</text>
       </view>
       <view class="connect-card" bindtap="onManualInputTap">
         <view class="connect-card-icon manual-icon">
-          <icon-svg name="keyboard" size="44" color="#FFFFFF" />
+          <icon-svg name="keyboard" size="48" color="#5B7FA5" />
         </view>
         <text class="connect-card-title">手动输入</text>
         <text class="connect-card-sub">输入设备IP地址</text>
@@ -114,8 +134,8 @@
         interval="{{6000}}"
         circular="{{true}}"
         indicator-dots="{{true}}"
-        indicator-color="rgba(46,139,139,0.15)"
-        indicator-active-color="#2E8B8B"
+        indicator-color="rgba(74,144,217,0.15)"
+        indicator-active-color="#4A90D9"
       >
         <swiper-item wx:for="{{healthTips}}" wx:key="id">
           <view class="tip-slide">

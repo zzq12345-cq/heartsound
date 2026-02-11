@@ -11,6 +11,8 @@
     "pages/profile/index",
     "pages/ai-assistant/chat/index",
     "pages/ai-assistant/report/index",
+    "pages/knowledge/index",
+    "pages/knowledge/detail/index",
     "pages/emergency-contact/index"
   ],
   "window": {
@@ -43,6 +45,12 @@
         "text": "AI助手",
         "iconPath": "static/images/tab-ai.png",
         "selectedIconPath": "static/images/tab-ai-active.png"
+      },
+      {
+        "pagePath": "pages/knowledge/index",
+        "text": "科普",
+        "iconPath": "static/images/tab-knowledge.png",
+        "selectedIconPath": "static/images/tab-knowledge-active.png"
       },
       {
         "pagePath": "pages/profile/index",

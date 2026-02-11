@@ -1,0 +1,213 @@
+/* =====================================================================
+   Knowledge Detail Page · 文章详情页样式
+   ===================================================================== */
+
+/* ── Page Shell ─────────────────────────────────────────────────────── */
+.page-container {
+  min-height: 100vh;
+  padding: 24rpx 36rpx calc(60rpx + 120rpx);
+  background: #F4F5F7;
+}
+
+/* ── Loading Skeleton ──────────────────────────────────────────────── */
+.loading-container {
+  padding: 32rpx 0;
+}
+
+.skeleton-detail {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+}
+
+.skeleton-line {
+  background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.skeleton-badge { width: 120rpx; height: 28rpx; }
+.skeleton-detail-title { width: 80%; height: 40rpx; }
+.skeleton-detail-meta { width: 50%; height: 24rpx; margin-bottom: 32rpx; }
+.skeleton-body-1 { width: 100%; height: 24rpx; }
+.skeleton-body-2 { width: 85%; height: 24rpx; }
+.skeleton-body-3 { width: 70%; height: 24rpx; }
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Error State ───────────────────────────────────────────────────── */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.error-text {
+  font-size: 28rpx;
+  color: #A0A3AB;
+  margin-top: 20rpx;
+}
+
+/* ── Article Header ────────────────────────────────────────────────── */
+.article-header {
+  margin-bottom: 24rpx;
+}
+
+.category-badge {
+  display: inline-block;
+  font-size: 22rpx;
+  font-weight: 500;
+  padding: 6rpx 18rpx;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.article-detail-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #2C2E33;
+  line-height: 1.3;
+  margin-bottom: 16rpx;
+}
+
+.article-detail-meta {
+  display: flex;
+  align-items: center;
+}
+
+.meta-item {
+  font-size: 22rpx;
+  color: #A0A3AB;
+}
+
+.meta-sep {
+  font-size: 22rpx;
+  color: #DCDEE3;
+  margin: 0 10rpx;
+}
+
+/* ── Article Body ──────────────────────────────────────────────────── */
+.article-body-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  border: 1rpx solid #EBEBED;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+/* ── Disclaimer ────────────────────────────────────────────────────── */
+.disclaimer-card {
+  background: #FFFCF5;
+  border: 1rpx solid rgba(212, 162, 76, 0.3);
+  border-left: 6rpx solid #D4A24C;
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.disclaimer-header {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 10rpx;
+}
+
+.disclaimer-title {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #8B7230;
+}
+
+.disclaimer-text {
+  font-size: 22rpx;
+  color: #A08840;
+  line-height: 1.7;
+}
+
+/* ── Tags ──────────────────────────────────────────────────────────── */
+.tags-section {
+  margin-bottom: 32rpx;
+}
+
+.tags-label {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #5A5D66;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag-item {
+  font-size: 22rpx;
+  color: #4A90D9;
+  background: rgba(74, 144, 217, 0.08);
+  padding: 8rpx 20rpx;
+  border-radius: 100rpx;
+}
+
+/* ── Bottom Actions ────────────────────────────────────────────────── */
+.bottom-actions {
+  display: flex;
+  gap: 20rpx;
+  padding: 16rpx 0;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  height: 88rpx;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: normal;
+  background: none;
+}
+.action-btn::after {
+  border: none;
+}
+
+.action-share {
+  background: #FFFFFF;
+  border: 1rpx solid #EBEBED;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+.action-share:active {
+  background: #F8F8F8;
+}
+
+.action-btn-text {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #5A5D66;
+}
+
+.action-ai {
+  background: linear-gradient(135deg, #4A90D9, #3A7BD5);
+  box-shadow: 0 4rpx 16rpx rgba(74, 144, 217, 0.25);
+}
+.action-ai:active {
+  opacity: 0.9;
+}
+
+.action-ai-text {
+  color: #FFFFFF !important;
+}

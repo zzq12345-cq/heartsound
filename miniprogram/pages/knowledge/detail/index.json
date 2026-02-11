@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "文章详情",
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#F4F5F7",
+  "usingComponents": {
+    "icon-svg": "/components/icon/index"
+  }
+}

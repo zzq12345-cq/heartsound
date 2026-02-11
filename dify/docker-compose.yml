@@ -1,0 +1,219 @@
+# Dify Docker Compose 部署配置
+# 心音智鉴 AI 健康助手平台
+#
+# 服务组成:
+#   - api: Dify API 后端服务
+#   - worker: Dify 异步任务处理
+#   - web: Dify Web 控制台
+#   - db: PostgreSQL 数据库
+#   - redis: Redis 缓存
+#   - weaviate: 向量数据库 (知识库检索)
+#   - nginx: 反向代理
+
+version: '3.8'
+
+services:
+  # ============================================
+  # Dify API 服务
+  # ============================================
+  api:
+    image: langgenius/dify-api:0.8.3
+    container_name: dify-api
+    restart: always
+    environment:
+      # 应用配置
+      MODE: api
+      LOG_LEVEL: INFO
+      SECRET_KEY: ${SECRET_KEY:-sk-heartsound-dify-secret-key-2026}
+      CONSOLE_WEB_URL: ${CONSOLE_WEB_URL:-http://localhost}
+      CONSOLE_API_URL: ${CONSOLE_API_URL:-http://localhost}
+      SERVICE_API_URL: ${SERVICE_API_URL:-http://localhost}
+      APP_WEB_URL: ${APP_WEB_URL:-http://localhost}
+
+      # 数据库配置
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-heartsound_db_pass_2026}
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_DATABASE: ${DB_DATABASE:-dify}
+
+      # Redis配置
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_DB: 0
+
+      # 向量数据库配置 (Weaviate)
+      VECTOR_STORE: weaviate
+      WEAVIATE_ENDPOINT: ${WEAVIATE_ENDPOINT:-http://weaviate:8080}
+      WEAVIATE_API_KEY: ${WEAVIATE_API_KEY:-}
+
+      # 存储配置
+      STORAGE_TYPE: local
+      STORAGE_LOCAL_PATH: /app/api/storage
+
+      # Celery配置
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+    volumes:
+      - ./storage:/app/api/storage
+    depends_on:
+      - db
+      - redis
+      - weaviate
+    networks:
+      - dify-network
+
+  # ============================================
+  # Dify Worker 异步任务处理
+  # ============================================
+  worker:
+    image: langgenius/dify-api:0.8.3
+    container_name: dify-worker
+    restart: always
+    environment:
+      MODE: worker
+      LOG_LEVEL: INFO
+      SECRET_KEY: ${SECRET_KEY:-sk-heartsound-dify-secret-key-2026}
+
+      # 数据库配置
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-heartsound_db_pass_2026}
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_DATABASE: ${DB_DATABASE:-dify}
+
+      # Redis配置
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_DB: 0
+
+      # 向量数据库配置
+      VECTOR_STORE: weaviate
+      WEAVIATE_ENDPOINT: ${WEAVIATE_ENDPOINT:-http://weaviate:8080}
+      WEAVIATE_API_KEY: ${WEAVIATE_API_KEY:-}
+
+      # 存储配置
+      STORAGE_TYPE: local
+      STORAGE_LOCAL_PATH: /app/api/storage
+
+      # Celery配置
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+    volumes:
+      - ./storage:/app/api/storage
+    depends_on:
+      - db
+      - redis
+      - weaviate
+    networks:
+      - dify-network
+
+  # ============================================
+  # Dify Web 控制台
+  # ============================================
+  web:
+    image: langgenius/dify-web:0.8.3
+    container_name: dify-web
+    restart: always
+    environment:
+      CONSOLE_API_URL: ${CONSOLE_API_URL:-http://localhost}
+      APP_API_URL: ${APP_API_URL:-http://localhost}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+    networks:
+      - dify-network
+
+  # ============================================
+  # PostgreSQL 数据库
+  # ============================================
+  db:
+    image: postgres:15-alpine
+    container_name: dify-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-heartsound_db_pass_2026}
+      POSTGRES_DB: ${DB_DATABASE:-dify}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dify-network
+
+  # ============================================
+  # Redis 缓存
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: dify-redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dify-network
+
+  # ============================================
+  # Weaviate 向量数据库 (知识库检索)
+  # ============================================
+  weaviate:
+    image: semitechnologies/weaviate:1.24.1
+    container_name: dify-weaviate
+    restart: always
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_HOSTNAME: 'node1'
+      ENABLE_MODULES: ''
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    networks:
+      - dify-network
+
+  # ============================================
+  # Nginx 反向代理
+  # ============================================
+  nginx:
+    image: nginx:alpine
+    container_name: dify-nginx
+    restart: always
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api
+      - web
+    networks:
+      - dify-network
+
+# ============================================
+# 数据卷
+# ============================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  weaviate_data:
+    driver: local
+
+# ============================================
+# 网络
+# ============================================
+networks:
+  dify-network:
+    driver: bridge

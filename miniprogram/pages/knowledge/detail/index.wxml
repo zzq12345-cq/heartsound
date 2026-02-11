@@ -1,0 +1,82 @@
+<!-- Knowledge Detail Page - 文章详情页 -->
+<view class="page-container">
+
+  <!-- Loading -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="skeleton-detail">
+      <view class="skeleton-line skeleton-badge"></view>
+      <view class="skeleton-line skeleton-detail-title"></view>
+      <view class="skeleton-line skeleton-detail-meta"></view>
+      <view class="skeleton-line skeleton-body-1"></view>
+      <view class="skeleton-line skeleton-body-2"></view>
+      <view class="skeleton-line skeleton-body-3"></view>
+      <view class="skeleton-line skeleton-body-2"></view>
+      <view class="skeleton-line skeleton-body-1"></view>
+    </view>
+  </view>
+
+  <!-- Error -->
+  <view wx:elif="{{error}}" class="error-container">
+    <icon-svg name="warning" size="64" color="#C2C7CF" />
+    <text class="error-text">文章不存在或已下架</text>
+  </view>
+
+  <!-- Article Content -->
+  <view wx:elif="{{article}}" class="article-detail">
+
+    <!-- Header -->
+    <view class="article-header">
+      <view class="category-badge" style="background: {{categoryColor}}20; color: {{categoryColor}};">
+        {{categoryName}}
+      </view>
+      <text class="article-detail-title">{{article.title}}</text>
+      <view class="article-detail-meta">
+        <text class="meta-item">{{article.author}}</text>
+        <text class="meta-sep">·</text>
+        <text class="meta-item">{{article.read_time}}分钟阅读</text>
+        <text class="meta-sep">·</text>
+        <text class="meta-item">{{article.view_count}}次阅读</text>
+      </view>
+    </view>
+
+    <!-- Content Body -->
+    <view class="article-body-card">
+      <rich-text nodes="{{htmlContent}}" />
+    </view>
+
+    <!-- Disclaimer -->
+    <view class="disclaimer-card">
+      <view class="disclaimer-header">
+        <icon-svg name="warning" size="20" color="#D4A24C" />
+        <text class="disclaimer-title">免责声明</text>
+      </view>
+      <text class="disclaimer-text">本文内容仅供健康科普参考，不能替代专业医疗诊断。如有心脏相关症状或疑虑，请及时就医。</text>
+    </view>
+
+    <!-- Tags -->
+    <view class="tags-section" wx:if="{{article.tags && article.tags.length > 0}}">
+      <text class="tags-label">相关标签</text>
+      <view class="tags-list">
+        <text
+          wx:for="{{article.tags}}"
+          wx:key="*this"
+          class="tag-item"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <!-- Bottom Actions -->
+    <view class="bottom-actions">
+      <button class="action-btn action-share" open-type="share">
+        <icon-svg name="share" size="20" color="#5A5D66" />
+        <text class="action-btn-text">分享文章</text>
+      </button>
+      <view class="action-btn action-ai" bindtap="onAskAI">
+        <icon-svg name="chat" size="20" color="#FFFFFF" />
+        <text class="action-btn-text action-ai-text">问AI助手</text>
+      </view>
+    </view>
+
+  </view>
+
+</view>

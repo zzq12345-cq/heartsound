@@ -7,30 +7,31 @@
    CSS Variables - Design System
    ============================================================================ */
 page {
-  /* Brand Colors */
-  --color-primary: #1890FF;
-  --color-primary-light: #40A9FF;
-  --color-primary-dark: #096DD9;
+  /* Brand Colors — Light Blue medical theme */
+  --color-primary: #4A90D9;
+  --color-primary-light: #5BA3E6;
+  --color-primary-dark: #3A7BD5;
+  --color-accent: #5B7FA5;
 
   /* Status Colors */
-  --color-success: #4CAF50;
-  --color-warning: #FF9800;
-  --color-danger: #F44336;
+  --color-success: #3CB371;
+  --color-warning: #D4A24C;
+  --color-danger: #C75450;
 
   /* Text Colors */
-  --color-text-primary: #333333;
-  --color-text-secondary: #666666;
-  --color-text-hint: #999999;
+  --color-text-primary: #2C2E33;
+  --color-text-secondary: #5A5D66;
+  --color-text-hint: #A0A3AB;
   --color-text-white: #FFFFFF;
 
   /* Background Colors */
-  --color-bg-page: #F5F5F5;
+  --color-bg-page: #F4F5F7;
   --color-bg-card: #FFFFFF;
-  --color-bg-disabled: #E0E0E0;
+  --color-bg-disabled: #DCDEE3;
 
   /* Border Colors */
-  --color-border: #E8E8E8;
-  --color-border-light: #F0F0F0;
+  --color-border: #EBEBED;
+  --color-border-light: #F4F5F7;
 
   /* Font Sizes */
   --font-size-display: 72rpx;
@@ -122,7 +123,7 @@ page {
 }
 
 .btn-outline:active {
-  background-color: rgba(24, 144, 255, 0.1);
+  background-color: rgba(74, 144, 217, 0.1);
 }
 
 .btn-disabled {

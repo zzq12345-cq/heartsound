@@ -71,7 +71,7 @@
   width: 88rpx;
   height: 88rpx;
   border-radius: 22rpx;
-  background: rgba(46, 139, 139, 0.08);
+  background: rgba(74, 144, 217, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -287,21 +287,21 @@
 .outer-ring.r1 {
   width: 260rpx;
   height: 260rpx;
-  border-color: rgba(46, 139, 139, 0.4);
+  border-color: rgba(74, 144, 217, 0.4);
   animation-delay: 0s;
 }
 
 .outer-ring.r2 {
   width: 300rpx;
   height: 300rpx;
-  border-color: rgba(46, 139, 139, 0.25);
+  border-color: rgba(74, 144, 217, 0.25);
   animation-delay: 0.8s;
 }
 
 .outer-ring.r3 {
   width: 340rpx;
   height: 340rpx;
-  border-color: rgba(46, 139, 139, 0.15);
+  border-color: rgba(74, 144, 217, 0.15);
   animation-delay: 1.6s;
 }
 
@@ -323,7 +323,7 @@
 }
 
 .start-btn.active {
-  background: #2E8B8B;
+  background: #4A90D9;
 }
 
 .start-btn.active:active {
@@ -420,7 +420,7 @@
 
 .section-more text {
   font-size: 26rpx;
-  color: #2E8B8B;
+  color: #4A90D9;
 }
 
 .tip-swiper {

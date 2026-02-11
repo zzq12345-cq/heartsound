@@ -151,14 +151,14 @@ Page({
     const suggestionMap = {
       safe: [
         { iconName: 'check-circle', iconColor: '#3CB371', text: '心音检测结果正常，请继续保持健康的生活方式' },
-        { iconName: 'heart-pulse', iconColor: '#2E8B8B', text: '建议每周进行3-5次中等强度有氧运动' },
+        { iconName: 'heart-pulse', iconColor: '#4A90D9', text: '建议每周进行3-5次中等强度有氧运动' },
         { iconName: 'breathe', iconColor: '#5B7FA5', text: '保持规律作息，每天睡眠7-8小时' },
         { iconName: 'clipboard', iconColor: '#D4A24C', text: '建议每3个月进行一次心音检测' }
       ],
       warning: [
         { iconName: 'warning', iconColor: '#D4A24C', text: '检测到轻微异常，建议密切关注' },
         { iconName: 'medical', iconColor: '#C75450', text: '建议近期前往医院进行详细检查' },
-        { iconName: 'clipboard', iconColor: '#2E8B8B', text: '记录日常身体状况，如有不适及时就医' },
+        { iconName: 'clipboard', iconColor: '#4A90D9', text: '记录日常身体状况，如有不适及时就医' },
         { iconName: 'breathe', iconColor: '#3CB371', text: '避免剧烈运动，保持心情平和' }
       ],
       danger: [

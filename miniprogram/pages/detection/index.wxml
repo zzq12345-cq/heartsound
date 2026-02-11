@@ -8,7 +8,7 @@
   <view class="header-section">
     <view class="header-content">
       <view class="header-icon-wrapper">
-        <icon-svg name="stethoscope" size="48" color="#2E8B8B" />
+        <icon-svg name="stethoscope" size="48" color="#4A90D9" />
       </view>
       <view class="header-text-group">
         <text class="header-title">心音检测</text>
@@ -68,7 +68,7 @@
       <!-- Info cards below button -->
       <view class="info-cards">
         <view class="info-card">
-          <icon-svg name="clock" size="28" color="#2E8B8B" />
+          <icon-svg name="clock" size="28" color="#4A90D9" />
           <text class="info-text">30秒</text>
           <text class="info-label">检测时长</text>
         </view>
@@ -121,12 +121,12 @@
     <view class="records-section" wx:if="{{recentRecords.length > 0}}">
       <view class="section-header">
         <view class="section-title-wrapper">
-          <icon-svg name="clock" size="28" color="#2E8B8B" />
+          <icon-svg name="clock" size="28" color="#4A90D9" />
           <text class="section-title">最近检测</text>
         </view>
         <view class="section-more" bindtap="viewAllRecords">
           <text>查看全部</text>
-          <icon-svg name="chevron-right" size="20" color="#2E8B8B" />
+          <icon-svg name="chevron-right" size="20" color="#4A90D9" />
         </view>
       </view>
 

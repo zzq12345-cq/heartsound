@@ -50,7 +50,7 @@
     </view>
 
     <button class="btn btn-outline btn-block" bindtap="onScanTap">
-      <icon-svg name="scan" size="32" color="#1890FF" />
+      <icon-svg name="scan" size="32" color="#4A90D9" />
       <text>扫码连接</text>
     </button>
   </view>

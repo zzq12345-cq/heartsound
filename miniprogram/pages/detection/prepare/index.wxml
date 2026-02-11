@@ -19,7 +19,7 @@
             <icon-svg name="heart" size="48" color="#C75450" />
           </view>
           <view class="stethoscope-marker">
-            <icon-svg name="stethoscope" size="64" color="#2E8B8B" />
+            <icon-svg name="stethoscope" size="64" color="#4A90D9" />
           </view>
         </view>
       </view>

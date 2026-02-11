@@ -30,7 +30,7 @@
         wx:key="index"
         style="animation-delay: {{index * 0.1}}s;"
       >
-        <icon-svg name="{{item.iconName}}" size="32" color="{{item.iconColor || '#2E8B8B'}}" />
+        <icon-svg name="{{item.iconName}}" size="32" color="{{item.iconColor || '#4A90D9'}}" />
         <text class="suggestion-text">{{item.text}}</text>
       </view>
     </view>
@@ -93,6 +93,6 @@
 
   <!-- Share button (fixed) -->
   <view class="share-float" wx:if="{{showShare}}" bindtap="shareResult">
-    <icon-svg name="share" size="48" color="#2E8B8B" />
+    <icon-svg name="share" size="48" color="#4A90D9" />
   </view>
 </view>

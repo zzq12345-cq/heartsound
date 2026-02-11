@@ -63,7 +63,7 @@
   align-items: center;
   justify-content: center;
   animation: heartbeat 0.8s ease-in-out infinite;
-  box-shadow: 0 8rpx 32rpx rgba(46, 139, 139, 0.4);
+  box-shadow: 0 8rpx 32rpx rgba(74, 144, 217, 0.4);
 }
 
 .heart-emoji {
@@ -153,7 +153,7 @@
 .dot {
   font-size: 36rpx;
   font-weight: bold;
-  color: var(--color-primary, #2E8B8B);
+  color: var(--color-primary, #4A90D9);
   animation: dot-blink 1.4s infinite;
 }
 

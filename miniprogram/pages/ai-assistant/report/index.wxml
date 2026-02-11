@@ -3,7 +3,7 @@
   <!-- Header -->
   <view class="report-header">
     <view class="header-title">
-      <icon-svg name="document" size="40" color="#1890FF" />
+      <icon-svg name="document" size="40" color="#4A90D9" />
       <text class="title-text">健康报告</text>
     </view>
     <view class="header-action" bindtap="goToChat">

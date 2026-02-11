@@ -67,7 +67,7 @@
       <icon-svg name="menu" size="36" color="#5A5D66" />
     </view>
     <view class="header-title">
-      <icon-svg name="robot" size="36" color="#2E8B8B" />
+      <icon-svg name="robot" size="36" color="#4A90D9" />
       <text class="title-text">健康助手</text>
     </view>
     <view class="header-right" bindtap="startNewChat">

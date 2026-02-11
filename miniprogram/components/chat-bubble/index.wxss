@@ -36,7 +36,7 @@
 }
 
 .user-avatar {
-  background: linear-gradient(135deg, #1890FF 0%, #096DD9 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BD5 100%);
 }
 
 /* Bubble Wrapper */
@@ -55,7 +55,7 @@
 
 /* User Bubble */
 .bubble-user {
-  background: linear-gradient(135deg, #1890FF 0%, #096DD9 100%);
+  background: linear-gradient(135deg, #4A90D9 0%, #3A7BD5 100%);
   border-bottom-right-radius: 4rpx;
 }
 

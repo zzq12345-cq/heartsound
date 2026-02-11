@@ -147,7 +147,7 @@
 }
 
 .action-btn.primary {
-  background: #2E8B8B;
+  background: #4A90D9;
   color: #FFFFFF;
 }
 

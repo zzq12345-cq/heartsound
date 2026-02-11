@@ -3,7 +3,7 @@
   <!-- Avatar -->
   <view class="avatar-wrapper">
     <view class="avatar {{type === 'user' ? 'user-avatar' : 'ai-avatar'}}">
-      <icon-svg name="{{type === 'user' ? 'user' : 'robot'}}" size="24" color="{{type === 'user' ? '#FFFFFF' : '#1890FF'}}" />
+      <icon-svg name="{{type === 'user' ? 'user' : 'robot'}}" size="24" color="{{type === 'user' ? '#FFFFFF' : '#4A90D9'}}" />
     </view>
   </view>
 

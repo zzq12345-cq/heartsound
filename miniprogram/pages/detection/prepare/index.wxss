@@ -63,7 +63,7 @@
 .body-outline {
   width: 100%;
   height: 100%;
-  background: rgba(46, 139, 139, 0.06);
+  background: rgba(74, 144, 217, 0.06);
   border-radius: 200rpx 200rpx 100rpx 100rpx;
   position: relative;
   display: flex;
@@ -152,7 +152,7 @@
 .tip-number {
   width: 48rpx;
   height: 48rpx;
-  background: #2E8B8B;
+  background: #4A90D9;
   color: #FFFFFF;
   border-radius: 50%;
   display: flex;
@@ -189,7 +189,7 @@
 .indicator.active {
   width: 32rpx;
   border-radius: 8rpx;
-  background: #2E8B8B;
+  background: #4A90D9;
 }
 
 /* Device status */
@@ -229,7 +229,7 @@
 .start-btn {
   width: 100%;
   height: 100rpx;
-  background: #2E8B8B;
+  background: #4A90D9;
   border-radius: 999rpx;
   display: flex;
   align-items: center;

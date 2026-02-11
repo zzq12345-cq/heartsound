@@ -10,7 +10,7 @@
         mode="aspectFill"
       />
       <view wx:else class="avatar-placeholder">
-        <icon-svg name="heart" size="64" color="#1890FF" />
+        <icon-svg name="heart" size="64" color="#4A90D9" />
       </view>
     </view>
     <text class="nickname">{{userInfo.nickname || '心音用户'}}</text>

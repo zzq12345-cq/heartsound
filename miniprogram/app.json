@@ -17,14 +17,14 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1890FF",
+    "navigationBarBackgroundColor": "#4A90D9",
     "navigationBarTitleText": "心音智鉴",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F5F5F5"
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#1890FF",
+    "selectedColor": "#4A90D9",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [

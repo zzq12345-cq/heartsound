@@ -65,7 +65,7 @@
 
 .type-item.active {
   background: #E6F4FF;
-  border-color: #1890FF;
+  border-color: #4A90D9;
 }
 
 .type-label {
@@ -76,7 +76,7 @@
 }
 
 .type-item.active .type-label {
-  color: #1890FF;
+  color: #4A90D9;
 }
 
 .type-period {
@@ -156,7 +156,7 @@
 .confidence-value {
   font-size: 28rpx;
   font-weight: 600;
-  color: #1890FF;
+  color: #4A90D9;
 }
 
 /* No Data Card */
@@ -195,7 +195,7 @@
   gap: 16rpx;
   width: 100%;
   height: 96rpx;
-  background: linear-gradient(135deg, #1890FF, #096DD9);
+  background: linear-gradient(135deg, #4A90D9, #3A7BD5);
   border-radius: 48rpx;
   font-size: 30rpx;
   font-weight: 600;
@@ -271,7 +271,7 @@
 
 .report-type-badge {
   padding: 8rpx 20rpx;
-  background: #1890FF;
+  background: #4A90D9;
   border-radius: 20rpx;
 }
 
@@ -402,7 +402,7 @@
 
 .report-period-tag text {
   font-size: 20rpx;
-  color: #1890FF;
+  color: #4A90D9;
 }
 
 /* History Title Row */
@@ -415,7 +415,7 @@
 /* History Period Tag */
 .history-period-tag {
   font-size: 20rpx;
-  color: #1890FF;
+  color: #4A90D9;
   background: #E6F4FF;
   padding: 4rpx 14rpx;
   border-radius: 12rpx;

@@ -14,7 +14,7 @@
     circular="{{true}}"
     indicator-dots="{{showDots}}"
     indicator-color="rgba(24, 144, 255, 0.3)"
-    indicator-active-color="#1890FF"
+    indicator-active-color="#4A90D9"
     bindchange="onSwiperChange"
   >
     <swiper-item

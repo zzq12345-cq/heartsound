@@ -75,12 +75,12 @@
   gap: 12rpx;
   margin: 24rpx 28rpx;
   height: 84rpx;
-  background: #2E8B8B;
+  background: #4A90D9;
   border-radius: 16rpx;
 }
 
 .new-chat-btn:active {
-  background: #267878;
+  background: #3A7BD5;
 }
 
 .new-chat-text {
@@ -109,7 +109,7 @@
 }
 
 .conversation-item.active {
-  background: rgba(46, 139, 139, 0.08);
+  background: rgba(74, 144, 217, 0.08);
 }
 
 .conv-content {
@@ -128,7 +128,7 @@
 }
 
 .conversation-item.active .conv-name {
-  color: #2E8B8B;
+  color: #4A90D9;
 }
 
 .conv-time {
@@ -337,7 +337,7 @@
 }
 
 .send-btn.active {
-  background: #2E8B8B;
+  background: #4A90D9;
 }
 
 .send-btn:active {

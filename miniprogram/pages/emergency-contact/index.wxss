@@ -130,7 +130,7 @@
 }
 
 .btn-test-text {
-  color: #2E8B8B;
+  color: #4A90D9;
   font-weight: 500;
   margin-left: 8rpx;
 }

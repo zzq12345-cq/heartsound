@@ -3,20 +3,19 @@
 
   <!-- ========== Hero Section ========== -->
   <view class="hero">
-    <!-- Decorative circles for texture -->
-    <view class="hero-deco hero-deco--circle1"></view>
-    <view class="hero-deco hero-deco--circle2"></view>
-    <view class="hero-deco hero-deco--wave"></view>
-    <view class="hero-content">
-      <view class="hero-text">
-        <text class="hero-greeting">{{greeting}}</text>
-        <text class="hero-tagline">守护每一次心跳</text>
-      </view>
-      <view class="hero-pulse-ring">
-        <view class="pulse-ring-outer"></view>
-        <view class="pulse-ring-inner"></view>
-        <icon-svg name="heart-pulse" size="52" color="#4A90D9" />
-      </view>
+    <!-- Greeting bar -->
+    <view class="hero-greeting-bar">
+      <text class="hero-greeting">{{greeting}}</text>
+      <text class="hero-greeting-sub">守护每一次心跳</text>
+    </view>
+    <!-- Brand banner image -->
+    <view class="hero-banner-wrap">
+      <image
+        class="hero-banner-img"
+        src="/static/images/hero-banner.png"
+        mode="widthFix"
+        lazy-load="{{true}}"
+      />
     </view>
   </view>
 

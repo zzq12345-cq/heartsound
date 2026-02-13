@@ -10,6 +10,7 @@
  */
 
 const deviceService = require('./device');
+const { DETECTION, TIMEOUT } = require('../config/constants');
 
 // Detection states
 const STATES = {
@@ -26,14 +27,18 @@ let currentSession = {
   sessionId: null,
   state: STATES.IDLE,
   startTime: null,
-  duration: 30,
+  duration: DETECTION.RECORD_DURATION,
   result: null,
   error: null
 };
 
 // WebSocket task
 let socketTask = null;
-let isSocketOpen = false; // 新增：跟踪socket状态
+let isSocketOpen = false;
+
+// Heartbeat state
+let heartbeatTimer = null;
+let missedPongs = 0;
 
 // Callbacks - 改用数组支持多个回调
 let audioFrameCallbacks = [];
@@ -151,7 +156,7 @@ function startMockDetection(duration) {
         console.error('[DetectionService] Mock audio frame callback error:', e);
       }
     });
-  }, 100); // 10fps
+  }, DETECTION.MOCK_FRAME_INTERVAL); // 10fps
 
   // 保存定时器引用以便停止
   currentSession.mockFrameInterval = frameInterval;
@@ -210,7 +215,7 @@ function connectWebSocket(ip, sessionId) {
 
     socketTask = wx.connectSocket({
       url: wsUrl,
-      timeout: 5000
+      timeout: TIMEOUT.WEBSOCKET_CONNECT
     });
 
     const connectTimeout = setTimeout(() => {
@@ -219,7 +224,7 @@ function connectWebSocket(ip, sessionId) {
         closeWebSocket();
         reject(new Error('WebSocket连接超时'));
       }
-    }, 5000);
+    }, TIMEOUT.WEBSOCKET_CONNECT);
 
     socketTask.onOpen(() => {
       if (settled) return; // 已经settled就不处理了
@@ -235,6 +240,9 @@ function connectWebSocket(ip, sessionId) {
           duration: currentSession.duration
         })
       });
+
+      // Start heartbeat
+      startHeartbeat();
 
       resolve();
     });
@@ -290,7 +298,8 @@ function handleWebSocketMessage(data) {
         break;
 
       case 'pong':
-        // Keep-alive response, ignore
+        // Heartbeat response received, reset miss counter
+        missedPongs = 0;
         break;
 
       default:
@@ -421,6 +430,7 @@ function stopDetection() {
  * 修复：更新isSocketOpen状态
  */
 function closeWebSocket() {
+  stopHeartbeat();
   isSocketOpen = false;
   if (socketTask) {
     try {
@@ -440,7 +450,7 @@ function resetSession() {
     sessionId: null,
     state: STATES.IDLE,
     startTime: null,
-    duration: 30,
+    duration: DETECTION.RECORD_DURATION,
     result: null,
     error: null
   };
@@ -596,6 +606,56 @@ function notifyError(message) {
       console.error('[DetectionService] Error callback error:', e);
     }
   });
+}
+
+// ============================================================================
+// Heartbeat
+// ============================================================================
+
+/**
+ * Start WebSocket heartbeat ping
+ * Sends ping every HEARTBEAT_INTERVAL, disconnects after HEARTBEAT_MAX_MISS missed pongs
+ */
+function startHeartbeat() {
+  stopHeartbeat();
+  missedPongs = 0;
+
+  heartbeatTimer = setInterval(() => {
+    if (!socketTask || !isSocketOpen) {
+      stopHeartbeat();
+      return;
+    }
+
+    missedPongs++;
+
+    if (missedPongs > TIMEOUT.HEARTBEAT_MAX_MISS) {
+      console.warn('[DetectionService] Heartbeat timeout, connection lost');
+      stopHeartbeat();
+      // Notify disconnect but don't auto-reconnect
+      notifyError('设备连接已断开，请重试');
+      closeWebSocket();
+      return;
+    }
+
+    try {
+      socketTask.send({
+        data: JSON.stringify({ type: 'ping' })
+      });
+    } catch (e) {
+      console.warn('[DetectionService] Heartbeat send failed:', e);
+    }
+  }, TIMEOUT.HEARTBEAT_INTERVAL);
+}
+
+/**
+ * Stop heartbeat timer
+ */
+function stopHeartbeat() {
+  if (heartbeatTimer) {
+    clearInterval(heartbeatTimer);
+    heartbeatTimer = null;
+  }
+  missedPongs = 0;
 }
 
 // ============================================================================

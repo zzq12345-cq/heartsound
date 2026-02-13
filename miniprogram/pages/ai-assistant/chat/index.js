@@ -13,6 +13,7 @@
 const app = getApp();
 const difyService = require('../../../services/dify');
 const userService = require('../../../services/user');
+const { formatTimeLabel } = require('../../../utils/date');
 
 // Quick questions
 const QUICK_QUESTIONS = [
@@ -86,7 +87,7 @@ Page({
       const result = await difyService.getConversations({ limit: 30 });
       const conversations = (result.data || []).map(conv => ({
         ...conv,
-        timeLabel: this.formatTimeLabel(conv.updated_at || conv.created_at)
+        timeLabel: formatTimeLabel(conv.updated_at || conv.created_at)
       }));
 
       this.setData({ conversations, historyLoading: false });
@@ -95,35 +96,6 @@ Page({
       console.error('[ChatPage] Load conversations failed:', error);
       this.setData({ historyLoading: false });
     }
-  },
-
-  /**
-   * Format timestamp to readable label
-   */
-  formatTimeLabel(timestamp) {
-    if (!timestamp) return '';
-
-    const date = new Date(
-      typeof timestamp === 'number' ? timestamp * 1000 : timestamp
-    );
-    const now = new Date();
-    const diff = now - date;
-    const oneDay = 86400000;
-
-    if (diff < oneDay && now.getDate() === date.getDate()) {
-      return `今天 ${this.padZero(date.getHours())}:${this.padZero(date.getMinutes())}`;
-    } else if (diff < 2 * oneDay) {
-      return `昨天 ${this.padZero(date.getHours())}:${this.padZero(date.getMinutes())}`;
-    } else if (diff < 7 * oneDay) {
-      const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-      return days[date.getDay()];
-    } else {
-      return `${date.getMonth() + 1}/${date.getDate()}`;
-    }
-  },
-
-  padZero(n) {
-    return n < 10 ? '0' + n : '' + n;
   },
 
   /**
@@ -453,44 +425,72 @@ Page({
   },
 
   /**
-   * Stream update AI message
+   * Stream update AI message (optimized with path update + throttle)
    */
   updateAIMessage(messageId, data) {
-    const messages = this.data.messages.map(msg => {
-      if (msg.id === messageId) {
-        return {
-          ...msg,
-          content: data.content,
-          thinking: data.thinking || '',
-          isThinking: data.isThinking || false,
-          loading: false
-        };
+    const idx = this.data.messages.findIndex(msg => msg.id === messageId);
+    if (idx === -1) return;
+
+    // Cache latest data for throttle
+    this._pendingAIUpdate = { idx, data };
+
+    // Throttle: skip if last update was < 100ms ago
+    const now = Date.now();
+    if (this._lastAIUpdateTime && now - this._lastAIUpdateTime < 100) {
+      // Schedule a trailing update
+      if (!this._aiUpdateTimer) {
+        this._aiUpdateTimer = setTimeout(() => {
+          this._aiUpdateTimer = null;
+          this._flushAIUpdate();
+        }, 100);
       }
-      return msg;
-    });
-    this.setData({ messages });
+      return;
+    }
+
+    this._flushAIUpdate();
   },
 
   /**
-   * Finalize AI message
+   * Flush pending AI message update using path-based setData
+   */
+  _flushAIUpdate() {
+    const pending = this._pendingAIUpdate;
+    if (!pending) return;
+
+    const { idx, data } = pending;
+    this._pendingAIUpdate = null;
+    this._lastAIUpdateTime = Date.now();
+
+    const prefix = `messages[${idx}]`;
+    this.setData({
+      [`${prefix}.content`]: data.content,
+      [`${prefix}.thinking`]: data.thinking || '',
+      [`${prefix}.isThinking`]: data.isThinking || false,
+      [`${prefix}.loading`]: false
+    });
+  },
+
+  /**
+   * Finalize AI message (no throttle, ensure complete display)
    */
   finalizeAIMessage(messageId, content, newConversationId, thinking) {
-    const messages = this.data.messages.map(msg => {
-      if (msg.id === messageId) {
-        return {
-          ...msg,
-          content: content || '抱歉，我暂时无法回答这个问题。',
-          thinking: thinking || msg.thinking || '',
-          isThinking: false,
-          loading: false,
-          showDisclaimer: true
-        };
-      }
-      return msg;
-    });
+    // Clear any pending throttled update
+    if (this._aiUpdateTimer) {
+      clearTimeout(this._aiUpdateTimer);
+      this._aiUpdateTimer = null;
+    }
+    this._pendingAIUpdate = null;
 
+    const idx = this.data.messages.findIndex(msg => msg.id === messageId);
+    if (idx === -1) return;
+
+    const prefix = `messages[${idx}]`;
     this.setData({
-      messages,
+      [`${prefix}.content`]: content || '抱歉，我暂时无法回答这个问题。',
+      [`${prefix}.thinking`]: thinking || this.data.messages[idx].thinking || '',
+      [`${prefix}.isThinking`]: false,
+      [`${prefix}.loading`]: false,
+      [`${prefix}.showDisclaimer`]: true,
       loading: false,
       conversationId: newConversationId || this.data.conversationId
     });
@@ -502,21 +502,28 @@ Page({
    * Handle error
    */
   handleError(messageId, error) {
+    // Clear any pending throttled update
+    if (this._aiUpdateTimer) {
+      clearTimeout(this._aiUpdateTimer);
+      this._aiUpdateTimer = null;
+    }
+    this._pendingAIUpdate = null;
+
     const errorMessage = error.message || '网络错误，请稍后重试';
+    const idx = this.data.messages.findIndex(msg => msg.id === messageId);
 
-    const messages = this.data.messages.map(msg => {
-      if (msg.id === messageId) {
-        return {
-          ...msg,
-          content: `抱歉，发生了错误：${errorMessage}`,
-          loading: false,
-          showDisclaimer: false
-        };
-      }
-      return msg;
-    });
+    if (idx !== -1) {
+      const prefix = `messages[${idx}]`;
+      this.setData({
+        [`${prefix}.content`]: `抱歉，发生了错误：${errorMessage}`,
+        [`${prefix}.loading`]: false,
+        [`${prefix}.showDisclaimer`]: false,
+        loading: false
+      });
+    } else {
+      this.setData({ loading: false });
+    }
 
-    this.setData({ messages, loading: false });
     wx.showToast({ title: '发送失败', icon: 'none' });
   },
 

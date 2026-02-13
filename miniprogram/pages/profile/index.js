@@ -11,6 +11,7 @@
 
 const app = getApp();
 const userService = require('../../services/user');
+const { formatDate } = require('../../utils/date');
 
 // Menu items configuration
 const MENU_ITEMS = [
@@ -79,7 +80,7 @@ Page({
 
       // Format last detection date
       const lastDetectionDate = stats.lastDetectionAt
-        ? this.formatDate(stats.lastDetectionAt)
+        ? formatDate(stats.lastDetectionAt)
         : '';
 
       this.setData({
@@ -108,29 +109,6 @@ Page({
       deviceConnected,
       deviceInfo
     });
-  },
-
-  /**
-   * Format date for display
-   */
-  formatDate(dateString) {
-    if (!dateString) return '';
-
-    const date = new Date(dateString);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-    const recordDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-    if (recordDate.getTime() === today.getTime()) {
-      return '今天';
-    } else if (recordDate.getTime() === yesterday.getTime()) {
-      return '昨天';
-    } else {
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      return `${month}月${day}日`;
-    }
   },
 
   /**

@@ -6,6 +6,8 @@
  * 支持显示AI思考过程（可折叠）
  */
 
+const { formatTime } = require('../../utils/date');
+
 Component({
   properties: {
     // 消息内容
@@ -54,23 +56,13 @@ Component({
     'timestamp': function(ts) {
       if (ts) {
         this.setData({
-          formattedTime: this.formatTime(ts)
+          formattedTime: formatTime(ts)
         });
       }
     }
   },
 
   methods: {
-    /**
-     * Format timestamp to HH:MM
-     */
-    formatTime(timestamp) {
-      const date = new Date(timestamp);
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    },
-
     /**
      * Toggle thinking content visibility
      */

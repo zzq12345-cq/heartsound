@@ -15,6 +15,8 @@
 
 const app = getApp();
 const userService = require('../../services/user');
+const { formatDateTime } = require('../../utils/date');
+const { PAGINATION, CACHE } = require('../../config/constants');
 
 // Filter options configuration
 const FILTER_OPTIONS = [
@@ -30,7 +32,7 @@ Page({
     loading: false,
     hasMore: true,
     page: 1,
-    pageSize: 20,
+    pageSize: PAGINATION.RECORDS_PAGE_SIZE,
     total: 0,
     currentFilter: 'all',
     filterOptions: FILTER_OPTIONS,
@@ -39,12 +41,26 @@ Page({
     showLoadingMore: false
   },
 
+  // Cache timestamp for onShow optimization
+  _lastLoadTime: 0,
+
   onLoad() {
     console.log('[RecordsPage] Page loaded');
   },
 
   onShow() {
-    // Reload records when page shows (in case new detection happened)
+    // Force refresh if flagged (e.g. after new detection)
+    if (app.globalData.needRefreshRecords) {
+      app.globalData.needRefreshRecords = false;
+      this.resetAndLoad();
+      return;
+    }
+
+    // Skip reload if data is fresh (< 30s)
+    if (this._lastLoadTime && Date.now() - this._lastLoadTime < CACHE.RECORDS_CACHE_DURATION) {
+      return;
+    }
+
     this.resetAndLoad();
   },
 
@@ -92,7 +108,7 @@ Page({
       // Format records with display date
       const formattedRecords = result.data.map(record => ({
         ...record,
-        displayDate: this.formatDate(record.created_at)
+        displayDate: formatDateTime(record.created_at)
       }));
 
       // Merge with existing records if loading more
@@ -110,6 +126,9 @@ Page({
         showLoadingMore: false
       });
 
+      // Update cache timestamp
+      this._lastLoadTime = Date.now();
+
     } catch (error) {
       console.error('[RecordsPage] Failed to load records:', error);
       wx.showToast({
@@ -122,39 +141,6 @@ Page({
         showLoadingMore: false
       });
     }
-  },
-
-  /**
-   * Format date for display
-   * Shows '今天', '昨天', or formatted date
-   */
-  formatDate(dateString) {
-    if (!dateString) return '';
-
-    const date = new Date(dateString);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-    const recordDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-    if (recordDate.getTime() === today.getTime()) {
-      return `今天 ${this.formatTime(date)}`;
-    } else if (recordDate.getTime() === yesterday.getTime()) {
-      return `昨天 ${this.formatTime(date)}`;
-    } else {
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      return `${month}-${day} ${this.formatTime(date)}`;
-    }
-  },
-
-  /**
-   * Format time as HH:MM
-   */
-  formatTime(date) {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
   },
 
   /**
@@ -250,7 +236,7 @@ Page({
 
     wx.showModal({
       title: record.result_label || '检测结果',
-      content: `风险等级: ${riskLabels[record.risk_level] || record.risk_level}\n置信度: ${record.confidence?.toFixed(1)}%\n检测时间: ${this.formatDate(record.created_at)}`,
+      content: `风险等级: ${riskLabels[record.risk_level] || record.risk_level}\n置信度: ${record.confidence?.toFixed(1)}%\n检测时间: ${formatDateTime(record.created_at)}`,
       showCancel: false,
       confirmText: '确定'
     });

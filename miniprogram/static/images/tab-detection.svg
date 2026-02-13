@@ -1,5 +1,0 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- 检测 - 心跳波形图标 (灰色未选中) -->
-  <path d="M4 24H12L16 14L22 34L28 18L32 24H44" stroke="#999999" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="24" cy="24" r="18" stroke="#999999" stroke-width="2.5" fill="none"/>
-</svg>

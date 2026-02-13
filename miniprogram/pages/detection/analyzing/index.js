@@ -8,6 +8,7 @@
  */
 
 const detectionService = require('../../../services/detection');
+const { DETECTION, UI } = require('../../../config/constants');
 
 Page({
   data: {
@@ -26,7 +27,7 @@ Page({
     estimatedTime: '约5秒',
     // 轮询计数
     pollCount: 0,
-    maxPollCount: 30 // 最多轮询30次，每次500ms
+    maxPollCount: DETECTION.MAX_POLL_COUNT
   },
 
   onLoad(options) {
@@ -36,7 +37,7 @@ Page({
         title: '会话ID缺失',
         icon: 'none'
       });
-      setTimeout(() => wx.navigateBack(), 1500);
+      setTimeout(() => wx.navigateBack(), UI.TOAST_NAVIGATE_DELAY);
       return;
     }
 
@@ -97,7 +98,7 @@ Page({
    * 模拟分析进度（纯UI效果）
    */
   simulateProgress() {
-    const stageDurations = [1200, 1500, 2000, 1000]; // 每阶段持续时间
+    const stageDurations = UI.STAGE_DURATIONS;
     let stageIndex = 0;
 
     const advanceStage = () => {
@@ -156,13 +157,13 @@ Page({
       } else {
         // 继续轮询
         this.setData({ pollCount: pollCount + 1 });
-        this.pollTimer = setTimeout(() => this.pollResult(), 500);
+        this.pollTimer = setTimeout(() => this.pollResult(), DETECTION.POLL_INTERVAL);
       }
     } catch (error) {
       console.error('轮询结果失败:', error);
       // 网络错误，继续重试
       this.setData({ pollCount: pollCount + 1 });
-      this.pollTimer = setTimeout(() => this.pollResult(), 1000);
+      this.pollTimer = setTimeout(() => this.pollResult(), DETECTION.POLL_RETRY_INTERVAL);
     }
   },
 
@@ -183,14 +184,13 @@ Page({
     // 振动反馈
     wx.vibrateShort({ type: 'medium' });
 
-    // 跳转到结果页
     setTimeout(() => {
       // 将结果存入缓存
       wx.setStorageSync('detectionResult', result);
       wx.redirectTo({
         url: `/pages/detection/result/index?sessionId=${this.data.sessionId}`
       });
-    }, 800);
+    }, UI.REDIRECT_DELAY);
   },
 
   /**

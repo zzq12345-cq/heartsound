@@ -12,7 +12,7 @@
     <view class="hero-banner-wrap">
       <image
         class="hero-banner-img"
-        src="/static/images/hero-banner.png"
+        src="/static/images/hero-banner.jpg"
         mode="widthFix"
         lazy-load="{{true}}"
       />

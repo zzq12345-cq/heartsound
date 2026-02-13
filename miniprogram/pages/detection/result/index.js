@@ -18,6 +18,8 @@ Page({
     suggestions: [],
     // 免责声明
     disclaimer: '本检测结果仅供参考，不能作为医学诊断依据。如有不适，请及时就医。',
+    // 结果状态插图
+    resultImage: '',
     // 紧急联系人
     emergencyContact: null,
     showEmergencyBtn: false
@@ -80,16 +82,28 @@ Page({
     const emergencyContact = wx.getStorageSync('emergencyContact') || null;
     const isDanger = result.risk_level === 'danger';
 
+    // 结果状态插图
+    const resultImageMap = {
+      safe: '/static/images/result-safe.jpg',
+      warning: '/static/images/result-warning.jpg',
+      danger: '/static/images/result-danger.jpg'
+    };
+    const resultImage = resultImageMap[result.risk_level] || resultImageMap.safe;
+
     this.setData({
       result,
       suggestions,
       showShare: true,
       emergencyContact,
-      showEmergencyBtn: isDanger
+      showEmergencyBtn: isDanger,
+      resultImage
     });
 
-    // 保存到历史记录
+    // Save to history
     this.saveToHistory(result);
+
+    // Flag records page to refresh on next show
+    app.globalData.needRefreshRecords = true;
 
     // danger级别且已设置联系人，延迟1秒弹窗提示拨打
     if (isDanger && emergencyContact) {

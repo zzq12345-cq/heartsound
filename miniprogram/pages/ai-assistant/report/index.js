@@ -12,23 +12,13 @@
 const app = getApp();
 const difyService = require('../../../services/dify');
 const userService = require('../../../services/user');
+const { formatFullDateTime } = require('../../../utils/date');
 
-// 报告类型配置
+// Report type configuration
 const REPORT_TYPES = [
   { type: 'weekly', label: '周报', period: 7 },
   { type: 'monthly', label: '月报', period: 30 }
 ];
-
-/**
- * Format timestamp or ISO string to YYYY-MM-DD HH:mm
- */
-function formatTime(value) {
-  if (!value) return '';
-  const date = typeof value === 'number' ? new Date(value) : new Date(value);
-  if (isNaN(date.getTime())) return '';
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
 
 Page({
   data: {
@@ -141,7 +131,7 @@ Page({
       // 格式化历史记录的时间
       const history = (result.data || []).map(item => ({
         ...item,
-        created_at: formatTime(item.created_at)
+        created_at: formatFullDateTime(item.created_at)
       }));
 
       this.setData({
@@ -218,7 +208,7 @@ Page({
           currentReport: {
             type: selectedType,
             content: reportContent,
-            generatedAt: formatTime(now),
+            generatedAt: formatFullDateTime(now),
             reportPeriod: periodLabel,
             stats: detectionStats
           },

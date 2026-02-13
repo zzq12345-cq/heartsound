@@ -7,6 +7,7 @@
  */
 
 const detectionService = require('../../../services/detection');
+const { DETECTION, UI } = require('../../../config/constants');
 
 Page({
   data: {
@@ -64,7 +65,7 @@ Page({
     // 自动开始录制
     setTimeout(() => {
       this.startRecording();
-    }, 1000);
+    }, DETECTION.AUTO_START_DELAY);
   },
 
   onUnload() {
@@ -182,7 +183,7 @@ Page({
         currentTipIndex: nextIndex,
         currentTip: this.data.tips[nextIndex]
       });
-    }, 5000); // 每5秒切换一次提示
+    }, DETECTION.TIP_ROTATION_INTERVAL);
   },
 
   /**
@@ -263,7 +264,7 @@ Page({
       wx.redirectTo({
         url: `/pages/detection/analyzing/index?sessionId=${this.data.sessionId}`
       });
-    }, 800);
+    }, UI.REDIRECT_DELAY);
   },
 
   /**

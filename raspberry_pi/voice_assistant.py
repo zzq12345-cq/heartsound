@@ -836,7 +836,7 @@ def _chat_with_openclaw_gateway(message):
     payload = openclaw_client.request(
         "agent",
         params,
-        timeout_s=float(OPENCLAW_AGENT_TIMEOUT + 4),
+        timeout_s=float(OPENCLAW_AGENT_TIMEOUT + 10),
         expect_final=True,
     )
 
@@ -872,6 +872,17 @@ def _chat_with_openclaw_gateway(message):
         result_text = _normalize_reply_text(result.get("text"))
         if result_text:
             return result_text
+
+    # 最后兜底：遍历 payload 所有 string 值，找最长的非占位内容
+    best = None
+    for k, v in payload.items():
+        if isinstance(v, str):
+            normalized = _normalize_reply_text(v)
+            if normalized and (best is None or len(normalized) > len(best)):
+                best = normalized
+
+    if best:
+        return best
 
     return None
 
@@ -910,15 +921,25 @@ def chat_with_openclaw(message):
     print("🤖 思考中...")
 
     # 优先长连接
+    gw_failed_with_timeout = False
     try:
+        t_gw = time.time()
         reply = _chat_with_openclaw_gateway(message)
+        dt_gw = time.time() - t_gw
         if reply:
-            print(f"💬 回复: {reply}")
+            print(f"💬 回复(GW {dt_gw:.1f}s): {reply}")
             return reply
-    except TimeoutError:
-        print("⚠️ Gateway 长连接超时，回退 CLI")
+        print(f"⚠️ Gateway 返回空内容({dt_gw:.1f}s)，回退 CLI")
+    except TimeoutError as e:
+        gw_failed_with_timeout = True
+        print(f"⚠️ Gateway 长连接超时，回退 CLI: {e}")
     except Exception as e:
-        print(f"⚠️ Gateway 长连接失败，回退 CLI: {e}")
+        print(f"⚠️ Gateway 长连接失败，回退 CLI: {type(e).__name__}: {e}")
+
+    # 如果 WS 已经超时，说明后端本身就慢，CLI 大概率也超时，跳过
+    if gw_failed_with_timeout:
+        text_to_speech("抱歉，网络有点慢，请稍后再试")
+        return None
 
     # 回退 CLI
     try:

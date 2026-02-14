@@ -42,6 +42,13 @@
           data-id="{{item.id}}"
           bindtap="onFeaturedTap"
         >
+          <!-- Cover background -->
+          <image
+            class="featured-cover"
+            src="{{item.cover_image || '/static/images/knowledge-cover-' + ((index % 5) + 1) + '.jpg'}}"
+            mode="aspectFill"
+            lazy-load="{{true}}"
+          />
           <view class="featured-card-content">
             <view class="featured-tag">精选</view>
             <text class="featured-title">{{item.title}}</text>
@@ -103,6 +110,13 @@
       data-id="{{item.id}}"
       bindtap="onArticleTap"
     >
+      <!-- Cover image -->
+      <image
+        class="article-cover"
+        src="{{item.cover_image || '/static/images/knowledge-cover-' + ((index % 5) + 1) + '.jpg'}}"
+        mode="aspectFill"
+        lazy-load="{{true}}"
+      />
       <view class="article-card-body">
         <text class="article-title">{{item.title}}</text>
         <text class="article-summary">{{item.summary}}</text>

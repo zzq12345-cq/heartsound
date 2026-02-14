@@ -9,6 +9,16 @@
     </view>
   </view>
 
+  <!-- Result illustration -->
+  <view class="result-illust-wrap" wx:if="{{resultImage}}">
+    <image
+      class="result-illust"
+      src="{{resultImage}}"
+      mode="aspectFit"
+      lazy-load="{{true}}"
+    />
+  </view>
+
   <!-- Result card -->
   <view class="result-section">
     <result-card

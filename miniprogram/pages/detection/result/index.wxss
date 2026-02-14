@@ -56,6 +56,19 @@
   color: #7A7D85;
 }
 
+/* Result illustration */
+.result-illust-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0 32rpx 24rpx;
+}
+
+.result-illust {
+  width: 360rpx;
+  height: 280rpx;
+  border-radius: var(--radius-lg);
+}
+
 /* Result section */
 .result-section {
   margin: 0 32rpx 32rpx;

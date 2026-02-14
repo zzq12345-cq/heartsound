@@ -10,6 +10,7 @@ pydantic-settings>=2.1.0
 
 # WebSocket
 websockets>=12.0
+cryptography>=42.0.0  # OpenClaw 网关设备签名
 
 # AI Inference
 onnxruntime>=1.16.0
@@ -18,7 +19,8 @@ numpy>=1.24.0
 # Audio Processing
 sounddevice>=0.4.6
 scipy>=1.11.0
-pyaudio>=0.2.14  # Optional: for real audio capture on Raspberry Pi
+vosk>=0.3.44  # 离线中文 ASR（树莓派可用版本）
+# pyaudio>=0.2.14  # Optional: 当前语音链路使用 arecord/aplay，无需安装
 
 # QR Code Generation
 qrcode[pil]>=7.4.0
